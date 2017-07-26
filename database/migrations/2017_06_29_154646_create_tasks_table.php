@@ -13,7 +13,8 @@ class CreateTasksTable extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        $table =  env('TABLE_PREFIX','admin_').'tasks';
+        Schema::create($table, function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->comment('任务名称');
             $table->string('minute')->nullable()->default('*')->comment('分钟0-59');
@@ -38,6 +39,7 @@ class CreateTasksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasks');
+        $table =  env('TABLE_PREFIX','admin_').'tasks';
+        Schema::dropIfExists($table);
     }
 }

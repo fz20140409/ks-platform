@@ -69,7 +69,7 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
-            'table' => 'users',
+            'table' => env('TABLE_PREFIX','admin_').'users',
         ],
 
         // 'users' => [

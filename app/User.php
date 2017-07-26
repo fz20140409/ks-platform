@@ -5,9 +5,11 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Traits\MyEntrustUserTrait;
+use Illuminate\Support\Facades\Config;
 
 class User extends Authenticatable
 {
+
     use Notifiable,MyEntrustUserTrait;
 
     /**
@@ -27,4 +29,10 @@ class User extends Authenticatable
     protected $hidden = [
          'remember_token',
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->table = Config::get('entrust.users_table');
+    }
 }

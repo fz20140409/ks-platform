@@ -12,7 +12,8 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
+        $table=config('entrust.users_table');
+        DB::table($table)->insert([
             'name'=>'admin',
             'email'=>'3040722030@qq.com',
             'password'=>bcrypt('admin888')
@@ -20,7 +21,7 @@ class UsersTableSeeder extends Seeder
 
 
         $users = factory(App\User::class, 105)->make()->toArray();
-        DB::table('users')->insert($users);
+        DB::table($table)->insert($users);
 
     }
 }

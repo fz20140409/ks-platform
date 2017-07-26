@@ -47,9 +47,10 @@ class UserController extends BaseController
      */
     public function store(Request $request)
     {
+        $table=config('entrust.users_table');
         $this->validate($request, [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => "required|string|email|max:255|unique:$table",
             'password' => 'required|string|min:6|confirmed',
         ]);
         $role_ids = $request->role_ids;
@@ -112,10 +113,11 @@ class UserController extends BaseController
     public function update(Request $request, $id)
     {
         //
+        $table=config('entrust.users_table');
         $user = User::findOrFail($id);
         $this->validate($request, [
             'name' => 'required|string|max:255',
-            'email' => "required|string|email|max:255|unique:users,email,$user->id",
+            'email' => "required|string|email|max:255|unique:$table,email,$user->id",
             'password' => 'nullable|string|min:6|confirmed',
         ]);
         $role_ids = $request->role_ids;
