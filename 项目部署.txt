@@ -1,0 +1,48 @@
+1.lnmp vhost add 
+2.配置文件修改
+eg: 
+	root  /home/wwwroot/laravel/public; 指到public目录
+
+	#注意这里注释掉不然 报错500 ，因为引入了php 配置，其中有句 try_files 开启就有报错
+	#include enable-php.conf;
+
+	#新增 支持laravel 优雅链接，在laravel 文档里有说明
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+	#新增支持php 的配置 
+        location ~ \.php$ {
+
+            #不能有下面这句 try_files ,不然报错500
+            # try_files $uri /index.php =404;
+            fastcgi_split_path_info ^(.+\.php)(/.+)$;
+
+            #这句注意 后面是.sock 不是127.0.0..1
+
+            fastcgi_pass  unix:/tmp/php-cgi.sock;
+            fastcgi_index index.php;
+
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            
+        }
+3.
+删除方法：
+在 根目录，即 .user.ini 所在目录
+
+chattr -i .user.ini
+
+rm .user.ini
+
+4.svn co http://115.29.205.99:8899/svn/php ./
+
+5.chown -R www:www chmod -R 777 storage    chmod -R 777 bootstrap/cache
+
+6.php 多次刷新 No input file specified
+php.ini把cgi.force_redirect = 1这个做法不好，可能是配置文件的问题
+
+
+
+
+
