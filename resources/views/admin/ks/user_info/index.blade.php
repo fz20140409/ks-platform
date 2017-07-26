@@ -9,7 +9,7 @@
                     <!--box-header-->
                     <div class="box-header">
                         <div class="row">
-                            <form class="form-inline" action="{{route('admin.user.index')}}">
+                            <form class="form-inline" action="{{route('admin.ks.user_info.index')}}">
                                 <div class="col-lg-1 col-xs-3">
                                     <select name="page_size" class="form-control">
                                         @foreach($page_sizes as $k=> $v)
@@ -21,20 +21,20 @@
 
                                 <div class="col-lg-8 col-xs-10">
                                     所在区域
-                                    <select name="page_size" class="form-control">
+                                    <select name="" class="form-control">
                                         <option>xxx</option>
                                     </select>
                                     类型
-                                    <select name="page_size" class="form-control">
+                                    <select name="" class="form-control">
                                         <option>xxx</option>
                                     </select>
                                     认证信息
-                                    <select name="page_size" class="form-control">
+                                    <select name="" class="form-control">
                                         <option>xxx</option>
                                     </select>
                                     <div class="input-group">
-                                        <input value="" name="where_str" type="text" class="form-control"
-                                               placeholder="手机号码/厂商姓名">
+                                        <input value="{{$where_str}}" name="where_str" type="text" class="form-control"
+                                               placeholder="手机号码/厂家姓名">
                                         <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit">查询</button>
                                     </span>
@@ -79,18 +79,11 @@
                     </form>
                     <!--box-body-->
                     <!--box-footer-->
-                    {{--<div class="box-footer ">
-                        @if(Auth::user()->can('admin.user.batch_destroy'))
-                        <div class="btn-group">
-                            <button onclick="selectAll()" type="button" class="btn btn-default">全选</button>
-                            <button onclick="reverse()" type="button" class="btn btn-default">反选</button>
-                            <a href="javascript:batch_destroy()" class="btn btn-danger">批量删除</a>
-                        </div>
-                        @endif
+                    <div class="box-footer ">
                         <div style="float: right">
-                            {{$users->appends(['where_str' => $where_str,'page_size'=>$page_size])->links()}}
+                            {{$infos->appends(['where_str' => $where_str,'page_size'=>$page_size])->links()}}
                         </div>
-                    </div>--}}
+                    </div>
                     <!--box-footer-->
                 </div>
             </div>

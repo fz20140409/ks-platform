@@ -20,14 +20,18 @@ class UserInfoController extends BaseController
      */
     public function index(Request $request)
     {
+        $where_str = $request->where_str;
+        $where = array();
+        $orWhere = array();
+        if (isset($where_str)) {
+            $where[] = ['a.phone', 'like', '%' . $where_str . '%'];
+            $orWhere[] = ['a.provice', 'like', '%' . $where_str . '%'];
+        }
 
         //条件
+        $infos=DB::table('user as a')->leftJoin('user_type_info as b','a.utype','=','b.id')->select(['a.uid','a.phone','a.provice','b.type_name','a.company','a.iscertifi'])->where($where)->orWhere($orWhere)->paginate($this->page_size);
 
-        $sql="SELECT a.uid,a.phone,a.provice,b.type_name,a.company,a.iscertifi FROM `user` as a LEFT JOIN user_type_info as b ON a.utype=b.id;";
-        $infos=DB::select($sql);
-
-
-       return view('admin.ks.user_info.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes]);
+       return view('admin.ks.user_info.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes,'where_str' => $where_str]);
 
     }
 
@@ -61,6 +65,8 @@ class UserInfoController extends BaseController
     public function show($id)
     {
         //
+        return view('admin.ks.user_info.create');
+
     }
 
     /**
