@@ -167,10 +167,11 @@ class PermissionController extends BaseController
         if (!empty($permission)) {
             $id=$permission->id;
         }
+        $table=config('entrust.permissions_table');
         return Validator::make($request->all(), [
             'pid' => 'required|integer',
             'display_name' => 'required|string',
-            'name' => "required|string|unique:permissions,name,$id",
+            'name' => "required|string|unique:$table,name,$id",
             'url' => 'nullable|string',
             'ishow' => 'required|integer',
         ])->validate();

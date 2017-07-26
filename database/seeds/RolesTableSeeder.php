@@ -13,15 +13,16 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('roles')->insert([
+        $table=config('entrust.roles_table');
+        DB::table($table)->insert([
             'name' => 'general_administrator',
             'display_name' => '普通管理员'
         ]);
-        DB::table('roles')->insert([
+        DB::table($table)->insert([
             'name' => 'system_administrator',
             'display_name' => '系统管理员'
         ]);
-        DB::table('roles')->insert([
+        DB::table($table)->insert([
             'name' => 'super_administrator',
             'display_name' => '超级管理员'
         ]);

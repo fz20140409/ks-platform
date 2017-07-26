@@ -64,8 +64,8 @@
                                 <div class="col-sm-8">
                                     <input value="@if(isset($permission)){{$permission->name}}@else{{old('name')}}@endif" name="name" type="text" class="form-control" id="name" placeholder="权限标识"
                                            required>
-                                    @if ($errors->has('password'))
-                                        <div class="alert alert-warning">{{ $errors->first('password') }}</div>
+                                    @if ($errors->has('name'))
+                                        <div class="alert alert-warning">{{ $errors->first('name') }}</div>
                                     @endif
                                 </div>
                             </div>
@@ -85,8 +85,8 @@
 
                                 <div class="col-sm-8">
                                     <input value="@if(isset($permission)){{$permission->icon}}@else{{old('icon')}}@endif" name="icon" type="text" class="form-control" id="icon" placeholder="图标">
-                                    @if ($errors->has('password'))
-                                        <div class="alert alert-warning">{{ $errors->first('password') }}</div>
+                                    @if ($errors->has('icon'))
+                                        <div class="alert alert-warning">{{ $errors->first('icon') }}</div>
                                     @endif
                                 </div>
                             </div>

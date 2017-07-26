@@ -56,8 +56,9 @@ class RoleController extends BaseController
     public function store(Request $request)
     {
         //
+        $table=config('entrust.roles_table');
         $this->validate($request, [
-            'name' => 'required|string|max:255|unique:roles',
+            'name' => 'required|string|max:255|unique:'.$table,
             'display_name' => 'required|string|max:255',
         ]);
         DB::beginTransaction();
@@ -111,9 +112,10 @@ class RoleController extends BaseController
     public function update(Request $request, Role $role)
     {
         //
+        $table=config('entrust.roles_table');
         $this->validate($request, [
             'display_name' => 'required|string|max:255',
-            'name' => "required|string|max:255|unique:roles,name,$role->id",
+            'name' => "required|string|max:255|unique:$table,name,$role->id",
 
         ]);
         DB::beginTransaction();

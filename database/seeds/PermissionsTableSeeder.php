@@ -13,49 +13,50 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
         //
-       DB::table('permissions')->insert([
+        $table=config('entrust.permissions_table');
+       DB::table($table)->insert([
            'id'=>1,
            'pid'=>0,
            'name'=>trim('admin.rbac'),
            'display_name'=>'权限管理',
            'icon'=>'fa fa-lock',
        ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>2,
             'pid'=>1,
             'name'=>trim('admin.user.index'),
             'url'=>'route#admin.user.index#',
             'display_name'=>'用户',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>3,
             'pid'=>1,
             'name'=>trim('admin.role.index'),
             'url'=>'route#admin.role.index#',
             'display_name'=>'角色',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>4,
             'pid'=>1,
             'name'=>trim('admin.permission.index'),
             'url'=>'route#admin.permission.index#',
             'display_name'=>'权限',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>5,
             'pid'=>2,
             'name'=>trim('admin.user.create'),
             'ishow'=>0,
             'display_name'=>'显示新增页',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>6,
             'pid'=>2,
             'name'=>trim('admin.user.edit'),
             'ishow'=>0,
             'display_name'=>'显示修改页',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>8,
             'pid'=>0,
             'name'=>trim('admin.tools'),
@@ -63,7 +64,7 @@ class PermissionsTableSeeder extends Seeder
             'icon'=>'fa fa-wrench',
             'display_name'=>'工具',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>9,
             'pid'=>8,
             'name'=>trim('admin.builder'),
@@ -71,35 +72,35 @@ class PermissionsTableSeeder extends Seeder
             'ishow'=>1,
             'display_name'=>'生成器',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>10,
             'pid'=>2,
             'name'=>trim('admin.user.destroy'),
             'ishow'=>0,
             'display_name'=>'删除',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>11,
             'pid'=>2,
             'name'=>trim('admin.user.batch_destroy'),
             'ishow'=>0,
             'display_name'=>'批量删除',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>12,
             'pid'=>2,
             'name'=>trim('admin.user.show'),
             'ishow'=>0,
             'display_name'=>'查看',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>13,
             'pid'=>3,
             'name'=>trim('admin.role.permission'),
             'ishow'=>0,
             'display_name'=>'显示权限页',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>14,
             'pid'=>0,
             'name'=>trim('admin.home'),
@@ -108,7 +109,7 @@ class PermissionsTableSeeder extends Seeder
             'ishow'=>1,
             'display_name'=>'主页',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>15,
             'pid'=>8,
             'name'=>trim('admin.logs.index'),
@@ -116,7 +117,7 @@ class PermissionsTableSeeder extends Seeder
             'ishow'=>1,
             'display_name'=>'日志分析',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>16,
             'pid'=>8,
             'name'=>trim('admin.task.index'),
@@ -124,70 +125,70 @@ class PermissionsTableSeeder extends Seeder
             'ishow'=>1,
             'display_name'=>'定时任务',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>17,
             'pid'=>16,
             'name'=>trim('admin.task.create'),
             'ishow'=>0,
             'display_name'=>'显示新增页',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>18,
             'pid'=>16,
             'name'=>trim('admin.task.edit'),
             'ishow'=>0,
             'display_name'=>'显示修改页',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>19,
             'pid'=>16,
             'name'=>trim('admin.task.destroy'),
             'ishow'=>0,
             'display_name'=>'删除',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>20,
             'pid'=>16,
             'name'=>trim('admin.task.batch_destroy'),
             'ishow'=>0,
             'display_name'=>'批量删除',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>21,
             'pid'=>16,
             'name'=>trim('admin.task.show'),
             'ishow'=>0,
             'display_name'=>'查看',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>22,
             'pid'=>16,
             'name'=>trim('admin.task.store'),
             'ishow'=>0,
             'display_name'=>'新增操作',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>23,
             'pid'=>16,
             'name'=>trim('admin.task.run'),
             'ishow'=>0,
             'display_name'=>'开启和关闭任务',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>24,
             'pid'=>16,
             'name'=>trim('admin.task.update'),
             'ishow'=>0,
             'display_name'=>'修改操作',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>25,
             'pid'=>2,
             'name'=>trim('admin.user.store'),
             'ishow'=>0,
             'display_name'=>'新增',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>26,
             'pid'=>2,
             'name'=>trim('admin.user.update'),
@@ -195,98 +196,98 @@ class PermissionsTableSeeder extends Seeder
             'display_name'=>'修改',
         ]);
 
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>27,
             'pid'=>3,
             'name'=>trim('admin.role.create'),
             'ishow'=>0,
             'display_name'=>'显示新增页',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>28,
             'pid'=>3,
             'name'=>trim('admin.role.edit'),
             'ishow'=>0,
             'display_name'=>'显示修改页',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>29,
             'pid'=>0,
             'name'=>trim('admin.home.flushCache'),
             'ishow'=>0,
             'display_name'=>'更新缓存',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>30,
             'pid'=>3,
             'name'=>trim('admin.role.store'),
             'ishow'=>0,
             'display_name'=>'新增',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>31,
             'pid'=>3,
             'name'=>trim('admin.role.update'),
             'ishow'=>0,
             'display_name'=>'修改',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>33,
             'pid'=>3,
             'name'=>trim('admin.role.show'),
             'ishow'=>0,
             'display_name'=>'查看',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>34,
             'pid'=>3,
             'name'=>trim('admin.role.destroy'),
             'ishow'=>0,
             'display_name'=>'删除',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>35,
             'pid'=>3,
             'name'=>trim('admin.role.doPermission'),
             'ishow'=>0,
             'display_name'=>'授权',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>36,
             'pid'=>4,
             'name'=>trim('admin.permission.create'),
             'ishow'=>0,
             'display_name'=>'显示新增页',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>37,
             'pid'=>4,
             'name'=>trim('admin.permission.edit'),
             'ishow'=>0,
             'display_name'=>'显示修改页',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>38,
             'pid'=>4,
             'name'=>trim('admin.permission.store'),
             'ishow'=>0,
             'display_name'=>'新增',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>39,
             'pid'=>4,
             'name'=>trim('admin.permission.update'),
             'ishow'=>0,
             'display_name'=>'修改',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>40,
             'pid'=>4,
             'name'=>trim('admin.permission.show'),
             'ishow'=>0,
             'display_name'=>'查看',
         ]);
-        DB::table('permissions')->insert([
+        DB::table($table)->insert([
             'id'=>41,
             'pid'=>4,
             'name'=>trim('admin.permission.destroy'),
