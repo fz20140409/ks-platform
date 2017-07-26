@@ -41,6 +41,18 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
     Route::post('task/batch_destroy','TaskController@batch_destroy')->name('task.batch_destroy');
     Route::put('task/run/{id}','TaskController@run')->name('task.run');
 
+    Route::group(['prefix'=>'ks','as'=>'ks.','namespace'=>'Ks'],function (){
+        //网店
+        Route::resource('user_info','UserInfoController');
+        //优质厂家
+        Route::resource('qm','QualityManufacturersController');
+        Route::post('qm/batch_destroy','QualityManufacturersController@batch_destroy')->name('qm.batch_destroy');
+        //优质商家
+        Route::resource('qum','QualityMerchantsController');
+        Route::post('qum/batch_destroy','QualityMerchantsController@batch_destroy')->name('qum.batch_destroy');
+    });
+
+
     //
     Route::get('/',function (){
         return redirect()->route('admin.login');
