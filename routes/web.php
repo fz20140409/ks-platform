@@ -50,6 +50,11 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         //优质商家
         Route::resource('qum','QualityMerchantsController');
         Route::post('qum/batch_destroy','QualityMerchantsController@batch_destroy')->name('qum.batch_destroy');
+        //商品管理
+        Route::resource('goods','GoodsController');
+        //品类设置
+        Route::resource('category','CategoryController');
+        Route::post('category/batch_destroy','CategoryController@batch_destroy')->name('category.batch_destroy');
     });
 
 
