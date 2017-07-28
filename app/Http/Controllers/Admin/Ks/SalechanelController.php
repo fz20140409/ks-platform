@@ -6,12 +6,11 @@ use App\Http\Controllers\Admin\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-/**
- * 品类设置
- * Class CategoryController
+/**渠道设置
+ * Class SalechanelController
  * @package App\Http\Controllers\Admin\Ks
  */
-class CategoryController extends BaseController
+class SalechanelController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -26,14 +25,14 @@ class CategoryController extends BaseController
 
         $where[]=['parent_id','=',0];
         if (isset($where_str)) {
-            $where[] = ['cat_name', 'like', '%' . $where_str . '%'];
+            $where[] = ['sale_name', 'like', '%' . $where_str . '%'];
 
         }
 
         //条件
-        $infos=DB::table('cfg_category')->select(['cat_name','cat_id'])->where($where)->paginate($this->page_size);
+        $infos=DB::table('cfg_salechanel')->select(['sale_name','sid'])->where($where)->paginate($this->page_size);
 
-        return view('admin.ks.category.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes,'where_str' => $where_str]);
+        return view('admin.ks.salechanel.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes,'where_str' => $where_str]);
 
     }
 
@@ -46,7 +45,7 @@ class CategoryController extends BaseController
     {
 
         //
-        return view('admin.ks.category.create');
+        return view('admin.ks.salechanel.create');
     }
 
     /**
@@ -58,29 +57,29 @@ class CategoryController extends BaseController
     public function store(Request $request)
     {
         //
-        $cat_name=$request->cat_name;
+        $sale_name=$request->sale_name;
         $pid=$request->pid;
-        $where=array('cat_name'=>$cat_name);
+        $where=array('sale_name'=>$sale_name);
         if(isset($pid)){
             $where['parent_id']=$pid;
         }else{
             $pid=0;
         }
 
-        $count= DB::table('cfg_category')->where($where)->count();
+        $count= DB::table('cfg_salechanel')->where($where)->count();
         if(!empty($count)){
-            return response()->json(['msg'=>'存在相同品类名称']);
+            return response()->json(['msg'=>'存在相同渠道名称']);
         }
         $insert=[
-            'cat_name'=>$cat_name,
+            'sale_name'=>$sale_name,
             'parent_id'=>$pid,
             'createtime'=>date('Y-m-d H:i:s',time())
         ];
 
 
-       if( DB::table('cfg_category')->insert($insert)){
-           return response()->json(['msg'=>1]);
-       }
+        if( DB::table('cfg_salechanel')->insert($insert)){
+            return response()->json(['msg'=>1]);
+        }
     }
 
     /**
@@ -103,8 +102,8 @@ class CategoryController extends BaseController
     public function edit($id)
     {
         //
-        $info = DB::table('cfg_category')->where('cat_id',$id)->first();
-        $info->url=route('admin.ks.category.update',$id);
+        $info = DB::table('cfg_salechanel')->where('sid',$id)->first();
+        $info->url=route('admin.ks.salechanel.update',$id);
         return response()->json($info);
     }
 
@@ -117,16 +116,16 @@ class CategoryController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        $cat_name=$request->cat_name;
+        $sale_name=$request->sale_name;
         $where=array();
-        $where[]=['cat_name','=',$cat_name];
-        $where[]=['cat_id','!=',$id];
-        $count= DB::table('cfg_category')->where($where)->count();
+        $where[]=['sale_name','=',$sale_name];
+        $where[]=['sid','!=',$id];
+        $count= DB::table('cfg_salechanel')->where($where)->count();
         if (!empty($count)) {
-            return response()->json(['msg'=>'存在相同品类名称']);
+            return response()->json(['msg'=>'存在相同渠道名称']);
         }
 
-        DB::table('cfg_category')->where('cat_id',$id)->update(['cat_name' => $cat_name]);
+        DB::table('cfg_salechanel')->where('sid',$id)->update(['sale_name' => $sale_name]);
         return response()->json(['msg'=>1]);
 
     }
@@ -142,23 +141,23 @@ class CategoryController extends BaseController
         //确认删除子分类
         if(isset($request->flag)){
             //当前分类下，子分类
-            $infos=DB::table('cfg_category')->where('parent_id',$id)->select('cat_id')->get()->toArray();
+            $infos=DB::table('cfg_salechanel')->where('parent_id',$id)->select('sid')->get()->toArray();
             $ids=array();
             foreach ($infos as $info){
-                $ids[]=$info->cat_id;
+                $ids[]=$info->sid;
             }
-            DB::table('cfg_category')->whereIn('parent_id', $ids)->delete();//三级分类
-            DB::table('cfg_category')->whereIn('cat_id', $ids)->delete();//二级分类
-            DB::table('cfg_category')->where('cat_id', $id)->delete();//一级分类
+            DB::table('cfg_salechanel')->whereIn('parent_id', $ids)->delete();
+            DB::table('cfg_salechanel')->whereIn('sid', $ids)->delete();
+            DB::table('cfg_salechanel')->where('sid', $id)->delete();
 
             return response()->json(['msg' => 1]);
         }
-        $count=DB::table('cfg_category')->where('parent_id',$id)->count();
+        $count=DB::table('cfg_salechanel')->where('parent_id',$id)->count();
         if(!empty($count)){
             return response()->json(['msg'=>'该分类下有子分类，是否一起删除?']);
         }
 
-        DB::table('cfg_category')->where('cat_id', $id)->delete();
+        DB::table('cfg_salechanel')->where('sid', $id)->delete();
         return response()->json(['msg' => 1]);
 
 
@@ -169,23 +168,23 @@ class CategoryController extends BaseController
         //确认删除子分类
         if(isset($request->flag)){
             //当前分类下，子分类
-            $infos=DB::table('cfg_category')->whereIn('parent_id',$ids)->select('cat_id')->get()->toArray();
+            $infos=DB::table('cfg_salechanel')->whereIn('parent_id',$ids)->select('sid')->get()->toArray();
             $idss=array();
             foreach ($infos as $info){
-                $idss[]=$info->cat_id;
+                $idss[]=$info->sid;
             }
-            DB::table('cfg_category')->whereIn('parent_id', $idss)->delete();//子分类的子分类
-            DB::table('cfg_category')->whereIn('cat_id', $idss)->delete();//子分类
-            DB::table('cfg_category')->whereIn('cat_id', $ids)->delete();//当前分类
+            DB::table('cfg_salechanel')->whereIn('parent_id', $idss)->delete();//子分类的子分类
+            DB::table('cfg_salechanel')->whereIn('sid', $idss)->delete();//子分类
+            DB::table('cfg_salechanel')->whereIn('sid', $ids)->delete();//当前分类
 
             return response()->json(['msg' => 1]);
         }
-        $count=DB::table('cfg_category')->whereIn('parent_id',$ids)->count();
+        $count=DB::table('cfg_salechanel')->whereIn('parent_id',$ids)->count();
         if(!empty($count)){
             return response()->json(['msg'=>'该分类下有子分类，是否一起删除?']);
         }
 
-        DB::table('cfg_category')->whereIn('cat_id', $ids)->delete();
+        DB::table('cfg_salechanel')->whereIn('sid', $ids)->delete();
         return response()->json(['msg' => 1]);
 
     }
@@ -201,14 +200,14 @@ class CategoryController extends BaseController
 
         $where[]=['parent_id','=',$id];
         if (isset($where_str)) {
-            $where[] = ['cat_name', 'like', '%' . $where_str . '%'];
+            $where[] = ['sale_name', 'like', '%' . $where_str . '%'];
 
         }
 
         //条件
-        $infos=DB::table('cfg_category')->select(['cat_name','cat_id','cat_icon'])->where($where)->paginate($this->page_size);
+        $infos=DB::table('cfg_salechanel')->select(['sale_name','sid'])->where($where)->paginate($this->page_size);
 
-        return view('admin.ks.category.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes,'where_str' => $where_str,'level'=>$request->level,'pid'=>$id]);
+        return view('admin.ks.salechanel.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes,'where_str' => $where_str,'level'=>$request->level,'pid'=>$id]);
 
     }
 }

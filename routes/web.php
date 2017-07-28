@@ -55,6 +55,11 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         //品类设置
         Route::resource('category','CategoryController');
         Route::post('category/batch_destroy','CategoryController@batch_destroy')->name('category.batch_destroy');
+        Route::get('category/showSub/{id}','CategoryController@showSub')->name('category.showSub');
+        //渠道设置
+        Route::resource('salechanel','SalechanelController');
+        Route::post('salechanel/batch_destroy','SalechanelController@batch_destroy')->name('salechanel.batch_destroy');
+        Route::get('salechanel/showSub/{id}','SalechanelController@showSub')->name('salechanel.showSub');
     });
 
 

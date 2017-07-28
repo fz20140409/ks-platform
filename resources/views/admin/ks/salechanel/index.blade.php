@@ -1,5 +1,5 @@
 @extends('admin.layouts.default')
-@section('t1','品类')
+@section('t1','渠道')
 @section('t2','设置')
 @section('content')
     <section class="content">
@@ -9,7 +9,7 @@
                     <!--box-header-->
                     <div class="box-header">
                         <div class="row">
-                            <form class="form-inline" action="@if(isset($level)){{route('admin.ks.category.showSub',$pid)}}@else {{route('admin.ks.category.index')}}@endif">
+                            <form class="form-inline" action="@if(isset($level)){{route('admin.ks.salechanel.showSub',$pid)}}@else {{route('admin.ks.salechanel.index')}}@endif">
                                 @if(isset($level))
                                     <input type="hidden" name="level" value="{{$level}}">
                                     @endif
@@ -24,18 +24,18 @@
                                 <div class="col-lg-6 col-xs-10">
                                     <div class="input-group">
                                         <input value="{{$where_str}}" name="where_str" type="text" class="form-control"
-                                               placeholder="品类名称">
+                                               placeholder="渠道名称">
                                         <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit">查询</button>
                                     </span>
                                     </div>
 
                                 </div>
-                                @if(Auth::user()->can('admin.ks.category.create'))
+                                @if(Auth::user()->can('admin.ks.salechanel.create'))
                                     <div class="col-lg-2 col-xs-2 pull-right">
-                                        <a href="javascript:ce('{{route('admin.ks.category.create')}}',1)" class="btn btn-primary">新增</a>
+                                        <a href="javascript:ce('{{route('admin.ks.salechanel.create')}}',1)" class="btn btn-primary">新增</a>
                                         @if(isset($level))
-                                                <a href="{{route('admin.ks.category.index')}}" class="btn btn-primary">返回上级</a>
+                                                <a href="{{route('admin.ks.salechanel.index')}}" class="btn btn-primary">返回上级</a>
                                          @endif
                                     </div>
                                 @endif
@@ -49,17 +49,11 @@
                                         @if(isset($level))
                                         <input type="hidden" name="pid" value="{{$pid}}">
                                         @endif
-                                        <label for="cat_name" class="col-sm-3 control-label">品类名称</label>
+                                        <label for="sale_name" class="col-sm-3 control-label">渠道名称</label>
 
                                         <div class="col-sm-8">
-                                            <input value="" name="cat_name" type="text" class="form-control" id="cat_name" placeholder="品类名称" required>
+                                            <input value="" name="sale_name" type="text" class="form-control" id="sale_name" placeholder="渠道名称" required>
                                         </div>
-                                        @if(isset($level)&&$level==2)
-                                        <label for="" class="col-sm-3 control-label">上传图片</label>
-                                        <div class="col-sm-8">
-                                            <img src="">
-                                        </div>
-                                        @endif
                                     </div>
 
                                 </div>
@@ -79,16 +73,13 @@
                                 <tr>
                                     <th></th>
                                     <th>序号</th>
-                                    @if(isset($level)&&$level==2)
-                                        <th>图片</th>
-                                    @endif
                                     <th>
                                         @if(isset($level)&&$level==2)
-                                            二级品类
+                                            二级渠道
                                             @elseif(isset($level)&&$level==3)
-                                            三级品类
+                                            三级渠道
                                             @else
-                                            一级品类
+                                            一级渠道
                                         @endif
 
                                     </th>
@@ -98,24 +89,21 @@
                                 @foreach($infos as $info)
                                     <tr>
                                         <th><input class="minimal" name="ids[]" type="checkbox"
-                                                   value="{{$info->cat_id}}"></th>
-                                        <td>{{$info->cat_id}}</td>
-                                        @if(isset($level)&&$level==2)
-                                            <td>{{$info->cat_icon}}</td>
-                                        @endif
-                                        <td>{{$info->cat_name}}</td>
+                                                   value="{{$info->sid}}"></th>
+                                        <td>{{$info->sid}}</td>
+                                        <td>{{$info->sale_name}}</td>
                                         <td>
-                                            {{--{{route('admin.ks.category.edit',$info->uid)}}--}}
-                                            <a class=" op_edit"  href="javascript:ce('{{route('admin.ks.category.edit',$info->cat_id)}}',2)"
+                                            {{--{{route('admin.ks.salechanel.edit',$info->uid)}}--}}
+                                            <a class=" op_edit"  href="javascript:ce('{{route('admin.ks.salechanel.edit',$info->sid)}}',2)"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
                                             @if(!(isset($level)&&$level==3))
-                                            <a class=" op_showSub"  href=" @if(isset($level)&&$level==2){{route('admin.ks.category.showSub',[$info->cat_id,'level'=>3])}}@else{{route('admin.ks.category.showSub',[$info->cat_id,'level'=>2])}}@endif"
+                                            <a class=" op_showSub"  href=" @if(isset($level)&&$level==2){{route('admin.ks.salechanel.showSub',[$info->sid,'level'=>3])}}@else{{route('admin.ks.salechanel.showSub',[$info->sid,'level'=>2])}}@endif"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">编辑子分类</i></a>
                                             @endif
 
-                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.category.destroy',$info->cat_id)}}')">
+                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.salechanel.destroy',$info->sid)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
                                         </td>
                                     </tr>
@@ -126,7 +114,7 @@
                     <!--box-body-->
                     <!--box-footer-->
                     <div class="box-footer ">
-                        @if(Auth::user()->can('admin.ks.category.batch_destroy'))
+                        @if(Auth::user()->can('admin.ks.salechanel.batch_destroy'))
                             <div class="btn-group">
                                 <button onclick="selectAll()" type="button" class="btn btn-default">全选</button>
                                 <button onclick="reverse()" type="button" class="btn btn-default">反选</button>
@@ -164,15 +152,15 @@
     </script>
     <script>
         //有修改权限，显示修改
-        @if(Auth::user()->can('admin.ks.category.edit'))
+        @if(Auth::user()->can('admin.ks.salechanel.edit'))
             $(".op_edit").show();
         @endif
         //有删除权限，显示删除
-        @if(Auth::user()->can('admin.ks.category.destroy'))
+        @if(Auth::user()->can('admin.ks.salechanel.destroy'))
             $(".op_destroy").show();
         @endif
         //子分类
-        @if(Auth::user()->can('admin.ks.category.showSub'))
+        @if(Auth::user()->can('admin.ks.salechanel.showSub'))
             $(".op_showSub").show();
         @endif
         //批量删除
@@ -182,7 +170,7 @@
                 layer.confirm('确认删除？', {
                     btn: ['确认', '取消']
                 },function () {
-                    var url='{{route("admin.ks.category.batch_destroy")}}';
+                    var url='{{route("admin.ks.salechanel.batch_destroy")}}';
                     $.ajax({
                         url: url,
                         type: 'post',
@@ -234,9 +222,9 @@
     <script>
         function ce(url,flag) {
             if(flag==1){
-                $('#layer_ce').attr('url','{{route('admin.ks.category.store')}}');
+                $('#layer_ce').attr('url','{{route('admin.ks.salechanel.store')}}');
                 layer.open({
-                    title:'品类',
+                    title:'渠道',
                     type: 1,
                     skin: 'layui-layer-rim', //加上边框
                     area: ['400px',''], //宽高
@@ -250,10 +238,10 @@
                     success:function (data) {
                         $('#layer_ce').append('{{method_field('PUT')}}');
                         $('#layer_ce').attr('url',data.url);
-                        $("#layer_ce input[name='cat_name']").val(data.cat_name);
+                        $("#layer_ce input[name='sale_name']").val(data.sale_name);
 
                         layer.open({
-                            title:'品类',
+                            title:'渠道',
                             type: 1,
                             skin: 'layui-layer-rim', //加上边框
                             area: ['400px',''], //宽高
