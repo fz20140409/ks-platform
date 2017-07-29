@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Ks;
 use App\Http\Controllers\Admin\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Tools\UploadTool;
 
 /**首页图标设置
  * Class MenuController
@@ -23,14 +24,14 @@ class MenuController extends BaseController
         //
         $where_str = $request->where_str;
         $where = array();
-        $orWhere = array();
+
         if (isset($where_str)) {
-            $where[] = ['a.phone', 'like', '%' . $where_str . '%'];
-            $orWhere[] = ['a.provice', 'like', '%' . $where_str . '%'];
+            $where[] = ['menu_name', 'like', '%' . $where_str . '%'];
+
         }
 
         //条件
-        $infos = DB::table('cfg_menu')->where($where)->orWhere($orWhere)->paginate($this->page_size);
+        $infos = DB::table('cfg_menu')->where($where)->paginate($this->page_size);
 
         return view('admin.ks.menu.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str]);
 
@@ -44,6 +45,7 @@ class MenuController extends BaseController
     public function create()
     {
         //
+        return view('admin.ks.menu.create');
     }
 
     /**
@@ -54,7 +56,18 @@ class MenuController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+
+        $menu_name=$request->menu_name;
+        $m_url=$request->m_url;
+        $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
+
+        DB::table('cfg_menu')->insert([
+            'menu_name'=>$menu_name,
+            'm_url'=>$m_url,
+            'icon'=>$icon,
+        ]);
+        return redirect()->back()->with('success', '添加成功');
+
     }
 
     /**
@@ -77,6 +90,8 @@ class MenuController extends BaseController
     public function edit($id)
     {
         //
+        $info=DB::table('cfg_menu')->where('id',$id)->first();
+        return view('admin.ks.menu.create',compact('info'));
     }
 
     /**
@@ -88,7 +103,15 @@ class MenuController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
+        $menu_name=$request->menu_name;
+        $m_url=$request->m_url;
+        $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
+        DB::table('cfg_menu')->where('id',$id)->update([
+            'menu_name'=>$menu_name,
+            'm_url'=>$m_url,
+            'icon'=>$icon,
+        ]);
+        return redirect()->back()->with('success', '添加成功');
     }
 
     /**
@@ -100,5 +123,30 @@ class MenuController extends BaseController
     public function destroy($id)
     {
         //
+        DB::table('cfg_menu')->where('id',$id)->delete();
+        return response()->json([
+            'msg' => 1
+        ]);
+
+    }
+
+    /**屏蔽和显示
+     * @param $id
+     */
+    function updateStatus($id){
+        $info=DB::table('cfg_menu')->where('id',$id)->first();
+        if($info->enabled==1){
+            DB::table('cfg_menu')->where('id',$id)->update([
+               'enabled'=>0
+            ]);
+        }else{
+            DB::table('cfg_menu')->where('id',$id)->update([
+                'enabled'=>1
+            ]);
+        }
+        return response()->json([
+            'msg' => 1
+        ]);
+
     }
 }

@@ -65,6 +65,8 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         Route::post('brand/batch_destroy','BrandController@batch_destroy')->name('brand.batch_destroy');
         //首页图标设置
         Route::resource('menu','MenuController');
+        Route::get('menu/updateStatus/{id}','MenuController@updateStatus')->name('menu.updateStatus');
+
         //轮播管理
         Route::resource('banner','BannerController');
 

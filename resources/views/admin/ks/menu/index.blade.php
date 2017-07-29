@@ -62,12 +62,12 @@
                                         <td><img src="{{$info->icon}}"></td>
                                         <td>{{$info->menu_name}}</td>
                                         <td>{{$info->m_url}}</td>
-                                        <td>{{$info->enabled}}</td>
+                                        <td>@if($info->enabled==1) 正常 @else 屏蔽 @endif</td>
                                         <td>
 
-                                            <a class=" op_show" href="{{route('admin.ks.menu.show',$info->id)}}"
+                                            <a class=" op_show" href="javascript:updateStatus('{{route('admin.ks.menu.updateStatus',$info->id)}}')"
                                                style="margin-right: 10px;display: none">
-                                                    <i class="fa fa-eye " aria-hidden="true">屏蔽</i></a>
+                                                    <i class="fa fa-eye " aria-hidden="true">@if($info->enabled==1) 屏蔽 @else 显示 @endif</i></a>
                                             <a class=" op_edit"  href="{{route('admin.ks.menu.edit',$info->id)}}"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
@@ -107,8 +107,8 @@
         });
     </script>
     <script>
-        //有查看权限，显示查看
-        @if(Auth::user()->can('admin.ks.menu.show'))
+        //屏蔽和显示
+        @if(Auth::user()->can('admin.ks.menu.updateStatus'))
              $(".op_show").show();
         @endif
         //有修改权限，显示修改
@@ -119,6 +119,22 @@
         @if(Auth::user()->can('admin.ks.menu.destroy'))
             $(".op_destroy").show();
         @endif
+        
+        function updateStatus(url) {
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function ($data) {
+                    if ($data.msg == 1) {
+                        layer.alert('操作成功');
+                        location.reload();
+                    } else {
+                        layer.alert('操作失败');
+                    }
+                }
+            });
+            
+        }
 
     </script>
     @include('admin.common.layer_del')
