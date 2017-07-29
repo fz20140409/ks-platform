@@ -12,9 +12,26 @@
 
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">
+    <link rel="stylesheet" href="/plugins/bootstrap-fileinput/css/fileinput.min.css">
     @endsection
 @section('js')
     <script src="/adminlte/plugins/iCheck/icheck.min.js"></script>
+    <script src="/plugins/bootstrap-fileinput/js/plugins/piexif.min.js"></script>
+    <script src="/plugins/bootstrap-fileinput/js/plugins/sortable.min.js"></script>
+    <script src="/plugins/bootstrap-fileinput/js/plugins/purify.min.js"></script>
+    <script src="/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
+    <script src="/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
+    <script>
+      $("#avatar").fileinput({
+            initialPreviewAsData: true,
+            language: 'zh',
+            maxFileSize: 1500,
+            showUpload: false,
+            allowedFileExtensions: ["jpg", "png", "gif"],
+            initialPreview: ["@if(isset($user)){{$user->avatar}}@else /img/default_avatar_male.jpg @endif"],
+
+        });
+    </script>
     <script>
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-blue',
@@ -29,7 +46,7 @@
         <div class="col-md-12">
             <div class="box box-default">
                 <!-- form start -->
-                <form class="box-header form-horizontal" method="post" action="@if(isset($user)){{ route('admin.user.update',$user) }}@else{{ route('admin.user.store') }}@endif">
+                <form enctype="multipart/form-data" class="box-header form-horizontal" method="post" action="@if(isset($user)){{ route('admin.user.update',$user) }}@else{{ route('admin.user.store') }}@endif">
                     {{csrf_field()}}
                     @if(isset($user)){{method_field('PUT')}}@endif
                     @if(isset($show))<fieldset disabled>@endif
@@ -70,6 +87,15 @@
                                 <input value="@if(isset($user)){{$user->name}}@else{{old('name')}}@endif" name="name" type="text" class="form-control" id="name" placeholder="昵称" required>
                                 @if ($errors->has('name'))
                                     <div class="alert alert-warning">{{ $errors->first('name') }}</div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="avatar" class="col-sm-2 control-label">头像</label>
+                            <div  class="col-sm-8">
+                                <input id="avatar" name="avatar" type="file" >
+                                @if(session()->has('upload'))
+                                    <div class="alert alert-error">{{session('upload')}}</div>
                                 @endif
                             </div>
                         </div>

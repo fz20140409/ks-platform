@@ -60,6 +60,9 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         Route::resource('salechanel','SalechanelController');
         Route::post('salechanel/batch_destroy','SalechanelController@batch_destroy')->name('salechanel.batch_destroy');
         Route::get('salechanel/showSub/{id}','SalechanelController@showSub')->name('salechanel.showSub');
+        //品牌设置
+        Route::resource('brand','BrandController');
+        Route::post('brand/batch_destroy','BrandController@batch_destroy')->name('brand.batch_destroy');
     });
 
 

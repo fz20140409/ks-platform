@@ -41,11 +41,11 @@
                                         <p>Why not buy a new awesome theme?</p>
                                     </a>
                                 </li>
-                                <!-- end message -->
+                                <!-- end message /adminlte/dist/img/user3-128x128.jpg-->
                                 <li>
                                     <a href="#">
                                         <div class="pull-left">
-                                            <img src="/adminlte/dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                                            <img src="" class="img-circle" alt="User Image">
                                         </div>
                                         <h4>
                                             AdminLTE Design Team
@@ -217,13 +217,13 @@
                 @if('Auth::check()')
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="/adminlte/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                        <img src=" @if(empty(Auth::user()->avatar)) /img/default_avatar_male.jpg @else {{Auth::user()->avatar}}   @endif" class="user-image" alt="User Image">
                         <span class="hidden-xs"> {{ Auth::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="/adminlte/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                            <img src="@if(empty(Auth::user()->avatar)) /img/default_avatar_male.jpg @else {{Auth::user()->avatar}}   @endif" class="img-circle" alt="User Image">
 
                             <p>
                                 {{ Auth::user()->name }}

@@ -7,6 +7,7 @@ use App\User;
 use App\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends BaseController
 {
@@ -47,6 +48,16 @@ class UserController extends BaseController
      */
     public function store(Request $request)
     {
+        $ClientMimeType=['image/jpeg','image/gif','image/png'];
+        $avatar='';
+        if ($request->hasFile('avatar')) {
+            $file=$request->file('avatar');
+            if(in_array($file->getClientMimeType(),$ClientMimeType)){
+                $avatar = Storage::url($file->store('public/avatars'));
+            }else{
+               return redirect()->back()->with('upload', '只支持 jpg, png, gif');
+            }
+        }
         $table=config('entrust.users_table');
         $this->validate($request, [
             'name' => 'required|string|max:255',
@@ -60,6 +71,7 @@ class UserController extends BaseController
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
+            $user->avatar = $avatar;
             $user->save();
 
             if ($user && !empty($role_ids)) {
@@ -115,6 +127,8 @@ class UserController extends BaseController
         //
         $table=config('entrust.users_table');
         $user = User::findOrFail($id);
+
+
         $this->validate($request, [
             'name' => 'required|string|max:255',
             'email' => "required|string|email|max:255|unique:$table,email,$user->id",
@@ -124,6 +138,9 @@ class UserController extends BaseController
         DB::beginTransaction();
         try {
             $data = ['name' => $request->name, 'email' => $request->email];
+            if(!empty($request->avatar)){
+                $data['avatar']= Storage::url($request->file('avatar')->store('public/avatars'));
+            }
             //不填密码，不更新原密码
             if (!empty($request->password)) {
                 $data['password'] = bcrypt($request->password);
