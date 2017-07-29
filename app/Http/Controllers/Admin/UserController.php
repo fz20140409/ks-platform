@@ -8,6 +8,7 @@ use App\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Tools\UploadTool;
 
 class UserController extends BaseController
 {
@@ -48,16 +49,8 @@ class UserController extends BaseController
      */
     public function store(Request $request)
     {
-        $ClientMimeType=['image/jpeg','image/gif','image/png'];
-        $avatar='';
-        if ($request->hasFile('avatar')) {
-            $file=$request->file('avatar');
-            if(in_array($file->getClientMimeType(),$ClientMimeType)){
-                $avatar = Storage::url($file->store('public/avatars'));
-            }else{
-               return redirect()->back()->with('upload', '只支持 jpg, png, gif');
-            }
-        }
+
+        $avatar=UploadTool::UploadImg($request,'avatar','public/avatars');
         $table=config('entrust.users_table');
         $this->validate($request, [
             'name' => 'required|string|max:255',
@@ -138,8 +131,9 @@ class UserController extends BaseController
         DB::beginTransaction();
         try {
             $data = ['name' => $request->name, 'email' => $request->email];
-            if(!empty($request->avatar)){
-                $data['avatar']= Storage::url($request->file('avatar')->store('public/avatars'));
+            $avatar=UploadTool::UploadImg($request,'avatar','public/avatars');
+            if(!empty($avatar)){
+                $data['avatar']=$avatar;
             }
             //不填密码，不更新原密码
             if (!empty($request->password)) {
