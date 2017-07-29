@@ -9,13 +9,19 @@
 @endif
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">
+    <link rel="stylesheet" href="/adminlte/plugins/select2/select2.min.css">
 @endsection
 @section('js')
     <script src="/adminlte/plugins/iCheck/icheck.min.js"></script>
+    <script src="/adminlte/plugins/select2/select2.min.js"></script>
+    <script src="/adminlte/plugins/select2/i18n/zh-CN.js"></script>
     <script>
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-blue',
             radioClass: 'iradio_minimal-blue'
+        });
+        $(document).ready(function() {
+            $("select").select2({language: "zh-CN"});
         });
     </script>
     @include('admin.common.layer_tip')

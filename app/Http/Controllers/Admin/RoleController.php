@@ -189,6 +189,7 @@ class RoleController extends BaseController
                 'msg' => '授权成功'
             ]);
         } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
             DB::rollBack();
             return response()->json([
                 'msg' => '授权失败'

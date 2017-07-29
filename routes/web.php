@@ -63,6 +63,11 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         //品牌设置
         Route::resource('brand','BrandController');
         Route::post('brand/batch_destroy','BrandController@batch_destroy')->name('brand.batch_destroy');
+        //首页图标设置
+        Route::resource('menu','MenuController');
+        //轮播管理
+        Route::resource('banner','BannerController');
+
     });
 
 
