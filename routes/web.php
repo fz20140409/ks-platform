@@ -69,6 +69,15 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
 
         //轮播管理
         Route::resource('banner','BannerController');
+        //热搜关键字
+        Route::resource('hk','HotKeywordController');
+        Route::get('hk/updateStatus/{id}','HotKeywordController@updateStatus')->name('hk.updateStatus');
+        Route::post('hk/batch_destroy','HotKeywordController@batch_destroy')->name('hk.batch_destroy');
+        //优惠头条管理
+        Route::resource('dh','DiscountHeadlinesController');
+        //首页热门商品banner
+        Route::resource('hgb','HotGoodsBannerController');
+
 
     });
 

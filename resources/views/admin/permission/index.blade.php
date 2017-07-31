@@ -24,6 +24,7 @@
                                     <th>菜单名称</th>
                                     <th>权限标识</th>
                                     <th>url</th>
+                                    <th>是否显示</th>
                                     <th>描述</th>
                                     <th>操作</th>
                                 </tr>
@@ -33,6 +34,7 @@
                                         <td>{{$permission['delimiter'].$permission['display_name']}}</td>
                                         <td>{{$permission['name']}}</td>
                                         <td>{{$permission['url']}}</td>
+                                        <td>@if($permission['ishow']==1) 是 @else 否 @endif</td>
                                         <td>{{$permission['description']}}</td>
                                         <td>
 

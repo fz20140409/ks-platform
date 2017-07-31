@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-class BrandController extends BaseController
+class HotGoodsBannerController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -16,18 +16,23 @@ class BrandController extends BaseController
      */
     public function index(Request $request)
     {
+        //
         $where_str = $request->where_str;
-        $where = array();
+        $is_recommend = isset($request->is_recommend) ? $request->is_recommend : -1;
+        $where = array(['enabled', '=', 1]);
 
         if (isset($where_str)) {
-            $where[] = ['zybrand', 'like', '%' . $where_str . '%'];
+            $where[] = ['searchname', 'like', '%' . $where_str . '%'];
 
+        }
+        if ($is_recommend != -1) {
+            $where[] = ['is_recommend', '=', $is_recommend];
         }
 
         //条件
-        $infos=DB::table('cfg_brand')->where($where)->paginate($this->page_size);
+        $infos = DB::table('cfg_hot_search')->where($where)->paginate($this->page_size);
 
-        return view('admin.ks.brand.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes,'where_str' => $where_str]);
+        return view('admin.ks.hgb.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str, 'is_recommend' => $is_recommend]);
 
     }
 
@@ -39,7 +44,6 @@ class BrandController extends BaseController
     public function create()
     {
         //
-        return view('admin.ks.brand.create');
     }
 
     /**
@@ -62,7 +66,6 @@ class BrandController extends BaseController
     public function show($id)
     {
         //
-        return view('admin.ks.user_info.create');
     }
 
     /**
@@ -97,9 +100,5 @@ class BrandController extends BaseController
     public function destroy($id)
     {
         //
-    }
-
-    function batch_destroy(){
-
     }
 }

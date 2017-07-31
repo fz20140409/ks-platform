@@ -2,33 +2,19 @@
 
 namespace App\Http\Controllers\Admin\Ks;
 
-use App\Http\Controllers\Admin\BaseController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
-
-class BrandController extends BaseController
+class HotCategoryBannerController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $where_str = $request->where_str;
-        $where = array();
-
-        if (isset($where_str)) {
-            $where[] = ['zybrand', 'like', '%' . $where_str . '%'];
-
-        }
-
-        //条件
-        $infos=DB::table('cfg_brand')->where($where)->paginate($this->page_size);
-
-        return view('admin.ks.brand.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes,'where_str' => $where_str]);
-
+        //
     }
 
     /**
@@ -39,7 +25,6 @@ class BrandController extends BaseController
     public function create()
     {
         //
-        return view('admin.ks.brand.create');
     }
 
     /**
@@ -62,7 +47,6 @@ class BrandController extends BaseController
     public function show($id)
     {
         //
-        return view('admin.ks.user_info.create');
     }
 
     /**
@@ -97,9 +81,5 @@ class BrandController extends BaseController
     public function destroy($id)
     {
         //
-    }
-
-    function batch_destroy(){
-
     }
 }

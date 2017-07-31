@@ -1,5 +1,5 @@
 @extends('admin.layouts.default')
-@section('t1','品牌')
+@section('t1','优惠头条')
 @section('t2','列表')
 @section('content')
     <section class="content">
@@ -9,7 +9,7 @@
                     <!--box-header-->
                     <div class="box-header">
                         <div class="row">
-                            <form class="form-inline" action="{{route('admin.ks.brand.index')}}">
+                            <form class="form-inline" action="{{route('admin.ks.dh.index')}}">
                                 <div class="col-lg-1 col-xs-3">
                                     <select name="page_size" class="form-control">
                                         @foreach($page_sizes as $k=> $v)
@@ -19,10 +19,22 @@
                                 </div>
 
 
-                                <div class="col-lg-8 col-xs-10">
+                                <div class="col-lg-9 col-xs-10">
+                                    分类
+                                    <select name="" class="form-control">
+                                        <option>全部</option>
+                                        <option>推荐</option>
+                                        <option>未推荐</option>
+                                    </select>
+                                    状态
+                                    <select name="" class="form-control">
+                                        <option>全部</option>
+                                        <option>推荐</option>
+                                        <option>未推荐</option>
+                                    </select>
                                     <div class="input-group">
                                         <input value="{{$where_str}}" name="where_str" type="text" class="form-control"
-                                               placeholder="品牌名称">
+                                               placeholder="标题">
                                         <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit">查询</button>
                                     </span>
@@ -30,9 +42,9 @@
 
                                 </div>
                             </form>
-                            @if(Auth::user()->can('admin.ks.brand.create'))
+                            @if(Auth::user()->can('admin.ks.dh.create'))
                                 <div class="col-lg-2 col-xs-2 pull-right">
-                                    <a href="{{route('admin.ks.brand.create')}}" class="btn btn-primary">新增</a>
+                                    <a href="{{route('admin.ks.dh.create')}}" class="btn btn-primary">新增</a>
                                 </div>
                             @endif
 
@@ -46,27 +58,31 @@
                                 <tr>
                                     <th></th>
                                     <th>ID</th>
-                                    <th>图标</th>
-                                    <th>品牌名称</th>
+                                    <th>发布时间</th>
+                                    <th>标题</th>
+                                    <th>分类</th>
+                                    <th>浏览量</th>
+                                    <th>被优化次数</th>
+                                    <th>商品数量</th>
+                                    <th>状态</th>
+                                    <th>置顶</th>
+
                                     <th>操作</th>
                                 </tr>
                                 @foreach($infos as $info)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
-                                                   value="{{$info->bid}}"></th>
-                                        <td>{{$info->bid}}</td>
-                                        <td><img src="{{$info->bicon}}"></td>
-                                        <td>{{$info->zybrand}}</td>
+                                                   value="{{$info->id}}"></th>
+                                        <td>{{$info->id}}</td>
+
+                                        <td><img src="{{$info->icon}}"></td>
+                                        <td>@if($info->enabled==1) 正常 @else 屏蔽 @endif</td>
                                         <td>
 
-                                            <a class=" op_show" href="{{route('admin.ks.brand.show',$info->bid)}}"
-                                               style="margin-right: 10px;display: none">
-                                                    <i class="fa fa-eye " aria-hidden="true">查看</i></a>
-                                            <a class=" op_edit"  href="{{route('admin.ks.brand.edit',$info->bid)}}"
+                                            <a class=" op_edit"  href="{{route('admin.ks.dh.edit',$info->id)}}"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
-
-                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.brand.destroy',$info->bid)}}')">
+                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.dh.destroy',$info->id)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
                                         </td>
                                     </tr>
@@ -77,13 +93,6 @@
                     <!--box-body-->
                     <!--box-footer-->
                     <div class="box-footer ">
-                        @if(Auth::user()->can('admin.ks.brand.batch_destroy'))
-                            <div class="btn-group">
-                                <button onclick="selectAll()" type="button" class="btn btn-default">全选</button>
-                                <button onclick="reverse()" type="button" class="btn btn-default">反选</button>
-                                <a href="javascript:batch_destroy()" class="btn btn-danger">批量删除</a>
-                            </div>
-                        @endif
                         <div style="float: right">
                             {{$infos->appends(['where_str' => $where_str,'page_size'=>$page_size])->links()}}
                         </div>
@@ -109,57 +118,20 @@
         });
     </script>
     <script>
-
-
-        //有查看权限，显示查看
-        @if(Auth::user()->can('admin.ks.brand.show'))
+        //屏蔽和显示
+        @if(Auth::user()->can('admin.ks.dh.updateStatus'))
              $(".op_show").show();
         @endif
-
         //有修改权限，显示修改
-        @if(Auth::user()->can('admin.ks.brand.edit'))
+        @if(Auth::user()->can('admin.ks.dh.edit'))
             $(".op_edit").show();
         @endif
         //有删除权限，显示删除
-        @if(Auth::user()->can('admin.ks.brand.destroy'))
+        @if(Auth::user()->can('admin.ks.dh.destroy'))
             $(".op_destroy").show();
         @endif
 
-        //批量删除
-        function batch_destroy() {
-            $cbs = $('table input[type="checkbox"]:checked');
-            if ($cbs.length > 0) {
-                layer.confirm('确认删除？', {
-                    btn: ['确认', '取消']
-                },function () {
-                    $.ajax({
-                        url: '{{route("admin.ks.brand.batch_destroy")}}',
-                        type: 'post',
-                        data: $("#user_ids").serialize(),
-                        success: function (data) {
-                            if (data.msg == 1) {
-                                layer.alert('删除成功');
-                                location.reload();
-                            } else {
-                                layer.alert('删除失败');
-                            }
-                        }
-                    });
-                });
 
-            } else {layer.alert('请选中要删除的列');}}
-        //全选
-        function selectAll() {
-            $('input[type="checkbox"].minimal').iCheck('check')
-        }
-        //反选
-        function reverse() {
-            $('input[type="checkbox"].minimal').each(function () {
-                if ($(this).is(":checked")) {
-                    $(this).iCheck('uncheck');
-                } else {
-                    $(this).iCheck('check');
-                }});}
     </script>
     @include('admin.common.layer_del')
 @endsection
