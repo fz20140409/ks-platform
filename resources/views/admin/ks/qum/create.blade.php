@@ -1,5 +1,5 @@
 @extends('admin.layouts.default')
-@section('t1','优质商家')
+@section('t1','商家')
 @section('t2','列表')
 @section('content')
     <section class="content">
@@ -38,11 +38,6 @@
 
                                 </div>
                             </form>
-                            @if(Auth::user()->can('admin.ks.qum.create'))
-                                <div class="col-lg-2 col-xs-2 pull-right">
-                                    <a href="{{route('admin.ks.qum.create')}}" class="btn btn-primary">新增优质商家</a>
-                                </div>
-                            @endif
 
                         </div>
                     </div>
@@ -72,6 +67,8 @@
                                                     <i class="fa fa-eye " aria-hidden="true">查看</i></a>
                                             <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.user.destroy',$info->mid)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
+                                            <a   class=" op_destroy"  href="javascript:del('{{route('admin.user.destroy',$info->mid)}}')">
+                                                <i class="fa  fa-trash-o " aria-hidden="true">添加优质商家</i></a>
                                         </td>
                                     </tr>
                                 @endforeach

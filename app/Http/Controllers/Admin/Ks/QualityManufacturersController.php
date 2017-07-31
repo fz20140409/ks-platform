@@ -20,8 +20,9 @@ class QualityManufacturersController extends BaseController
      */
     public function index()
     {
-        $sql="SELECT a.uid,a.phone,a.provice,b.type_name,a.company,a.iscertifi FROM `user` as a LEFT JOIN user_type_info as b ON a.utype=b.id;";
-        $infos=DB::select($sql);
+
+        $infos= DB::table(DB::raw("(SELECT a.mid,c.company,c.provice FROM `great_merchant` AS a LEFT JOIN merchant AS b ON a.mid=b.sr_id LEFT JOIN `user` AS c ON b.uid=c.uid WHERE b.mtype IN (4,5,6)) as d "))->paginate($this->page_size);
+
 
 
         return view('admin.ks.qm.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes]);

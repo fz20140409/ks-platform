@@ -19,15 +19,19 @@ class QualityMerchantsController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        $where_str = $request->where_str;
+        $provices=DB::table('user')->select('provice')->distinct('provice')->get();
+        $str='';
+        if (isset($where_str)) {
+            $str.=" and d.company like '%$where_str%'";
 
-        $sql="SELECT a.uid,a.phone,a.provice,b.type_name,a.company,a.iscertifi FROM `user` as a LEFT JOIN user_type_info as b ON a.utype=b.id;";
-        $infos=DB::select($sql);
+        }
 
-
-        return view('admin.ks.qum.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes]);
+        $infos= DB::table(DB::raw("(SELECT a.mid,c.company,c.provice FROM `great_merchant` AS a LEFT JOIN merchant AS b ON a.mid=b.sr_id LEFT JOIN `user` AS c ON b.uid=c.uid WHERE b.mtype IN (4,5,6)) as d where 1=1 $str"))->paginate($this->page_size);
+        return view('admin.ks.qum.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes,'provices'=>$provices,'where_str' => $where_str]);
 
     }
 
@@ -36,9 +40,19 @@ class QualityMerchantsController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $where_str = $request->where_str;
+        $provices=DB::table('user')->select('provice')->distinct('provice')->get();
+        $str='';
+        if (isset($where_str)) {
+            $str.=" and d.company like '%$where_str%'";
+
+        }
+
+        $infos= DB::table(DB::raw("(SELECT a.mid,c.company,c.provice FROM `great_merchant` AS a LEFT JOIN merchant AS b ON a.mid=b.sr_id LEFT JOIN `user` AS c ON b.uid=c.uid WHERE b.mtype IN (4,5,6)) as d where 1=1 $str"))->paginate($this->page_size);
+        return view('admin.ks.qum.create',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes,'provices'=>$provices,'where_str' => $where_str]);
+
     }
 
     /**

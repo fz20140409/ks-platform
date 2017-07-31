@@ -58,16 +58,16 @@
                                 @foreach($infos as $info)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
-                                                   value="{{$info->uid}}"></th>
-                                        <td>{{$info->uid}}</td>
+                                                   value="{{$info->mid}}"></th>
+                                        <td>{{$info->mid}}</td>
                                         <td>{{$info->provice}}</td>
-                                        <td>{{$info->phone}}</td>
+                                        <td>{{$info->company}}</td>
                                         <td>
 
-                                            <a class=" op_show" href="{{route('admin.ks.user_info.show',$info->uid)}}"
+                                            <a class=" op_show" href="{{route('admin.ks.user_info.show',$info->mid)}}"
                                                style="margin-right: 10px;display: none">
                                                     <i class="fa fa-eye " aria-hidden="true">查看</i></a>
-                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.user.destroy',$info->uid)}}')">
+                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.user.destroy',$info->mid)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
                                         </td>
                                     </tr>

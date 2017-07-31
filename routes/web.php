@@ -77,6 +77,9 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         Route::resource('dh','DiscountHeadlinesController');
         //首页热门商品banner
         Route::resource('hgb','HotGoodsBannerController');
+        //地区数据字典
+        Route::resource('location','LocationController');
+        Route::post('location/getData','LocationController@getData')->name('location.getData');
 
 
     });
