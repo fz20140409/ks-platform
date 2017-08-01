@@ -56,19 +56,31 @@
                                     <th>手机号</th>
                                     <th>所在区域</th>
                                     <th>类型</th>
+                                    <th>企业/商铺名称</th>
+                                    <th>认证信息</th>
+                                    <th>诚信值</th>
+                                    <th>在乎数</th>
+                                    <th>商品数</th>
+                                    <th>优质厂家/商家</th>
                                     <th>操作</th>
                                 </tr>
                                 @foreach($infos as $info)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
-                                                   value="{{$info->uid}}"></th>
-                                        <td>{{$info->uid}}</td>
+                                                   value="{{$info->sr_id}}"></th>
+                                        <td>{{$info->sr_id}}</td>
                                         <td>{{$info->phone}}</td>
                                         <td>{{$info->provice}}</td>
                                         <td>{{$info->type_name}}</td>
+                                        <td>{{$info->company}}</td>
+                                        <td>{{$info->iscertifi}}</td>
+                                        <td>{{$info->honesty}}</td>
+                                        <td>{{$info->favor}}</td>
+                                        <td>{{$info->goods_num}}</td>
+                                        <td>{{$info->is_yz}}</td>
                                         <td>
 
-                                            <a class=" op_show" href="{{route('admin.ks.user_info.show',$info->uid)}}"
+                                            <a class=" op_show" href="{{route('admin.ks.user_info.show',$info->sr_id)}}"
                                                style="margin-right: 10px;display: none">
                                                     <i class="fa fa-eye " aria-hidden="true">查看</i></a>
                                         </td>

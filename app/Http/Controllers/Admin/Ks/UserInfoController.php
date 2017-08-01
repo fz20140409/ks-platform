@@ -29,7 +29,9 @@ class UserInfoController extends BaseController
         }
 
         //条件
-        $infos=DB::table('user as a')->leftJoin('user_type_info as b','a.utype','=','b.id')->select(['a.uid','a.phone','a.provice','b.type_name','a.company','a.iscertifi'])->where($where)->orWhere($orWhere)->paginate($this->page_size);
+        $infos=DB::table('merchant As a')->select('a.sr_id','b.phone','b.provice','c.type_name','b.company','a.iscertifi','a.honesty',
+            DB::raw("(SELECT COUNT('uid') FROM user_merchant_favor WHERE sr_id=a.sr_id) AS favor"), DB::raw("(SELECT COUNT(*) FROM goods WHERE sr_id=a.sr_id) AS goods_num"),
+            DB::raw("(SELECT COUNT(*) FROM great_merchant WHERE mid=a.sr_id) AS is_yz"))->leftJoin('user as b','a.uid','=','b.uid')->leftJoin('user_type_info AS c','a.mtype','=','c.id')->paginate($this->page_size);
 
        return view('admin.ks.user_info.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes,'where_str' => $where_str]);
 

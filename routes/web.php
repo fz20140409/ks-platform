@@ -47,9 +47,11 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         //优质厂家
         Route::resource('qm','QualityManufacturersController');
         Route::post('qm/batch_destroy','QualityManufacturersController@batch_destroy')->name('qm.batch_destroy');
+        Route::get('qm/add_qum/{id}','QualityMerchantsController@add_qum')->name('qm.add_qum');//添加优质厂家
         //优质商家
         Route::resource('qum','QualityMerchantsController');
         Route::post('qum/batch_destroy','QualityMerchantsController@batch_destroy')->name('qum.batch_destroy');
+        Route::get('qum/add_qum/{id}','QualityMerchantsController@add_qum')->name('qum.add_qum');//添加优质商家
         //商品管理
         Route::resource('goods','GoodsController');
         //品类设置

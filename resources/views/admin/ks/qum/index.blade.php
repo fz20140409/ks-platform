@@ -22,14 +22,15 @@
                                 <div class="col-lg-8 col-xs-10">
                                     所在区域
                                     <select name="provice" class="form-control">
-                                        @foreach($provices as $provice)
-                                            <option value="{{$provice->provice}}">{{$provice->provice}}</option>
+                                        <option value="-1">全部</option>
+                                        @foreach($provices as $item)
+                                            <option @if($item->provice==$provice) selected @endif value="{{$item->provice}}">{{$item->provice}}</option>
                                             @endforeach
 
                                     </select>
 
                                     <div class="input-group">
-                                        <input value="" name="where_str" type="text" class="form-control"
+                                        <input value="{{$where_str}}" name="where_str" type="text" class="form-control"
                                                placeholder="企业/商铺名称">
                                         <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit">查询</button>
@@ -48,7 +49,7 @@
                     </div>
                     <!--box-header-->
                     <!--box-body-->
-                    <form id="user_ids">
+                    <form id="ids">
                         <div class="box-body table-responsive no-padding">
                             <table class="table table-hover">
                                 <tr>
@@ -60,17 +61,17 @@
                                 </tr>
                                 @foreach($infos as $info)
                                     <tr>
-                                        <th><input class="minimal" name="user_ids[]" type="checkbox"
+                                        <th><input class="minimal" name="ids[]" type="checkbox"
                                                    value="{{$info->mid}}"></th>
                                         <td>{{$info->mid}}</td>
                                         <td>{{$info->provice}}</td>
                                         <td>{{$info->company}}</td>
                                         <td>
 
-                                            <a class=" op_show" href="{{route('admin.ks.user_info.show',$info->mid)}}"
+                                            <a class=" op_show" href="{{route('admin.ks.qum.show',$info->mid)}}"
                                                style="margin-right: 10px;display: none">
                                                     <i class="fa fa-eye " aria-hidden="true">查看</i></a>
-                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.user.destroy',$info->mid)}}')">
+                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.qum.destroy',$info->mid)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
                                         </td>
                                     </tr>
@@ -82,15 +83,15 @@
                     <!--box-footer-->
                     <div class="box-footer ">
                         @if(Auth::user()->can('admin.ks.qum.batch_destroy'))
-                        <div class="btn-group">
-                            <button onclick="selectAll()" type="button" class="btn btn-default">全选</button>
-                            <button onclick="reverse()" type="button" class="btn btn-default">反选</button>
-                            <a href="javascript:batch_destroy()" class="btn btn-danger">批量删除</a>
-                        </div>
+                            <div class="btn-group">
+                                <button onclick="selectAll()" type="button" class="btn btn-default">全选</button>
+                                <button onclick="reverse()" type="button" class="btn btn-default">反选</button>
+                                <a href="javascript:batch_destroy()" class="btn btn-danger">批量删除</a>
+                            </div>
                         @endif
-                        {{--<div style="float: right">
-                            {{$users->appends(['where_str' => $where_str,'page_size'=>$page_size])->links()}}
-                        </div>--}}
+                        <div style="float: right">
+                            {{$infos->appends($link_where)->links()}}
+                        </div>
                     </div>
                     <!--box-footer-->
                 </div>
@@ -132,7 +133,7 @@
                     $.ajax({
                         url: '{{route("admin.ks.qum.batch_destroy")}}',
                         type: 'post',
-                        data: $("#user_ids").serialize(),
+                        data: $("#ids").serialize(),
                         success: function (data) {
                             if (data.msg == 1) {
                                 layer.alert('删除成功');
@@ -157,6 +158,7 @@
                 } else {
                     $(this).iCheck('check');
                 }});}
+
 
     </script>
     @include('admin.common.layer_del')

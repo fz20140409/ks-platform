@@ -1,5 +1,5 @@
 @extends('admin.layouts.default')
-@section('t1','商家')
+@section('t1','厂家')
 @section('t2','列表')
 @section('content')
     <section class="content">
@@ -9,7 +9,7 @@
                     <!--box-header-->
                     <div class="box-header">
                         <div class="row">
-                            <form class="form-inline" action="{{route('admin.ks.qum.create')}}">
+                            <form class="form-inline" action="{{route('admin.ks.qm.create')}}">
                                 <div class="col-lg-1 col-xs-3">
                                     <select name="page_size" class="form-control">
                                         @foreach($page_sizes as $k=> $v)
@@ -41,7 +41,7 @@
                                 </div>
                             </form>
                             <div class="col-lg-2 col-xs-2 pull-right">
-                                <a href="{{route('admin.ks.qum.index')}}" class="btn btn-primary">返回</a>
+                                <a href="{{route('admin.ks.qm.index')}}" class="btn btn-primary">返回</a>
                             </div>
 
                         </div>
@@ -66,8 +66,8 @@
                                         <td>{{$info->provice}}</td>
                                         <td>{{$info->company}}</td>
                                         <td>
-                                            <a   class=" op_add_qum"  href="javascript:add_qum('{{route('admin.ks.qum.add_qum',$info->mid)}}')">
-                                                <i class="fa  fa-trash-o " aria-hidden="true">添加优质商家</i></a>
+                                            <a   class=" op_add_qum"  href="javascript:add_qum('{{route('admin.ks.qm.add_qum',$info->mid)}}')">
+                                                <i class="fa  fa-trash-o " aria-hidden="true">添加优质厂家</i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -103,7 +103,7 @@
     </script>
     <script>
         //添加优质商家
-        @if(Auth::user()->can('admin.ks.qum.add_qum'))
+        @if(Auth::user()->can('admin.ks.qm.add_qum'))
              $(".op_add_qum").show();
         @endif
         
