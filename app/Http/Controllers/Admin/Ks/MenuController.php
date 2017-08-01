@@ -111,7 +111,7 @@ class MenuController extends BaseController
             'm_url'=>$m_url,
             'icon'=>$icon,
         ]);
-        return redirect()->back()->with('success', '添加成功');
+        return redirect()->back()->with('success', '更新成功');
     }
 
     /**
