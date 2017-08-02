@@ -28,8 +28,8 @@
             maxFileSize: 1500,
             showUpload: false,
             allowedFileExtensions: ["jpg", "png", "gif"],
-            @if(isset($info)&&!empty($info->icon))
-            initialPreview: ["{{$info->icon}}"],
+            @if(isset($info)&&!empty($info->bicon))
+            initialPreview: ["{{$info->bicon}}"],
             @endif
 
         });
@@ -39,6 +39,15 @@
             checkboxClass: 'icheckbox_minimal-blue',
             radioClass: 'iradio_minimal-blue',
         });
+        $('.cat_p').each(function () {
+            $(this).on('ifChecked', function () {
+                $(this).next('.cat_s').find('input[type="checkbox"]').iCheck('check');
+            });
+            $(this).on('ifUnchecked', function () {
+
+                $(this).next('.cat_s').find('input[type="checkbox"]').iCheck('uncheck');
+            });
+        })
     </script>
     @include('admin.common.layer_tip')
     @endsection
@@ -48,7 +57,7 @@
         <div class="col-md-12">
             <div class="box box-default">
                 <!-- form start -->
-                <form enctype="multipart/form-data" class="box-header form-horizontal" method="post" action="@if(isset($info)){{ route('admin.ks.menu.update',$info->id) }}@else{{ route('admin.ks.menu.store') }}@endif">
+                <form enctype="multipart/form-data" class="box-header form-horizontal" method="post" action="@if(isset($info)){{ route('admin.ks.brand.update',$info->bid) }}@else{{ route('admin.ks.brand.store') }}@endif">
                     {{csrf_field()}}
                     @if(isset($info)){{method_field('PUT')}}@endif
                     @if(isset($show))<fieldset disabled>@endif
@@ -64,12 +73,12 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="menu_name" class="col-sm-2 control-label">品牌名称</label>
+                            <label for="zybrand" class="col-sm-2 control-label">品牌名称</label>
 
                             <div class="col-sm-8">
-                                <input value="@if(isset($info)){{$info->menu_name}}@else{{old('menu_name')}}@endif" name="menu_name" type="text" class="form-control" id="menu_name" placeholder="名称" required >
-                                @if ($errors->has('menu_name'))
-                                    <div class="alert alert-warning">{{ $errors->first('menu_name') }}</div>
+                                <input value="@if(isset($info)){{$info->zybrand}}@else{{old('zybrand')}}@endif" name="zybrand" type="text" class="form-control" id="zybrand" placeholder="名称" required >
+                                @if ($errors->has('zybrand'))
+                                    <div class="alert alert-warning">{{ $errors->first('zybrand') }}</div>
                                 @endif
                             </div>
                         </div>
@@ -77,49 +86,22 @@
                             <label for="m_url" class="col-sm-2 control-label">所属品类</label>
 
                             <div class="col-sm-8">
-                                <div style="background:#ecf0f5;padding: 10px 0px;">
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                </div>
-                                <div style="margin: 10px 0px">
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                </div>
-                                <div style="background:#ecf0f5;padding: 10px 0px;">
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                </div>
-                                <div style="margin: 10px 0px">
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                    <input class="minimal" name="user_ids[]" type="checkbox"
-                                           value="">冷冻肉类
-                                </div>
-
-
-
+                                @foreach($infos as $one)
+                                    <div class="cat_p" style="background:#ecf0f5;padding: 10px 0px;margin-bottom: 10px">
+                                        <input @if(!empty($cat_ids)&&in_array($one['id'],$cat_ids)) checked @endif class="minimal" name="ids[]" type="checkbox"
+                                               value="{{$one['id']}}">{{$one['cat_name']}}
+                                    </div>
+                                    @if(!empty($one['child']))
+                                        <div class="cat_s" style="margin: 10px 0px">
+                                            @foreach($one['child'] as $item)
+                                            <input @if(!empty($cat_ids)&&in_array($item['id'],$cat_ids)) checked @endif class="minimal" name="ids[]" type="checkbox"
+                                                   value="{{$item['id']}}">{{$item['cat_name']}}
+                                                @endforeach
+                                        </div>
+                                        @endif
+                                    @endforeach
                             </div>
                         </div>
-
-
                     </div>
                     @if(isset($show))</fieldset>@endif
                     <!-- /.box-body -->

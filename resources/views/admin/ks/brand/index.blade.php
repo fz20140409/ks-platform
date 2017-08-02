@@ -40,7 +40,7 @@
                     </div>
                     <!--box-header-->
                     <!--box-body-->
-                    <form id="user_ids">
+                    <form id="ids">
                         <div class="box-body table-responsive no-padding">
                             <table class="table table-hover">
                                 <tr>
@@ -52,10 +52,10 @@
                                 </tr>
                                 @foreach($infos as $info)
                                     <tr>
-                                        <th><input class="minimal" name="user_ids[]" type="checkbox"
+                                        <th><input class="minimal" name="ids[]" type="checkbox"
                                                    value="{{$info->bid}}"></th>
                                         <td>{{$info->bid}}</td>
-                                        <td><img src="{{$info->bicon}}"></td>
+                                        <td><img width="20%" src="{{$info->bicon}}"></td>
                                         <td>{{$info->zybrand}}</td>
                                         <td>
 
@@ -135,7 +135,7 @@
                     $.ajax({
                         url: '{{route("admin.ks.brand.batch_destroy")}}',
                         type: 'post',
-                        data: $("#user_ids").serialize(),
+                        data: $("#ids").serialize(),
                         success: function (data) {
                             if (data.msg == 1) {
                                 layer.alert('删除成功');

@@ -79,9 +79,25 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         Route::resource('dh','DiscountHeadlinesController');
         //首页热门商品banner
         Route::resource('hgb','HotGoodsBannerController');
+        //品类热销榜banner设置
+        Route::resource('hcb','HotCategoryBannerController');
         //地区数据字典
         Route::resource('location','LocationController');
         Route::post('location/getData','LocationController@getData')->name('location.getData');
+
+        //上传材料范例
+        Route::get('other/material_example','OtherController@material_example')->name('other.material_example');
+        Route::post('other/material_example_update','OtherController@material_example_update')->name('other.material_example_update');
+
+        //合作机会
+        Route::resource('coop','CooperationOpportunityController');
+        //优化原因设置
+        Route::resource('or','OptimizationReasonsController');
+        Route::post('or/batch_destroy','OptimizationReasonsController@batch_destroy')->name('or.batch_destroy');
+        //合作机会分类
+        Route::resource('oc','OpportunityCategoryController');
+        Route::post('oc/batch_destroy','OpportunityCategoryController@batch_destroy')->name('oc.batch_destroy');
+
 
 
     });

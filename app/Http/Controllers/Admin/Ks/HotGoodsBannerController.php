@@ -8,7 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-
+/**
+ * 首页热门商品设置
+ * Class HotGoodsBannerController
+ * @package App\Http\Controllers\Admin\Ks
+ */
 class HotGoodsBannerController extends BaseController
 {
     /**
@@ -20,7 +24,7 @@ class HotGoodsBannerController extends BaseController
     {
 
 
-        $infos = DB::table('cfg_hot_category as a')->select('a.id','a.img','b.cat_name')->leftJoin('cfg_category as b','a.cat_id','=','b.cat_id')->get();
+        $infos = DB::table('cfg_hot_category as a')->select('a.id','a.img','b.cat_name')->leftJoin('cfg_category as b','a.cat_id','=','b.cat_id')->where('a.type',1)->get();
 
         return view('admin.ks.hgb.index',compact('infos'));
     }
@@ -68,7 +72,7 @@ class HotGoodsBannerController extends BaseController
     {
         //
         $info=DB::table('cfg_hot_category')->where('id',$id)->first();
-        $cats=DB::select('SELECT cat_id,cat_name FROM cfg_category WHERE parent_id=0 AND cat_id NOT in(SELECT cat_id FROM cfg_hot_category )');
+        $cats=DB::select('SELECT cat_id,cat_name FROM cfg_category WHERE parent_id=0 AND cat_id NOT in(SELECT cat_id FROM cfg_hot_category WHERE type=1)');
 
         return view('admin.ks.hgb.create',compact('cats','info'));
     }
