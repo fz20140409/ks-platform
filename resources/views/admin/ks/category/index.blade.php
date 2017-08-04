@@ -9,10 +9,11 @@
                     <!--box-header-->
                     <div class="box-header">
                         <div class="row">
-                            <form class="form-inline" action="@if(isset($level)){{route('admin.ks.category.showSub',$pid)}}@else {{route('admin.ks.category.index')}}@endif">
+                            <form class="form-inline"
+                                  action="@if(isset($level)){{route('admin.ks.category.showSub',$pid)}}@else {{route('admin.ks.category.index')}}@endif">
                                 @if(isset($level))
                                     <input type="hidden" name="level" value="{{$level}}">
-                                    @endif
+                                @endif
                                 <div class="col-lg-1 col-xs-3">
                                     <select name="page_size" class="form-control">
                                         @foreach($page_sizes as $k=> $v)
@@ -33,41 +34,26 @@
                                 </div>
                                 @if(Auth::user()->can('admin.ks.category.create'))
                                     <div class="col-lg-2 col-xs-2 pull-right">
-                                        <a href="javascript:ce('{{route('admin.ks.category.create')}}',1)" class="btn btn-primary">新增</a>
-                                        @if(isset($level))
-                                                <a href="{{route('admin.ks.category.index')}}" class="btn btn-primary">返回上级</a>
-                                         @endif
+                                        @if(isset($pid))
+                                            <a href="{{route('admin.ks.category.create',['pid'=>$pid,'level'=>$level])}}"
+                                               class="btn btn-primary">新增</a>
+                                            @else
+                                            <a href="{{route('admin.ks.category.create')}}"
+                                               class="btn btn-primary">新增</a>
+                                            @endif
+                                            @if(isset($level))
+
+                                                    <a href="{{route('admin.ks.category.index')}}"
+                                                       class="btn btn-primary">返回</a>
+
+
+
+                                            @endif
+
                                     </div>
                                 @endif
-
                             </form>
 
-                            <form id="layer_ce" style="display: none" class="box-header form-horizontal" method="post">
-                                {{csrf_field()}}
-                                <div class="box-body">
-                                    <div class="form-group">
-                                        @if(isset($level))
-                                        <input type="hidden" name="pid" value="{{$pid}}">
-                                        @endif
-                                        <label for="cat_name" class="col-sm-3 control-label">品类名称</label>
-
-                                        <div class="col-sm-8">
-                                            <input value="" name="cat_name" type="text" class="form-control" id="cat_name" placeholder="品类名称" required>
-                                        </div>
-                                        @if(isset($level)&&$level==2)
-                                        <label for="" class="col-sm-3 control-label">上传图片</label>
-                                        <div class="col-sm-8">
-                                            <img src="">
-                                        </div>
-                                        @endif
-                                    </div>
-
-                                </div>
-                                <div class="box-footer  ">
-                                    <a href="" class="btn btn-default">返回</a>
-                                    <a href="javascript:layer_ce_ajax()" class="btn btn-primary pull-right">保存</a>
-                                </div>
-                            </form>
 
                         </div>
                     </div>
@@ -79,15 +65,15 @@
                                 <tr>
                                     <th></th>
                                     <th>序号</th>
-                                    @if(isset($level)&&$level==2)
+                                    @if(!(isset($level)&&$level==3))
                                         <th>图片</th>
                                     @endif
                                     <th>
                                         @if(isset($level)&&$level==2)
                                             二级品类
-                                            @elseif(isset($level)&&$level==3)
+                                        @elseif(isset($level)&&$level==3)
                                             三级品类
-                                            @else
+                                        @else
                                             一级品类
                                         @endif
 
@@ -100,22 +86,25 @@
                                         <th><input class="minimal" name="ids[]" type="checkbox"
                                                    value="{{$info->cat_id}}"></th>
                                         <td>{{$info->cat_id}}</td>
-                                        @if(isset($level)&&$level==2)
-                                            <td>{{$info->cat_icon}}</td>
+                                        @if(!(isset($level)&&$level==3))
+                                            <td width="20%">@if(!empty($info->cat_icon)) <img width="30%" src="{{$info->cat_icon}}"> @endif</td>
                                         @endif
                                         <td>{{$info->cat_name}}</td>
                                         <td>
                                             {{--{{route('admin.ks.category.edit',$info->uid)}}--}}
-                                            <a class=" op_edit"  href="javascript:ce('{{route('admin.ks.category.edit',$info->cat_id)}}',2)"
+                                            <a class=" op_edit"
+                                               href="{{route('admin.ks.category.edit',$info->cat_id)}}"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
                                             @if(!(isset($level)&&$level==3))
-                                            <a class=" op_showSub"  href=" @if(isset($level)&&$level==2){{route('admin.ks.category.showSub',[$info->cat_id,'level'=>3])}}@else{{route('admin.ks.category.showSub',[$info->cat_id,'level'=>2])}}@endif"
-                                               style="margin-right: 10px;display: none">
-                                                <i class="fa fa-pencil-square-o " aria-hidden="true">编辑子分类</i></a>
+                                                <a class=" op_showSub"
+                                                   href=" @if(isset($level)&&$level==2){{route('admin.ks.category.showSub',[$info->cat_id,'level'=>3])}}@else{{route('admin.ks.category.showSub',[$info->cat_id,'level'=>2])}}@endif"
+                                                   style="margin-right: 10px;display: none">
+                                                    <i class="fa fa-pencil-square-o " aria-hidden="true">编辑子分类</i></a>
                                             @endif
 
-                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.category.destroy',$info->cat_id)}}')">
+                                            <a style="display: none" class=" op_destroy"
+                                               href="javascript:del('{{route('admin.ks.category.destroy',$info->cat_id)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
                                         </td>
                                     </tr>
@@ -136,9 +125,9 @@
                         <div style="float: right">
                             @if(isset($level))
                                 {{$infos->appends(['where_str' => $where_str,'page_size'=>$page_size,'level'=>$level])->links()}}
-                                @else
+                            @else
                                 {{$infos->appends(['where_str' => $where_str,'page_size'=>$page_size])->links()}}
-                                @endif
+                            @endif
 
                         </div>
                     </div>
@@ -151,11 +140,16 @@
 
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">
+    <link rel="stylesheet" href="/plugins/bootstrap-fileinput/css/fileinput.min.css">
+    <link rel="stylesheet" href="/plugins/bootstrapvalidator/css/bootstrapValidator.min.css">
 @endsection
 
 @section('js')
+
+
     <script src="/plugins/layer/layer.js"></script>
     <script src="/adminlte/plugins/iCheck/icheck.min.js"></script>
+
     <script>
         $('input[type="checkbox"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-blue',
@@ -181,8 +175,8 @@
             if ($cbs.length > 0) {
                 layer.confirm('确认删除？', {
                     btn: ['确认', '取消']
-                },function () {
-                    var url='{{route("admin.ks.category.batch_destroy")}}';
+                }, function () {
+                    var url = '{{route("admin.ks.category.batch_destroy")}}';
                     $.ajax({
                         url: url,
                         type: 'post',
@@ -192,19 +186,19 @@
                                 layer.alert('删除成功');
                                 location.reload();
                             } else {
-                                layer.confirm(data.msg,{
+                                layer.confirm(data.msg, {
                                     btn: ['确认', '取消']
-                                },function () {
-                                    url=url+'?flag=true';
+                                }, function () {
+                                    url = url + '?flag=true';
                                     $.ajax({
-                                        url:url,
+                                        url: url,
                                         type: 'post',
                                         data: $("#ids").serialize(),
-                                        success:function (data) {
+                                        success: function (data) {
                                             if (data.msg == 1) {
                                                 layer.alert('删除成功');
                                                 location.reload();
-                                            }else {
+                                            } else {
                                                 layer.alert('删除失败');
                                             }
                                         }
@@ -216,7 +210,10 @@
                     });
                 });
 
-            } else {layer.alert('请选中要删除的列');}}
+            } else {
+                layer.alert('请选中要删除的列');
+            }
+        }
         //全选
         function selectAll() {
             $('input[type="checkbox"].minimal').iCheck('check')
@@ -228,59 +225,10 @@
                     $(this).iCheck('uncheck');
                 } else {
                     $(this).iCheck('check');
-                }});}
-
-    </script>
-    <script>
-        function ce(url,flag) {
-            if(flag==1){
-                $('#layer_ce').attr('url','{{route('admin.ks.category.store')}}');
-                layer.open({
-                    title:'品类',
-                    type: 1,
-                    skin: 'layui-layer-rim', //加上边框
-                    area: ['400px',''], //宽高
-                    content:$('#layer_ce')
-                });
-            }
-            if(flag==2){
-                $.ajax({
-                    type:'GET',
-                    url:url,
-                    success:function (data) {
-                        $('#layer_ce').append('{{method_field('PUT')}}');
-                        $('#layer_ce').attr('url',data.url);
-                        $("#layer_ce input[name='cat_name']").val(data.cat_name);
-
-                        layer.open({
-                            title:'品类',
-                            type: 1,
-                            skin: 'layui-layer-rim', //加上边框
-                            area: ['400px',''], //宽高
-                            content:$('#layer_ce')
-                        });
-                    }
-                })
-            }
-        }
-        //新增
-        function layer_ce_ajax() {
-            var url=$('#layer_ce').attr('url');
-            $.ajax({
-                type:'post',
-                url:url,
-                data:$('#layer_ce').serialize(),
-                success:function (result) {
-                    layer.closeAll();
-                    if(result.msg==1){
-                        layer.alert('操作成功');
-                        location.reload();
-                    }else{
-                        layer.alert(result.msg);
-                    }
                 }
             });
         }
+
         //删除
         function del(url) {
             layer.confirm('确认删除？', {
@@ -294,18 +242,18 @@
                             layer.alert('删除成功');
                             location.reload();
                         } else {
-                            layer.confirm(data.msg,{
+                            layer.confirm(data.msg, {
                                 btn: ['确认', '取消']
-                            },function () {
+                            }, function () {
                                 $.ajax({
-                                    url:url,
+                                    url: url,
                                     type: 'DELETE',
-                                    data:{'flag':true},
-                                    success:function (data) {
+                                    data: {'flag': true},
+                                    success: function (data) {
                                         if (data.msg == 1) {
                                             layer.alert('删除成功');
                                             location.reload();
-                                        }else {
+                                        } else {
                                             layer.alert('删除失败');
                                         }
                                     }
