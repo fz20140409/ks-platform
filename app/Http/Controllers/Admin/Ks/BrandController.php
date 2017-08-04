@@ -62,13 +62,17 @@ class BrandController extends BaseController
            'bicon'=>$icon,
        ]);
         $data=array();
-        foreach ($ids as $item){
-            $data[]=array('brand_id'=>$id,'cat_id'=>$item);
+        if (!empty($ids)){
+            foreach ($ids as $item){
+                $data[]=array('brand_id'=>$id,'cat_id'=>$item);
+
+            }
+
+            DB::table('brand_category_rela')->insert($data);
 
         }
-        if (!empty($data)){
-            DB::table('brand_category_rela')->insert($data);
-        }
+
+
 
         return redirect()->back()->with('success', '添加成功');
 
@@ -116,7 +120,7 @@ class BrandController extends BaseController
     public function update(Request $request, $id)
     {
         $zybrand=$request->zybrand;
-        $ids=$request->ids;
+        $ids=isset($request->ids)?$request->ids:array();
         $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
         //品牌更新的数据
         $update['zybrand']=$zybrand;
