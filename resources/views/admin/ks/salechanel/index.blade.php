@@ -236,7 +236,6 @@
                     type:'GET',
                     url:url,
                     success:function (data) {
-                        $('#layer_ce').append('{{method_field('PUT')}}');
                         $('#layer_ce').attr('url',data.url);
                         $("#layer_ce input[name='sale_name']").val(data.sale_name);
 

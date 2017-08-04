@@ -103,7 +103,7 @@ class SalechanelController extends BaseController
     {
         //
         $info = DB::table('cfg_salechanel')->where('sid',$id)->first();
-        $info->url=route('admin.ks.salechanel.update',$id);
+        $info->url=route('admin.ks.salechanel.update_post',$id);
         return response()->json($info);
     }
 
@@ -116,6 +116,21 @@ class SalechanelController extends BaseController
      */
     public function update(Request $request, $id)
     {
+        $sale_name=$request->sale_name;
+        $where=array();
+        $where[]=['sale_name','=',$sale_name];
+        $where[]=['sid','!=',$id];
+        $count= DB::table('cfg_salechanel')->where($where)->count();
+        if (!empty($count)) {
+            return response()->json(['msg'=>'存在相同渠道名称']);
+        }
+
+        DB::table('cfg_salechanel')->where('sid',$id)->update(['sale_name' => $sale_name]);
+        return response()->json(['msg'=>1]);
+
+    }
+    //修改update请求方式
+    function update_post(Request $request, $id){
         $sale_name=$request->sale_name;
         $where=array();
         $where[]=['sale_name','=',$sale_name];
