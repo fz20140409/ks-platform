@@ -66,6 +66,7 @@ class CategoryController extends BaseController
         $pid=$request->pid;
         $where=array('cat_name'=>$cat_name);
         $where['parent_id']=$pid;
+        $where['enabled']=1;
         //同名判断
         $count= DB::table('cfg_category')->where($where)->count();
         if(!empty($count)){
@@ -103,12 +104,13 @@ class CategoryController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,Request $request)
     {
-        //
+        $pid=isset($request->pid)?$request->pid:0;
+        $level=isset($request->level)?$request->level:1;
         $info = DB::table('cfg_category')->where('cat_id',$id)->first();
         $info->url=route('admin.ks.category.update',$id);
-       return view('admin.ks.category.create',compact('info'));
+       return view('admin.ks.category.create',compact('info','pid','level'));
     }
 
     /**
@@ -126,6 +128,7 @@ class CategoryController extends BaseController
         $where=array();
         $where[]=['cat_name','=',$cat_name];
         $where[]=['cat_id','!=',$id];
+        $where[]=['enabled','=',1];
         $count= DB::table('cfg_category')->where($where)->count();
         if (!empty($count)) {
             return redirect()->back()->with('success', '存在相同品类名称');
@@ -206,7 +209,7 @@ class CategoryController extends BaseController
 
             return response()->json(['msg' => 1]);
         }
-        $count=DB::table('cfg_category')->whereIn('parent_id',$ids)->count();
+        $count=DB::table('cfg_category')->whereIn('parent_id',$ids)->where('enabled',1)->count();
         if(!empty($count)){
             return response()->json(['msg'=>'该分类下有子分类，是否一起删除?']);
         }

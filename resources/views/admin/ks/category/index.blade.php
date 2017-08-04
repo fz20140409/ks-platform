@@ -92,10 +92,19 @@
                                         <td>{{$info->cat_name}}</td>
                                         <td>
                                             {{--{{route('admin.ks.category.edit',$info->uid)}}--}}
-                                            <a class=" op_edit"
-                                               href="{{route('admin.ks.category.edit',$info->cat_id)}}"
-                                               style="margin-right: 10px;display: none">
-                                                <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
+                                            @if(isset($pid))
+
+                                                <a class=" op_edit"
+                                                   href="{{route('admin.ks.category.edit',[$info->cat_id,'pid'=>$pid,'level'=>$level])}}"
+                                                   style="margin-right: 10px;display: none">
+                                                    <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
+                                            @else
+                                                <a class=" op_edit"
+                                                   href="{{route('admin.ks.category.edit',$info->cat_id)}}"
+                                                   style="margin-right: 10px;display: none">
+                                                    <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
+                                            @endif
+
                                             @if(!(isset($level)&&$level==3))
                                                 <a class=" op_showSub"
                                                    href=" @if(isset($level)&&$level==2){{route('admin.ks.category.showSub',[$info->cat_id,'level'=>3])}}@else{{route('admin.ks.category.showSub',[$info->cat_id,'level'=>2])}}@endif"

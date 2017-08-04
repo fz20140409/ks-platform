@@ -59,14 +59,6 @@
                                 },
                             }
                         },
-                        icon: {
-                            message: '请上传图片',
-                            validators: {
-                                notEmpty: {
-                                    message: '请上传图片'
-                                },
-                            }
-                        },
 
                     }
                 })
@@ -108,6 +100,7 @@
                                     </div>
                                 </div>
                                     @endif
+
                                 <input type="hidden" name="pid" value="{{$pid}}">
 
                             </div>
