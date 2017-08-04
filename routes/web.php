@@ -91,12 +91,14 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
 
         //合作机会
         Route::resource('coop','CooperationOpportunityController');
+        Route::get('coop/updateStatus/{id}','CooperationOpportunityController@updateStatus')->name('coop.updateStatus');
         //优化原因设置
         Route::resource('or','OptimizationReasonsController');
         Route::post('or/batch_destroy','OptimizationReasonsController@batch_destroy')->name('or.batch_destroy');
         //合作机会分类
         Route::resource('oc','OpportunityCategoryController');
         Route::post('oc/batch_destroy','OpportunityCategoryController@batch_destroy')->name('oc.batch_destroy');
+
 
 
 
