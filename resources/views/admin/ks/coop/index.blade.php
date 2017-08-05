@@ -89,11 +89,12 @@
                                             <a class=" op_show" href="{{route('admin.ks.coop.show',$info->id)}}"
                                                style="margin-right: 10px;display: none">
                                                     <i class="fa fa-eye " aria-hidden="true">查看</i></a>
-                                            <a  class=" op_updateStatus" href="javascript:updateStatus('{{route('admin.ks.coop.updateStatus',$info->id)}}')"
-                                               style="margin-right: 10px;display: none;">
-                                                <i class="fa fa-eye " aria-hidden="true">@if($info->state==1) 取消推荐 @else 推荐 @endif</i></a>
-                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.coop.destroy',$info->id)}}')">
+                                            <a style="display: none;margin-right: 10px;"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.coop.destroy',$info->id)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
+                                            <a  class=" op_updateStatus" href="javascript:updateStatus('{{route('admin.ks.coop.updateStatus',$info->id)}}')"
+                                               style="display: none;">
+                                                <i class="fa fa-eye " aria-hidden="true">@if($info->state==1) 取消推荐 @else 推荐 @endif</i></a>
+
                                         </td>
                                     </tr>
                                 @endforeach
