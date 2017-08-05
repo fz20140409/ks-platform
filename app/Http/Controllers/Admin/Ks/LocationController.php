@@ -61,6 +61,8 @@ class LocationController extends BaseController
     public function create()
     {
         //
+        $provinces = DB::table('cfg_locations')->where('level', 1)->get();
+        return view('admin.ks.location.create',['provinces' => $provinces]);
     }
 
     /**
@@ -72,6 +74,27 @@ class LocationController extends BaseController
     public function store(Request $request)
     {
         //
+        $province=$request->province;
+        $city=$request->city;
+        $county=$request->county;
+        if($province==-1){
+            return redirect()->back()->with('success', '请选择省');
+        }
+        if($city==-1){
+            return redirect()->back()->with('success', '请选择市');
+        }
+
+        DB::table('cfg_locations')->insert([
+            'name'=>$county,
+            'parent_id'=>$city,
+            'level'=>3,
+        ]);
+
+        return redirect()->back()->with('success', '添加成功');
+
+
+
+
     }
 
     /**
@@ -93,7 +116,9 @@ class LocationController extends BaseController
      */
     public function edit($id)
     {
-        //
+        $info=DB::select("SELECT a.id,a.`name` AS county,a.parent_id AS city,(SELECT parent_id FROM cfg_locations WHERE a.parent_id=id) AS province FROM `cfg_locations` AS a WHERE a.id=$id")[0];
+        $provinces = DB::table('cfg_locations')->where('level', 1)->get();
+        return view('admin.ks.location.create',['provinces' => $provinces,'info'=>$info]);
     }
 
     /**
@@ -105,7 +130,22 @@ class LocationController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
+        $province=$request->province;
+        $city=$request->city;
+        $county=$request->county;
+        if($province==-1){
+            return redirect()->back()->with('success', '请选择省');
+        }
+        if($city==-1){
+            return redirect()->back()->with('success', '请选择市');
+        }
+
+        DB::table('cfg_locations')->where('id',$id)->update([
+            'name'=>$county,
+            'parent_id'=>$city,
+            'level'=>3,
+        ]);
+        return redirect()->back()->with('success', '更新成功');
     }
 
     /**
@@ -116,7 +156,10 @@ class LocationController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        DB::table('cfg_locations')->where('id',$id)->delete();
+        return response()->json([
+            'msg' => 1
+        ]);
     }
 
     //获取省市区数据
