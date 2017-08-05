@@ -83,6 +83,10 @@ class LocationController extends BaseController
         if($city==-1){
             return redirect()->back()->with('success', '请选择市');
         }
+        $count=DB::table('cfg_locations')->where('parent_id',$city)->where('name',$county)->count();
+        if (!empty($count)){
+            return redirect()->back()->with('success', '已经存在同名的区县');
+        }
 
         DB::table('cfg_locations')->insert([
             'name'=>$county,
@@ -138,6 +142,11 @@ class LocationController extends BaseController
         }
         if($city==-1){
             return redirect()->back()->with('success', '请选择市');
+        }
+
+        $count=DB::table('cfg_locations')->where('parent_id',$city)->where('name',$county)->where('id','!=',$id)->count();
+        if (!empty($count)){
+            return redirect()->back()->with('success', '已经存在同名的区县');
         }
 
         DB::table('cfg_locations')->where('id',$id)->update([
