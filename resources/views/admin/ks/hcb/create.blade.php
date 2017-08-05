@@ -27,6 +27,8 @@
             language: 'zh',
             maxFileSize: 1500,
             showUpload: false,
+          showRemove: false,
+          showClose: false,
             allowedFileExtensions: ["jpg", "png", "gif"],
             @if(isset($info)&&!empty($info->img))
             initialPreview: ["{{$info->img}}"],
@@ -71,6 +73,7 @@
                             <label for="img" class="col-sm-2 control-label">图片</label>
                             <div  class="col-sm-8">
                                 <input id="img" name="img" type="file"  >
+                                <p style="color: red;margin-top: 5px">图片建议尺寸：750*120</p>
                                 @if(session()->has('upload'))
                                     <div class="alert alert-error">{{session('upload')}}</div>
                                 @endif

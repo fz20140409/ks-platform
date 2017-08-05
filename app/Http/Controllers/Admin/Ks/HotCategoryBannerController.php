@@ -52,6 +52,9 @@ class HotCategoryBannerController extends BaseController
 
         $cat_id=$request->cat_id;
         $img=UploadTool::UploadImg($request,'img','public/upload/img');
+        if (empty($img)){
+            return redirect()->back()->with('upload', '请上传图片');
+        }
 
         DB::table('cfg_hot_category')->insert([
             'cat_id'=>$cat_id,

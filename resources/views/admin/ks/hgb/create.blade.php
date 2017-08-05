@@ -65,6 +65,7 @@
                             <label for="icon" class="col-sm-2 control-label">图片</label>
                             <div  class="col-sm-8">
                                 <input id="icon" name="icon" type="file"  >
+                                <p style="color: red;margin-top: 5px">序号1 2 3 6 7 8的图片尺寸为：205*140; 序号 4 5的图片尺寸为：376*140</p>
                                 @if(session()->has('upload'))
                                     <div class="alert alert-error">{{session('upload')}}</div>
                                 @endif
