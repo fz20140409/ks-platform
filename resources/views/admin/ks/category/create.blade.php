@@ -36,6 +36,8 @@
             language: 'zh',
             maxFileSize: 1500,
             showUpload: false,
+            showRemove: false,
+            showClose: false,
             allowedFileExtensions: ["jpg", "png", "gif"],
             @if(isset($info)&&!empty($info->cat_icon))
             initialPreview: ["{{$info->cat_icon}}"],
