@@ -59,7 +59,7 @@
                                                    value="{{$info->id}}"></th>
                                         <td>{{$info->id}}</td>
 
-                                        <td><img src="{{$info->icon}}"></td>
+                                        <td><img width="20%" src="{{$info->icon}}"></td>
                                         <td>{{$info->menu_name}}</td>
                                         <td>{{$info->m_url}}</td>
                                         <td>@if($info->enabled==1) 正常 @else 屏蔽 @endif</td>
