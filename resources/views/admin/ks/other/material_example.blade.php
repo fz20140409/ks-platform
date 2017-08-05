@@ -23,6 +23,8 @@
             language: 'zh',
             maxFileSize: 1500,
             showUpload: false,
+          showRemove: false,
+          showClose: false,
             allowedFileExtensions: ["jpg", "png", "gif"],
             @if(!empty($yy->fileurl))
             initialPreview: ["{{$yy->fileurl}}"],
@@ -34,6 +36,8 @@
           language: 'zh',
           maxFileSize: 1500,
           showUpload: false,
+          showRemove: false,
+          showClose: false,
           allowedFileExtensions: ["jpg", "png", "gif"],
           @if(!empty($sc->fileurl))
           initialPreview: ["{{$sc->fileurl}}"],
@@ -45,6 +49,8 @@
           language: 'zh',
           maxFileSize: 1500,
           showUpload: false,
+          showRemove: false,
+          showClose: false,
           allowedFileExtensions: ["jpg", "png", "gif"],
           @if(!empty($sp->fileurl))
           initialPreview: ["{{$sp->fileurl}}"],
