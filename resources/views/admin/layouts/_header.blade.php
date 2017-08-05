@@ -2,9 +2,9 @@
     <!-- Logo -->
     <a href="{{route('admin.home')}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini">LA</span>
+        <span class="logo-mini">客商</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg">laravel-admin</span>
+        <span class="logo-lg">客商管理平台</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">

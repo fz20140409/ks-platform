@@ -25,7 +25,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="">laravel-admin</a>
+        <a href="">客商管理平台</a>
     </div>
     <div class="login-box-body">
 
