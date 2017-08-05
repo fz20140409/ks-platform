@@ -106,9 +106,15 @@
             $('#r_url').val('');
             $('#r_url').val(id);
         })
-        //头条下拉框
+        //机会下拉框
         $('.jh').change(function () {
             var id=$('.jh option:selected').val();
+            $('#r_url').val('');
+            $('#r_url').val(id);
+        })
+        //厂家下拉框
+        $('.cj').change(function () {
+            var id=$('.cj option:selected').val();
             $('#r_url').val('');
             $('#r_url').val(id);
         })
@@ -153,6 +159,7 @@
                             <label for="url" class="col-sm-2 control-label">轮播图</label>
                             <div  class="col-sm-8">
                                 <input id="url" name="url" type="file" >
+                                <p style="color: red;margin-top: 5px">建议图片宽720*高300</p>
                                 @if(session()->has('upload'))
                                     <div class="alert alert-error">{{session('upload')}}</div>
                                 @endif

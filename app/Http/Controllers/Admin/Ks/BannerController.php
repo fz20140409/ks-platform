@@ -59,6 +59,9 @@ class BannerController extends BaseController
     public function store(Request $request)
     {
         $url=UploadTool::UploadImg($request,'url','public/upload/img');
+        if (empty($url)){
+            return redirect()->back()->with('upload', '请上传轮播图');
+        }
         $title=$request->title;
         $type=$request->type;
         $r_url=$request->r_url;
@@ -113,12 +116,15 @@ class BannerController extends BaseController
         $title=$request->title;
         $type=$request->type;
         $r_url=$request->r_url;
-        DB::table('cfg_banner')->where('id',$id)->update([
+        $update=[
             'title'=>$title,
             'type'=>$type,
             'r_url'=>$r_url,
-            'url'=>$url,
-        ]);
+        ];
+        if (!empty($url)){
+            $update['url']=$url;
+        }
+        DB::table('cfg_banner')->where('id',$id)->update($update);
         return redirect()->back()->with('success', '更新成功');
     }
 
@@ -131,5 +137,9 @@ class BannerController extends BaseController
     public function destroy($id)
     {
         //
+        DB::table('cfg_banner')->where('id',$id)->delete();
+        return response()->json([
+            'msg' => 1
+        ]);
     }
 }

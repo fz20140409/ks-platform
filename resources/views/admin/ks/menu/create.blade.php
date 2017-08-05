@@ -71,6 +71,7 @@
                             <label for="icon" class="col-sm-2 control-label">图标</label>
                             <div  class="col-sm-8">
                                 <input id="icon" name="icon" type="file"  >
+                                <p style="color: red;margin-top: 5px">建议图片宽120*高120</p>
                                 @if(session()->has('upload'))
                                     <div class="alert alert-error">{{session('upload')}}</div>
                                 @endif
