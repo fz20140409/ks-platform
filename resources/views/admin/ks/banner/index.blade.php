@@ -61,11 +61,11 @@
                                         <td>{{$info->title}}</td>
                                         <td>@if($info->type==0) 外部链接 @else
                                                @if($info->type==2)
-                                                   内部链接-厂商
+                                                   内部链接--厂商
                                                    @elseif($info->type==3)
-                                                    内部链接-优惠头条
+                                                    内部链接--优惠头条
                                                    @elseif($info->type==4)
-                                                    内部链接-合作机会
+                                                    内部链接--合作机会
                                                    @else
 
                                                    @endif
