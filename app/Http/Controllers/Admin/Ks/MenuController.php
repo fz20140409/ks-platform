@@ -60,6 +60,9 @@ class MenuController extends BaseController
         $menu_name=$request->menu_name;
         $m_url=$request->m_url;
         $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
+       if (empty($icon)){
+           return redirect()->back()->with('upload', '请上传图标');
+       }
 
         DB::table('cfg_menu')->insert([
             'menu_name'=>$menu_name,
@@ -106,11 +109,11 @@ class MenuController extends BaseController
         $menu_name=$request->menu_name;
         $m_url=$request->m_url;
         $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
-        DB::table('cfg_menu')->where('id',$id)->update([
-            'menu_name'=>$menu_name,
-            'm_url'=>$m_url,
-            'icon'=>$icon,
-        ]);
+        $update=['menu_name'=>$menu_name, 'm_url'=>$m_url];
+        if (!empty($icon)){
+            $update['icon']=$icon;
+        }
+        DB::table('cfg_menu')->where('id',$id)->update($update);
         return redirect()->back()->with('success', '更新成功');
     }
 

@@ -27,6 +27,8 @@
             language: 'zh',
             maxFileSize: 1500,
             showUpload: false,
+            showRemove: false,
+            showClose: false,
             allowedFileExtensions: ["jpg", "png", "gif"],
             @if(isset($info)&&!empty($info->icon))
             initialPreview: ["{{$info->icon}}"],
@@ -66,7 +68,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="icon" class="col-sm-2 control-label">头像</label>
+                            <label for="icon" class="col-sm-2 control-label">图标</label>
                             <div  class="col-sm-8">
                                 <input id="icon" name="icon" type="file"  >
                                 @if(session()->has('upload'))
