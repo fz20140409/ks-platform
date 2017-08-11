@@ -59,6 +59,9 @@ class SalechanelController extends BaseController
     {
         //
         $sale_name=$request->sale_name;
+        if(empty($sale_name)){
+            return response()->json(['msg'=>'渠道名称不同为空']);
+        }
         $pid=$request->pid;
         $where=array('sale_name'=>$sale_name);
         if(isset($pid)){
