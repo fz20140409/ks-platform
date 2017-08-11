@@ -136,12 +136,12 @@ class CooperationOpportunityController extends BaseController
     }
     function updateStatus($id){
         $info=DB::table('cooperation_opportunity')->where('id',$id)->first();
-        if($info->enabled==1){
+        if($info->state==1){
             DB::table('cooperation_opportunity')->where('id',$id)->update([
                 'state'=>0
             ]);
         }else{
-            DB::table('cfg_menu')->where('id',$id)->update([
+            DB::table('cooperation_opportunity')->where('id',$id)->update([
                 'state'=>1
             ]);
         }

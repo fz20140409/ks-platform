@@ -67,7 +67,7 @@
                                         <td>{{$info->company}}</td>
                                         <td>
                                             <a   class=" op_add_qum"  href="javascript:add_qum('{{route('admin.ks.qum.add_qum',$info->mid)}}')">
-                                                <i class="fa  fa-trash-o " aria-hidden="true">添加优质商家</i></a>
+                                                添加优质商家</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -111,6 +111,7 @@
             $.ajax({
                 url: url,
                 type: 'get',
+                async: false,
                 success: function (data) {
                     if (data.msg == 1) {
                         layer.alert('操作成功');

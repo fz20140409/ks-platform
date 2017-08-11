@@ -234,11 +234,13 @@ class CategoryController extends BaseController
             $where[] = ['cat_name', 'like', '%' . $where_str . '%'];
 
         }
+        $parent=DB::table('cfg_category')->where('cat_id',$id)->select('cat_name')->get()[0];
+
 
         //条件
         $infos=DB::table('cfg_category')->select(['cat_name','cat_id','cat_icon'])->where($where)->paginate($this->page_size);
 
-        return view('admin.ks.category.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes,'where_str' => $where_str,'level'=>$request->level,'pid'=>$id]);
+        return view('admin.ks.category.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes,'where_str' => $where_str,'level'=>$request->level,'pid'=>$id,'parent'=>$parent]);
 
     }
 }

@@ -13,6 +13,7 @@
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">
     <link rel="stylesheet" href="/plugins/bootstrap-fileinput/css/fileinput.min.css">
+    <link rel="stylesheet" href="/plugins/bootstrapvalidator/css/bootstrapValidator.min.css">
     @endsection
 @section('js')
     <script src="/adminlte/plugins/iCheck/icheck.min.js"></script>
@@ -21,6 +22,7 @@
     <script src="/plugins/bootstrap-fileinput/js/plugins/purify.min.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
+    <script src="/plugins/bootstrapvalidator/js/bootstrapValidator.js"></script>
     <script>
       $("#icon").fileinput({
             initialPreviewAsData: true,
@@ -42,6 +44,39 @@
             radioClass: 'iradio_minimal-blue',
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $('#form')
+                .bootstrapValidator({
+                    feedbackIcons: {
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        menu_name: {
+                            message: '名称不能为空',
+                            validators: {
+                                notEmpty: {
+                                    message: '名称不能为空'
+                                },
+                                stringLength: {
+                                    max: 35,
+                                    message: '名称长度小于35字符'
+                                },
+                            }
+                        },
+                        m_url: {
+                            message: '链接不能为空',
+                            validators: {
+                                notEmpty: {
+                                    message: '链接不能为空'
+                                },
+                            }
+                        },
+
+                    }
+                })
+        })
+    </script>
     @include('admin.common.layer_tip')
     @endsection
 @section('content')
@@ -50,7 +85,7 @@
         <div class="col-md-12">
             <div class="box box-default">
                 <!-- form start -->
-                <form enctype="multipart/form-data" class="box-header form-horizontal" method="post" action="@if(isset($info)){{ route('admin.ks.menu.update',$info->id) }}@else{{ route('admin.ks.menu.store') }}@endif">
+                <form id="form" enctype="multipart/form-data" class="box-header form-horizontal" method="post" action="@if(isset($info)){{ route('admin.ks.menu.update',$info->id) }}@else{{ route('admin.ks.menu.store') }}@endif">
                     {{csrf_field()}}
                     @if(isset($info)){{method_field('PUT')}}@endif
                     @if(isset($show))<fieldset disabled>@endif
@@ -81,7 +116,7 @@
                             <label for="m_url" class="col-sm-2 control-label">链接</label>
 
                             <div class="col-sm-8">
-                                <input value="@if(isset($info)){{$info->m_url}}@else{{old('m_url')}}@endif" name="m_url" type="text" class="form-control" id="m_url" placeholder="链接" required>
+                                <input value="@if(isset($info)){{$info->m_url}}@else{{old('m_url')}}@endif" name="m_url" type="text" class="form-control" id="m_url" placeholder="链接" >
                                 @if ($errors->has('m_url'))
                                     <div class="alert alert-warning">{{ $errors->first('m_url') }}</div>
                                 @endif

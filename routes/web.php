@@ -89,6 +89,10 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         //上传材料范例
         Route::get('other/material_example','OtherController@material_example')->name('other.material_example');
         Route::post('other/material_example_update','OtherController@material_example_update')->name('other.material_example_update');
+        //模块设置
+        Route::get('other/module_settings','OtherController@module_settings')->name('other.module_settings');
+        Route::post('other/do_module_settings','OtherController@do_module_settings')->name('other.do_module_settings');
+
 
         //合作机会
         Route::resource('coop','CooperationOpportunityController');

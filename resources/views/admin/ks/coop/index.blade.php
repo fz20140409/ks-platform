@@ -79,9 +79,9 @@
                                         <td>{{$info->cat}}</td>
                                         <td>{{$info->company}}</td>
                                         <td>{{$info->title}}</td>
-                                        <td>{{$info->view_count}}</td>
-                                        <td>{{$info->assess_count}}</td>
-                                        <td>{{$info->optimize_count}}</td>
+                                        <td>@if(empty($info->view_count)) 0 @else {{$info->view_count}} @endif</td>
+                                        <td>@if(empty($info->assess_count)) 0 @else {{$info->assess_count}} @endif</td>
+                                        <td>@if(empty($info->optimize_count)) 0 @else {{$info->optimize_count}} @endif</td>
                                         <td>{{$info->type_name}}</td>
                                         <td>@if($info->state==1) 推荐 @else 未推荐 @endif</td>
                                         <td>
