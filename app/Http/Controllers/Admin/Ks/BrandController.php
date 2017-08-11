@@ -40,7 +40,7 @@ class BrandController extends BaseController
      */
     public function create()
     {
-        $infos = DB::select('SELECT cat_id AS id,cat_name,parent_id AS pid FROM `cfg_category` WHERE parent_id=0 UNION SELECT cat_id,cat_name,parent_id FROM cfg_category WHERE parent_id IN(SELECT cat_id FROM cfg_category WHERE parent_id=0)');
+        $infos = DB::select('SELECT cat_id AS id,cat_name,parent_id AS pid FROM `cfg_category` WHERE parent_id=0 and enabled=1 UNION SELECT cat_id,cat_name,parent_id FROM cfg_category WHERE parent_id IN(SELECT cat_id FROM cfg_category WHERE parent_id=0)');
         $infos = json_decode(json_encode($infos), true);
         $infos = Category::toLayer($infos);
         return view('admin.ks.brand.create', compact('infos'));

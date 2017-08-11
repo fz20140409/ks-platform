@@ -12,14 +12,41 @@
 
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">
+    <link rel="stylesheet" href="/plugins/bootstrapvalidator/css/bootstrapValidator.min.css">
     @endsection
 @section('js')
     <script src="/adminlte/plugins/iCheck/icheck.min.js"></script>
+    <script src="/plugins/bootstrapvalidator/js/bootstrapValidator.js"></script>
     <script>
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-blue',
             radioClass: 'iradio_minimal-blue',
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#form')
+                .bootstrapValidator({
+                    feedbackIcons: {
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        r_name: {
+                            message: '原因名称不能为空',
+                            validators: {
+                                notEmpty: {
+                                    message: '原因名称不能为空'
+                                },
+                                stringLength: {
+                                    max: 35,
+                                    message: '原因名称长度小于35字符'
+                                },
+                            }
+                        },
+
+                    }
+                })
+        })
     </script>
     @include('admin.common.layer_tip')
     @endsection
@@ -29,7 +56,7 @@
         <div class="col-md-12">
             <div class="box box-default">
                 <!-- form start -->
-                <form enctype="multipart/form-data" class="box-header form-horizontal" method="post" action="@if(isset($info)){{ route('admin.ks.or.update',$info->r_id) }}@else{{ route('admin.ks.or.store') }}@endif">
+                <form id="form" enctype="multipart/form-data" class="box-header form-horizontal" method="post" action="@if(isset($info)){{ route('admin.ks.or.update',$info->r_id) }}@else{{ route('admin.ks.or.store') }}@endif">
                     {{csrf_field()}}
                     @if(isset($info)){{method_field('PUT')}}@endif
                     @if(isset($show))<fieldset disabled>@endif
