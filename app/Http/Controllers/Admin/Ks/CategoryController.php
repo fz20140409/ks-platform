@@ -62,6 +62,12 @@ class CategoryController extends BaseController
     public function store(Request $request)
     {
         $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
+        $flag=$request->flag;
+
+        if(empty($icon)&&empty($flag)){
+            return redirect()->back()->with('upload', '请上传图片');
+
+        }
         $cat_name=$request->cat_name;
         $pid=$request->pid;
         $where=array('cat_name'=>$cat_name);

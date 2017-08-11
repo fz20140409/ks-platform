@@ -105,6 +105,8 @@
                                         @endif
                                     </div>
                                 </div>
+                                    @else
+                                    <input type="hidden" name="flag" value="1">
                                     @endif
 
                                 <input type="hidden" name="pid" value="{{$pid}}">
