@@ -47,6 +47,10 @@ class OptimizationReasonsController extends BaseController
     public function store(Request $request)
     {
         $r_name = $request->r_name;
+        $count=DB::table('cfg_coop_reducereason')->where(['r_name'=>$r_name])->count();
+        if (!empty($count)){
+            return redirect()->back()->with('success', '不能重名');
+        }
         DB::table('cfg_coop_reducereason')->insert(['r_name' => $r_name]);
 
         return redirect()->back()->with('success', '添加成功');
@@ -89,6 +93,10 @@ class OptimizationReasonsController extends BaseController
     public function update(Request $request, $id)
     {
         $r_name = $request->r_name;
+        $count=DB::table('cfg_coop_reducereason')->where(['r_name'=>$r_name])->whereNotIn('r_id',[$id])->count();
+        if (!empty($count)){
+            return redirect()->back()->with('success', '不能重名');
+        }
         DB::table('cfg_coop_reducereason')->where('r_id', $id)->update([
             'r_name' => $r_name
         ]);
