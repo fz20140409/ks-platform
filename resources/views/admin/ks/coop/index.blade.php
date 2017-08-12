@@ -70,6 +70,7 @@
                                     <th>状态</th>
                                     <th>操作</th>
                                 </tr>
+                                @if(!empty($infos))
                                 @foreach($infos as $info)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
@@ -97,6 +98,11 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                @else
+                                <tr>
+                                    <td>暂无记录</td>
+                                </tr>
+                                    @endif
                             </table>
                         </div>
                     </form>

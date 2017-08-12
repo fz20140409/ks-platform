@@ -72,7 +72,7 @@ class HotGoodsBannerController extends BaseController
     {
         //
         $info=DB::table('cfg_hot_category')->where('id',$id)->first();
-        $cats=DB::select('SELECT cat_id,cat_name FROM cfg_category WHERE parent_id=0 AND cat_id NOT in(SELECT cat_id FROM cfg_hot_category WHERE type=1)');
+        $cats=DB::select('SELECT cat_id,cat_name FROM cfg_category WHERE parent_id=0 AND enabled=1 AND cat_id NOT in(SELECT cat_id FROM cfg_hot_category WHERE type=1)');
 
         return view('admin.ks.hgb.create',compact('cats','info'));
     }

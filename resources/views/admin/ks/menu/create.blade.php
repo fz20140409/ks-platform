@@ -70,6 +70,10 @@
                                 notEmpty: {
                                     message: '链接不能为空'
                                 },
+                                uri: {
+                                    allowLocal: true,
+                                    message: '输入必须是url'
+                                }
                             }
                         },
 
@@ -116,7 +120,7 @@
                             <label for="m_url" class="col-sm-2 control-label">链接</label>
 
                             <div class="col-sm-8">
-                                <input value="@if(isset($info)){{$info->m_url}}@else{{old('m_url')}}@endif" name="m_url" type="text" class="form-control" id="m_url" placeholder="链接" >
+                                <input value="@if(isset($info)){{$info->m_url}}@else{{old('m_url')}}@endif" name="m_url" type="url" class="form-control" id="m_url" placeholder="链接" >
                                 @if ($errors->has('m_url'))
                                     <div class="alert alert-warning">{{ $errors->first('m_url') }}</div>
                                 @endif

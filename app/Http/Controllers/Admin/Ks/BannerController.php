@@ -65,6 +65,25 @@ class BannerController extends BaseController
         $title=$request->title;
         $type=$request->type;
         $r_url=$request->r_url;
+        if(empty($r_url)){
+            switch ($type){
+                case 2:
+                    //厂家
+                    return redirect()->back()->with('success', '请选择厂家/商家主页');
+                    break;
+                case 3:
+                    //头条
+                    return redirect()->back()->with('success', '请选择优惠头条');
+                    break;
+                case 4:
+                    //机会
+                    return redirect()->back()->with('success', '请选择合作机会');
+                    break;
+                default:
+                    return redirect()->back()->with('success', '请输入网址');
+
+            }
+        }
         DB::table('cfg_banner')->insert([
             'title'=>$title,
             'type'=>$type,
