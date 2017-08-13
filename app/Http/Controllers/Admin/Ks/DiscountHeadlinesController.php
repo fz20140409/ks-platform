@@ -20,19 +20,49 @@ class DiscountHeadlinesController extends BaseController
      */
     public function index(Request $request)
     {
-        //
-        $where_str = $request->where_str;
-        $where = array();
 
-        if (isset($where_str)) {
-            $where[] = ['menu_name', 'like', '%' . $where_str . '%'];
+
+       $where_link=array();
+        //分类
+        $cate= isset($request->cate)?$request->cate:-1;
+        $str_where='';
+        if ($cate!=-1){
+            if($cate==1){
+                $cate1=DB::table('cfg_preferential_cate')->pluck('id')->toArray();
+
+                $cate2=DB::table('headline_cate')->whereNotIn('cid',$cate1)->pluck('hid')->toArray();
+
+                if (!empty($cate2)){
+                    $temp=implode(',',$cate2);
+                    $str_where.=" and b.cid in($temp)";
+                }else{
+                    $str_where.=" and b.cid in(1)";
+                }
+
+            }else{
+                $str_where.=" and b.cid=$cate";
+            }
+
+            $where_link['cate']=$cate;
 
         }
+        //状态
+        $status= isset($request->status)?$request->status:-1;
+        if($status!=-1){
+            $str_where.=" and a.enabled=$status";
+            $where_link['status']=$status;
+        }
+        //标题
+        $title=$request->title;
+       if(isset($title)){
+           $str_where.=" and a.title like '%$title%'";
+           $where_link['title']=$title;
+       }
+        $cates=DB::select("SELECT * FROM cfg_preferential_cate");
 
-        //条件
-        $infos = DB::table('cfg_menu')->where($where)->paginate($this->page_size);
-
-        return view('admin.ks.dh.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str]);
+        $sql="(SELECT a.hid, a.createtime ,a.title,(SELECT catename FROM cfg_preferential_cate WHERE id=b.cid ) catename,a.view_count,a.optimize_count,(SELECT COUNT(*) FROM headline_attr WHERE hid=a.hid AND enabled=1 and attr_type='good') num,a.enabled,a.is_top FROM `headline_info` AS a LEFT JOIN headline_cate AS b ON a.hid=b.hid where 1=1 $str_where ) as d";
+        $infos=DB::table(DB::raw($sql))->paginate($this->page_size);
+        return view('admin.ks.dh.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_link' => $where_link,'cates'=>$cates,'cate'=>$cate,'status'=>$status,'title'=>$title]);
 
     }
 
@@ -44,7 +74,8 @@ class DiscountHeadlinesController extends BaseController
     public function create()
     {
         //
-        return view('admin.ks.dh.create');
+        $cates=DB::table('cfg_preferential_cate')->get();
+        return view('admin.ks.dh.create',compact('cates'));
     }
 
     /**
@@ -55,7 +86,29 @@ class DiscountHeadlinesController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $title=$request->title;
+        $is_top=$request->is_top;
+        $cate=$request->cate;
+        $has_good=$request->has_good;
+        $display_type=$request->display_type;
+        $intro=$request->intro;
+        $insert=[
+            'title'=>$title,
+            'is_top'=>$is_top,
+            'has_good'=>$has_good,
+            'display_type'=>$display_type,
+            'intro'=>$intro,
+            'createtime'=>date('Y-m-d H:i:s',time())
+        ];
+        $id=DB::table('headline_info')->insertGetId($insert);
+        DB::table('headline_cate')->insert([
+            'hid'=>$id,
+            'cid'=>$cate,
+            'enabled'=>1
+        ]);
+        return redirect()->back()->with('success', '添加成功');
+
+
     }
 
     /**

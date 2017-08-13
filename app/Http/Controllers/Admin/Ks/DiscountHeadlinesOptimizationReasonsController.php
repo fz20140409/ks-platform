@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 /**
- * 合作机会优化原因设置
- * Class OptimizationReasonsController
+ * 优惠头条优化原因设置
+ * Class DiscountHeadlinesOptimizationReasonsController
  * @package App\Http\Controllers\Admin\Ks
  */
-class OptimizationReasonsController extends BaseController
+class DiscountHeadlinesOptimizationReasonsController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -22,9 +22,9 @@ class OptimizationReasonsController extends BaseController
     {
 
         //条件
-        $infos = DB::table('cfg_coop_reducereason')->paginate(10);
+        $infos = DB::table('cfg_pr_reducereason')->paginate(10);
 
-        return view('admin.ks.or.index', ['infos' => $infos, 'page_size' => 10]);
+        return view('admin.ks.dhor.index', ['infos' => $infos, 'page_size' => 10]);
 
     }
 
@@ -35,7 +35,7 @@ class OptimizationReasonsController extends BaseController
      */
     public function create()
     {
-        return view('admin.ks.or.create');
+        return view('admin.ks.dhor.create');
     }
 
     /**
@@ -47,11 +47,11 @@ class OptimizationReasonsController extends BaseController
     public function store(Request $request)
     {
         $r_name = $request->r_name;
-        $count=DB::table('cfg_coop_reducereason')->where(['r_name'=>$r_name])->count();
+        $count=DB::table('cfg_pr_reducereason')->where(['r_name'=>$r_name])->count();
         if (!empty($count)){
             return redirect()->back()->with('success', '不能重名');
         }
-        DB::table('cfg_coop_reducereason')->insert(['r_name' => $r_name]);
+        DB::table('cfg_pr_reducereason')->insert(['r_name' => $r_name]);
 
         return redirect()->back()->with('success', '添加成功');
 
@@ -78,9 +78,9 @@ class OptimizationReasonsController extends BaseController
      */
     public function edit($id)
     {
-        $info = DB::table('cfg_coop_reducereason')->where('r_id', $id)->first();
+        $info = DB::table('cfg_pr_reducereason')->where('r_id', $id)->first();
 
-        return view('admin.ks.or.create', compact('info'));
+        return view('admin.ks.dhor.create', compact('info'));
     }
 
     /**
@@ -93,11 +93,11 @@ class OptimizationReasonsController extends BaseController
     public function update(Request $request, $id)
     {
         $r_name = $request->r_name;
-        $count=DB::table('cfg_coop_reducereason')->where(['r_name'=>$r_name])->whereNotIn('r_id',[$id])->count();
+        $count=DB::table('cfg_pr_reducereason')->where(['r_name'=>$r_name])->whereNotIn('r_id',[$id])->count();
         if (!empty($count)){
             return redirect()->back()->with('success', '不能重名');
         }
-        DB::table('cfg_coop_reducereason')->where('r_id', $id)->update([
+        DB::table('cfg_pr_reducereason')->where('r_id', $id)->update([
             'r_name' => $r_name
         ]);
         return redirect()->back()->with('success', '更新成功');
@@ -113,7 +113,7 @@ class OptimizationReasonsController extends BaseController
     public function destroy($id)
     {
         //
-        DB::table('cfg_coop_reducereason')->where('r_id', $id)->delete();
+        DB::table('cfg_pr_reducereason')->where('r_id', $id)->delete();
         return response()->json([
             'msg' => 1
         ]);
@@ -122,7 +122,7 @@ class OptimizationReasonsController extends BaseController
     function batch_destroy(Request $request)
     {
         $ids = $request->ids;
-        DB::table('cfg_coop_reducereason')->whereIn('r_id', $ids)->delete();
+        DB::table('cfg_pr_reducereason')->whereIn('r_id', $ids)->delete();
         return response()->json([
             'msg' => 1
         ]);

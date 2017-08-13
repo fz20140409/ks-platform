@@ -39,6 +39,14 @@
             checkboxClass: 'icheckbox_minimal-blue',
             radioClass: 'iradio_minimal-blue',
         });
+        //是
+        $('#t1').on('ifChecked',function () {
+            $('#display_type').show();
+        })
+        //否
+        $('#t2').on('ifChecked',function () {
+            $('#display_type').hide();
+        })
     </script>
     @include('admin.common.layer_tip')
     @endsection
@@ -56,52 +64,53 @@
 
 
                         <div class="form-group">
-                            <label for="menu_name" class="col-sm-2 control-label">标题</label>
+                            <label for="title" class="col-sm-2 control-label">标题</label>
 
                             <div class="col-sm-8">
-                                <input value="@if(isset($info)){{$info->menu_name}}@else{{old('menu_name')}}@endif" name="menu_name" type="text" class="form-control" id="menu_name" placeholder="名称" required autofocus>
-                                @if ($errors->has('menu_name'))
-                                    <div class="alert alert-warning">{{ $errors->first('menu_name') }}</div>
+                                <input value="@if(isset($info)){{$info->title}}@else{{old('title')}}@endif" name="title" type="text" class="form-control" id="title" placeholder="名称" required  autofocus>
+                                @if ($errors->has('title'))
+                                    <div class="alert alert-warning">{{ $errors->first('title') }}</div>
                                 @endif
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="menu_name" class="col-sm-2 control-label">分类</label>
+                            <label for="cate" class="col-sm-2 control-label">分类</label>
 
                             <div class="col-sm-8">
-                                <select name="" class="form-control">
-                                    <option>全部</option>
-                                    <option>推荐</option>
-                                    <option>未推荐</option>
+                                <select name="cate" class="form-control">
+                                    @foreach($cates  as $item)
+                                        <option value="{{$item->id}}">{{$item->catename}}</option>
+                                        @endforeach
+
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label  class="col-sm-2 control-label">是否置顶</label>
                             <div class="col-sm-8" style="margin-top: 6px">
-                                <input @if(isset($info)) @if($info->type==0) checked @else   @endif @else checked @endif    name="flag" type="radio" class="minimal"  id="show_outer">是
-                                <input  @if(isset($info)&&$info->type!=0) checked @endif  name="flag" type="radio" class="minimal" id="show_inner">否
+                                <input @if(isset($info)) @if($info->type==0) checked @else   @endif @else checked @endif    name="is_top" type="radio" class="minimal"  value="1">是
+                                <input  @if(isset($info)&&$info->type!=0) checked @endif  name="is_top" type="radio" class="minimal"  value="0">否
                             </div>
                         </div>
                         <div class="form-group">
                             <label  class="col-sm-2 control-label">是否添加商品</label>
                             <div class="col-sm-8" style="margin-top: 6px">
-                                <input @if(isset($info)) @if($info->type==0) checked @else   @endif @else checked @endif    name="flag" type="radio" class="minimal"  id="show_outer">是
-                                <input  @if(isset($info)&&$info->type!=0) checked @endif  name="flag" type="radio" class="minimal" id="show_inner">否
+                                <input @if(isset($info)) @if($info->type==0) checked @else   @endif @else checked @endif    name="has_good" type="radio" class="minimal"  value="1" id="t1">是
+                                <input  @if(isset($info)&&$info->type!=0) checked @endif  name="has_good" type="radio" class="minimal" value="0" id="t2">否
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="display_type">
                             <label  class="col-sm-2 control-label">商品显示方式</label>
                             <div class="col-sm-8" style="margin-top: 6px">
-                                <input @if(isset($info)) @if($info->type==0) checked @else   @endif @else checked @endif    name="flag" type="radio" class="minimal"  id="show_outer">列表
-                                <input  @if(isset($info)&&$info->type!=0) checked @endif  name="flag" type="radio" class="minimal" id="show_inner">方格
+                                <input @if(isset($info)) @if($info->type==0) checked @else   @endif @else checked @endif    name="display_type" type="radio" class="minimal" value="0">列表
+                                <input  @if(isset($info)&&$info->type!=0) checked @endif  name="display_type" type="radio" class="minimal" value="1">方格
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="menu_name" class="col-sm-2 control-label">优惠信息</label>
+                            <label for="intro" class="col-sm-2 control-label">优惠信息</label>
 
                             <div class="col-sm-8">
-                                <textarea class="form-control"></textarea>
+                                <textarea class="form-control" name="intro" required></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -114,40 +123,36 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="menu_name" class="col-sm-2 control-label">视频</label>
+                            <label for="video" class="col-sm-2 control-label">视频</label>
 
                             <div class="col-sm-8">
-                                <input value="@if(isset($info)){{$info->menu_name}}@else{{old('menu_name')}}@endif" name="menu_name" type="text" class="form-control" id="menu_name" placeholder="名称" required autofocus>
-                                @if ($errors->has('menu_name'))
-                                    <div class="alert alert-warning">{{ $errors->first('menu_name') }}</div>
+                                <input value="@if(isset($info)){{$info->video}}@else{{old('video')}}@endif" name="video" type="text" class="form-control" id="video" >
+                                @if ($errors->has('video'))
+                                    <div class="alert alert-warning">{{ $errors->first('video') }}</div>
                                 @endif
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="menu_name" class="col-sm-2 control-label">关键字</label>
+                            <label for="keyword" class="col-sm-2 control-label">关键字</label>
 
                             <div class="col-sm-8">
-                                <input value="@if(isset($info)){{$info->menu_name}}@else{{old('menu_name')}}@endif" name="menu_name" type="text" class="form-control" id="menu_name" placeholder="名称" required autofocus>
-                                @if ($errors->has('menu_name'))
-                                    <div class="alert alert-warning">{{ $errors->first('menu_name') }}</div>
+                                <input value="@if(isset($info)){{$info->keyword}}@else{{old('keyword')}}@endif" name="keyword" type="text" class="form-control" id="keyword">
+                                @if ($errors->has('keyword'))
+                                    <div class="alert alert-warning">{{ $errors->first('keyword') }}</div>
                                 @endif
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="menu_name" class="col-sm-2 control-label">发布范围</label>
+                            <label for="area" class="col-sm-2 control-label">发布范围</label>
 
                             <div class="col-sm-8">
-                                <select name="" class="form-control">
+                                <select name="area" class="form-control">
                                     <option>全国</option>
                                     <option>推荐</option>
                                     <option>未推荐</option>
                                 </select>
                             </div>
                         </div>
-
-
-
-
                     </div>
                     @if(isset($show))</fieldset>@endif
                     <!-- /.box-body -->

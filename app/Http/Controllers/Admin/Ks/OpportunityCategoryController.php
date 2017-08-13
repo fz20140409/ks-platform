@@ -93,6 +93,10 @@ class OpportunityCategoryController extends BaseController
     public function update(Request $request, $id)
     {
         $catename = $request->catename;
+        $count=DB::table('cfg_coop_cate')->where('catename',$catename)->whereNotIn('id',[$id])->count();
+        if(!empty($count)){
+            return redirect()->back()->with('success', '存在相同分类名称');
+        }
         DB::table('cfg_coop_cate')->where('id', $id)->update([
             'catename' => $catename
         ]);

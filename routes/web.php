@@ -78,6 +78,14 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         Route::post('hk/batch_destroy','HotKeywordController@batch_destroy')->name('hk.batch_destroy');
         //优惠头条管理
         Route::resource('dh','DiscountHeadlinesController');
+        //优惠头条分类
+        Route::resource('dhc','DiscountHeadlinesCategoryController');
+        Route::post('dhc/batch_destroy','DiscountHeadlinesCategoryController@batch_destroy')->name('dhc.batch_destroy');
+        //优惠头条优化原因
+        Route::resource('dhor','DiscountHeadlinesOptimizationReasonsController');
+        Route::post('dhor/batch_destroy','DiscountHeadlinesOptimizationReasonsController@batch_destroy')->name('dhor.batch_destroy');
+
+
         //首页热门商品banner
         Route::resource('hgb','HotGoodsBannerController');
         //品类热销榜banner设置

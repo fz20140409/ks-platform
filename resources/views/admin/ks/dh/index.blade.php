@@ -21,24 +21,21 @@
 
                                 <div class="col-lg-9 col-xs-10">
                                     分类
-                                    <select name="" class="form-control">
-                                        <option>全部</option>
-                                        <option>推荐</option>
-                                        <option>未推荐</option>
+                                    <select name="cate" class="form-control">
+                                        <option value="-1">全部</option>
+                                        @foreach($cates as $item)
+                                            <option  @if($cate==$item->id) selected @endif value="{{$item->id}}">  {{$item->catename}}</option>
+                                            @endforeach
+
                                     </select>
                                     状态
-                                    <select name="" class="form-control">
-                                        <option>全部</option>
-                                        <option>推荐</option>
-                                        <option>未推荐</option>
+                                    <select name="status" class="form-control">
+                                        <option value="-1">全部</option>
+                                        <option @if($status==1) selected @endif value="1">正常</option>
+                                        <option  @if($status==0) selected @endif value="0">屏蔽</option>
                                     </select>
-                                    <div class="input-group">
-                                        <input value="{{$where_str}}" name="where_str" type="text" class="form-control"
-                                               placeholder="标题">
-                                        <span class="input-group-btn">
+                                    标题<input value="{{$title}}" name="title" type="text" class="form-control">
                                     <button class="btn btn-default" type="submit">查询</button>
-                                    </span>
-                                    </div>
 
                                 </div>
                             </form>
@@ -72,17 +69,22 @@
                                 @foreach($infos as $info)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
-                                                   value="{{$info->id}}"></th>
-                                        <td>{{$info->id}}</td>
-
-                                        <td><img src="{{$info->icon}}"></td>
+                                                   value="{{$info->hid}}"></th>
+                                        <td>{{$info->hid}}</td>
+                                        <td>{{$info->createtime}}</td>
+                                        <td>{{$info->title}}</td>
+                                        <td>{{$info->catename}}</td>
+                                        <td>{{$info->view_count}}</td>
+                                        <td>{{$info->optimize_count}}</td>
+                                        <td>{{$info->num}}</td>
                                         <td>@if($info->enabled==1) 正常 @else 屏蔽 @endif</td>
+                                        <td>@if($info->is_top==1) 是 @else 否 @endif</td>
                                         <td>
 
-                                            <a class=" op_edit"  href="{{route('admin.ks.dh.edit',$info->id)}}"
+                                            <a class=" op_edit"  href="{{route('admin.ks.dh.edit',$info->hid)}}"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
-                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.dh.destroy',$info->id)}}')">
+                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.dh.destroy',$info->hid)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
                                         </td>
                                     </tr>
@@ -94,7 +96,7 @@
                     <!--box-footer-->
                     <div class="box-footer ">
                         <div style="float: right">
-                            {{$infos->appends(['where_str' => $where_str,'page_size'=>$page_size])->links()}}
+                            {{$infos->appends($where_link)->links()}}
                         </div>
                     </div>
                     <!--box-footer-->
