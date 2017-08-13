@@ -34,7 +34,7 @@ class HotKeywordController extends BaseController
         }
 
         //条件
-        $infos = DB::table('cfg_hot_search')->where($where)->paginate($this->page_size);
+        $infos = DB::table('cfg_hot_search')->where($where)->orderBy('search_count', 'desc')->paginate($this->page_size);
 
         return view('admin.ks.hk.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str, 'is_recommend' => $is_recommend]);
 

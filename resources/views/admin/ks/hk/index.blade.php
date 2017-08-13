@@ -54,6 +54,7 @@
                                     <th>ID</th>
                                     <th width="30%">热搜关键字</th>
                                     <th>状态</th>
+                                    <th>搜索次数</th>
 
                                     <th width="20%">操作</th>
                                 </tr>
@@ -65,6 +66,7 @@
 
                                         <td>{{$info->searchname}}</td>
                                         <td>@if($info->is_recommend==1) 推荐 @else 不推荐 @endif</td>
+                                        <td>{{$info->search_count}}</td>
                                         <td>
                                             <a class=" op_show" href="javascript:updateStatus('{{route('admin.ks.hk.updateStatus',$info->id)}}')"
                                                style="margin-right: 10px;display: none">
