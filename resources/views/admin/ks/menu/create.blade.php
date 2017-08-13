@@ -70,6 +70,10 @@
                                 notEmpty: {
                                     message: '链接不能为空'
                                 },
+                                stringLength: {
+                                    max: 200,
+                                    message: '名称长度小于200字符'
+                                },
                                 uri: {
                                     allowLocal: true,
                                     message: '输入必须是url'

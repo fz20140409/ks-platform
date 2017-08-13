@@ -55,7 +55,7 @@
                             <div class="col-sm-8">
                                <select name="cat_id" class="form-control">
                                    @foreach($cats as $cat)
-                                       <option  value="{{$cat->cat_id}}">{{$cat->cat_name}}</option>
+                                       <option @if(isset($info)&&($info->cat_id==$cat->cat_id)) selected @endif  value="{{$cat->cat_id}}">{{$cat->cat_name}}</option>
                                        @endforeach
 
                                </select>
