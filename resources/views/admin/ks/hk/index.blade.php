@@ -52,10 +52,10 @@
                                 <tr>
                                     <th></th>
                                     <th>ID</th>
-                                    <th>热搜关键字</th>
+                                    <th width="30%">热搜关键字</th>
                                     <th>状态</th>
 
-                                    <th>操作</th>
+                                    <th width="20%">操作</th>
                                 </tr>
                                 @foreach($infos as $info)
                                     <tr>

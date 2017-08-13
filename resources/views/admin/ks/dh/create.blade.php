@@ -13,6 +13,7 @@
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">
     <link rel="stylesheet" href="/plugins/bootstrap-fileinput/css/fileinput.min.css">
+    <link rel="stylesheet" href="/adminlte/plugins/select2/select2.min.css">
     @endsection
 @section('js')
     <script src="/adminlte/plugins/iCheck/icheck.min.js"></script>
@@ -21,6 +22,8 @@
     <script src="/plugins/bootstrap-fileinput/js/plugins/purify.min.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
+    <script src="/adminlte/plugins/select2/select2.min.js"></script>
+    <script src="/adminlte/plugins/select2/i18n/zh-CN.js"></script>
     <script>
         $("#icon").fileinput({
             initialPreviewAsData: true,
@@ -47,6 +50,9 @@
         $('#t2').on('ifChecked',function () {
             $('#display_type').hide();
         })
+        $(document).ready(function() {
+            $("select").select2({language: "zh-CN"});
+        });
     </script>
     @include('admin.common.layer_tip')
     @endsection
@@ -56,7 +62,7 @@
         <div class="col-md-12">
             <div class="box box-default">
                 <!-- form start -->
-                <form enctype="multipart/form-data" class="box-header form-horizontal" method="post" action="@if(isset($info)){{ route('admin.ks.dh.update',$info->id) }}@else{{ route('admin.ks.dh.store') }}@endif">
+                <form enctype="multipart/form-data" class="box-header form-horizontal" method="post" action="@if(isset($info)){{ route('admin.ks.dh.update',$info->hid) }}@else{{ route('admin.ks.dh.store') }}@endif">
                     {{csrf_field()}}
                     @if(isset($info)){{method_field('PUT')}}@endif
                     @if(isset($show))<fieldset disabled>@endif
@@ -79,7 +85,7 @@
                             <div class="col-sm-8">
                                 <select name="cate" class="form-control">
                                     @foreach($cates  as $item)
-                                        <option value="{{$item->id}}">{{$item->catename}}</option>
+                                        <option @if(isset($info)&&$item->id==$cate->cid) selected  @endif value="{{$item->id}}">{{$item->catename}}</option>
                                         @endforeach
 
                                 </select>
@@ -88,29 +94,29 @@
                         <div class="form-group">
                             <label  class="col-sm-2 control-label">是否置顶</label>
                             <div class="col-sm-8" style="margin-top: 6px">
-                                <input @if(isset($info)) @if($info->type==0) checked @else   @endif @else checked @endif    name="is_top" type="radio" class="minimal"  value="1">是
-                                <input  @if(isset($info)&&$info->type!=0) checked @endif  name="is_top" type="radio" class="minimal"  value="0">否
+                                <input @if(isset($info)) @if($info->is_top==1) checked @else   @endif @else checked @endif    name="is_top" type="radio" class="minimal"  value="1">是
+                                <input  @if(isset($info)&&$info->is_top==0) checked @endif  name="is_top" type="radio" class="minimal"  value="0">否
                             </div>
                         </div>
                         <div class="form-group">
                             <label  class="col-sm-2 control-label">是否添加商品</label>
                             <div class="col-sm-8" style="margin-top: 6px">
-                                <input @if(isset($info)) @if($info->type==0) checked @else   @endif @else checked @endif    name="has_good" type="radio" class="minimal"  value="1" id="t1">是
-                                <input  @if(isset($info)&&$info->type!=0) checked @endif  name="has_good" type="radio" class="minimal" value="0" id="t2">否
+                                <input @if(isset($info)) @if($info->has_good==1) checked @else   @endif @else checked @endif    name="has_good" type="radio" class="minimal"  value="1" id="t1">是
+                                <input  @if(isset($info)&&$info->has_good==0) checked @endif  name="has_good" type="radio" class="minimal" value="0" id="t2">否
                             </div>
                         </div>
-                        <div class="form-group" id="display_type">
+                        <div class="form-group" id="display_type" @if(isset($info)&&$info->has_good==0) style="display: none" @endif>
                             <label  class="col-sm-2 control-label">商品显示方式</label>
                             <div class="col-sm-8" style="margin-top: 6px">
-                                <input @if(isset($info)) @if($info->type==0) checked @else   @endif @else checked @endif    name="display_type" type="radio" class="minimal" value="0">列表
-                                <input  @if(isset($info)&&$info->type!=0) checked @endif  name="display_type" type="radio" class="minimal" value="1">方格
+                                <input @if(isset($info)) @if($info->display_type==0) checked @else   @endif @else checked @endif    name="display_type" type="radio" class="minimal" value="0">列表
+                                <input  @if(isset($info)&&$info->display_type==1) checked @endif  name="display_type" type="radio" class="minimal" value="1">方格
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="intro" class="col-sm-2 control-label">优惠信息</label>
 
                             <div class="col-sm-8">
-                                <textarea class="form-control" name="intro" required></textarea>
+                                <textarea class="form-control" name="intro" required>@if(isset($info)) {{$info->intro}} @endif</textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -126,7 +132,7 @@
                             <label for="video" class="col-sm-2 control-label">视频</label>
 
                             <div class="col-sm-8">
-                                <input value="@if(isset($info)){{$info->video}}@else{{old('video')}}@endif" name="video" type="text" class="form-control" id="video" >
+                                <input value="" name="video" type="text" class="form-control" id="video" >
                                 @if ($errors->has('video'))
                                     <div class="alert alert-warning">{{ $errors->first('video') }}</div>
                                 @endif
@@ -146,11 +152,11 @@
                             <label for="area" class="col-sm-2 control-label">发布范围</label>
 
                             <div class="col-sm-8">
-                                <select name="area" class="form-control">
-                                    <option>全国</option>
-                                    <option>推荐</option>
-                                    <option>未推荐</option>
-                                </select>
+                            <select  name="area[]" class="form-control select2" multiple="multiple" data-placeholder="请选择" style="width: 100%;">
+                                @foreach($areas as $item)
+                                    <option @if(isset($info)) @if(in_array($item->id,$area_arr)) selected @endif @endif  value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                            </select>
                             </div>
                         </div>
                     </div>

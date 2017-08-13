@@ -78,6 +78,7 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         Route::post('hk/batch_destroy','HotKeywordController@batch_destroy')->name('hk.batch_destroy');
         //优惠头条管理
         Route::resource('dh','DiscountHeadlinesController');
+        Route::get('dh/updateStatus/{id}','DiscountHeadlinesController@updateStatus')->name('dh.updateStatus');
         //优惠头条分类
         Route::resource('dhc','DiscountHeadlinesCategoryController');
         Route::post('dhc/batch_destroy','DiscountHeadlinesCategoryController@batch_destroy')->name('dhc.batch_destroy');

@@ -75,7 +75,9 @@ class DiscountHeadlinesController extends BaseController
     {
         //
         $cates=DB::table('cfg_preferential_cate')->get();
-        return view('admin.ks.dh.create',compact('cates'));
+        $areas=DB::table('cfg_locations')->select('id','name')->where('level',1)->get();
+
+        return view('admin.ks.dh.create',compact('cates','areas'));
     }
 
     /**
@@ -86,12 +88,14 @@ class DiscountHeadlinesController extends BaseController
      */
     public function store(Request $request)
     {
+
         $title=$request->title;
         $is_top=$request->is_top;
         $cate=$request->cate;
         $has_good=$request->has_good;
         $display_type=$request->display_type;
         $intro=$request->intro;
+        $area=$request->area;
         $insert=[
             'title'=>$title,
             'is_top'=>$is_top,
@@ -101,11 +105,20 @@ class DiscountHeadlinesController extends BaseController
             'createtime'=>date('Y-m-d H:i:s',time())
         ];
         $id=DB::table('headline_info')->insertGetId($insert);
+        //分类
         DB::table('headline_cate')->insert([
             'hid'=>$id,
             'cid'=>$cate,
             'enabled'=>1
         ]);
+        //发布区域
+        foreach ($area as $item){
+            DB::table('headline_area_range')->insert([
+                'hid'=>$id,
+                'area_id'=>$item,
+                'enabled'=>1
+            ]);
+        }
         return redirect()->back()->with('success', '添加成功');
 
 
@@ -130,7 +143,14 @@ class DiscountHeadlinesController extends BaseController
      */
     public function edit($id)
     {
-        //
+        $info=DB::table("headline_info")->where('hid',$id)->first();
+        $cate=DB::table("headline_cate")->where('hid',$id)->first();
+        $area_arr=DB::table("headline_area_range")->where('hid',$id)->pluck('area_id')->toArray();
+
+        $cates=DB::table('cfg_preferential_cate')->get();
+        $areas=DB::table('cfg_locations')->select('id','name')->where('level',1)->get();
+
+        return view('admin.ks.dh.create',compact('cates','areas','info','area_arr','cate'));
     }
 
     /**
@@ -142,7 +162,44 @@ class DiscountHeadlinesController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
+        $title=$request->title;
+        $is_top=$request->is_top;
+        $cate=$request->cate;
+        $has_good=$request->has_good;
+        $display_type=$request->display_type;
+        $intro=$request->intro;
+        $area=$request->area;
+        $update=[
+            'title'=>$title,
+            'is_top'=>$is_top,
+            'has_good'=>$has_good,
+            'display_type'=>$display_type,
+            'intro'=>$intro,
+            'updatetime'=>date('Y-m-d H:i:s',time())
+        ];
+        //更新优惠头条
+        DB::table('headline_info')->where('hid',$id)->update($update);
+        //更新分类
+        DB::table('headline_cate')->where('hid',$id)->update([
+            'cid'=>$cate
+        ]);
+        //原始地区
+        $arr=DB::table("headline_area_range")->where('hid',$id)->pluck('area_id')->toArray();
+       if (!empty(array_diff($arr,$area))){
+           //删除原始数据
+           DB::table("headline_area_range")->where('hid',$id)->delete();
+           //发布区域
+           foreach ($area as $item){
+               DB::table('headline_area_range')->insert([
+                   'hid'=>$id,
+                   'area_id'=>$item,
+                   'enabled'=>1
+               ]);
+           }
+       }
+
+
+        return redirect()->back()->with('success', '更新成功');
     }
 
     /**
@@ -153,6 +210,33 @@ class DiscountHeadlinesController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        //删除优惠头条
+        DB::table('headline_info')->where('hid',$id)->delete();
+        //删除分类
+        DB::table('headline_cate')->where('hid',$id)->delete();
+        //删除地区
+        DB::table('headline_area_range')->where('hid',$id)->delete();
+        return response()->json([
+            'msg' => 1
+        ]);
+
+    }
+
+
+    function updateStatus($id){
+        $info=DB::table('headline_info')->where('hid',$id)->first();
+        if($info->enabled==1){
+            DB::table('headline_info')->where('hid',$id)->update([
+                'enabled'=>0
+            ]);
+        }else{
+            DB::table('headline_info')->where('hid',$id)->update([
+                'enabled'=>1
+            ]);
+        }
+        return response()->json([
+            'msg' => 1
+        ]);
+
     }
 }

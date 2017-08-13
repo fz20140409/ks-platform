@@ -84,6 +84,9 @@
                                             <a class=" op_edit"  href="{{route('admin.ks.dh.edit',$info->hid)}}"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
+                                            <a  class=" op_updateStatus" href="javascript:updateStatus('{{route('admin.ks.dh.updateStatus',$info->hid)}}')"
+                                                style="margin-right: 10px;display: none;">
+                                                <i class="fa fa-eye " aria-hidden="true">@if($info->enabled==1) 屏蔽  @else 显示 @endif</i></a>
                                             <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.dh.destroy',$info->hid)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
                                         </td>
@@ -122,7 +125,7 @@
     <script>
         //屏蔽和显示
         @if(Auth::user()->can('admin.ks.dh.updateStatus'))
-             $(".op_show").show();
+             $(".op_updateStatus").show();
         @endif
         //有修改权限，显示修改
         @if(Auth::user()->can('admin.ks.dh.edit'))
@@ -132,6 +135,22 @@
         @if(Auth::user()->can('admin.ks.dh.destroy'))
             $(".op_destroy").show();
         @endif
+
+        function updateStatus(url) {
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function ($data) {
+                    if ($data.msg == 1) {
+                        layer.alert('操作成功');
+                        location.reload();
+                    } else {
+                        layer.alert('操作失败');
+                    }
+                }
+            });
+
+        }
 
 
     </script>
