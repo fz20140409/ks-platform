@@ -59,6 +59,7 @@ class DiscountGoodsController extends BaseController
         $title=DB::table('headline_info')->select('title')->where('hid',$hid)->first();
         $str_where='';
         $where_link['page_size']=$this->page_size;
+        $where_link['hid']=$hid;
 
         $goods_ids=DB::table('headline_attr')->where([
             ['hid','=',$hid],['attr_type','=','good']
