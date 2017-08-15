@@ -1,5 +1,5 @@
 @extends('admin.layouts.default')
-@section('t1','商品')
+@section('t1',"($title->title)-商品")
 @section('t2','列表')
 @section('content')
     <section class="content">
@@ -9,7 +9,7 @@
                     <!--box-header-->
                     <div class="box-header">
                         <div class="row">
-                            <form class="form-inline" action="{{route('admin.ks.goods.index')}}">
+                            <form class="form-inline" action="{{route('admin.ks.dg.create')}}">
                                 <div class="col-lg-1 col-xs-3">
                                     <select name="page_size" class="form-control">
                                         @foreach($page_sizes as $k=> $v)
@@ -25,7 +25,7 @@
                                         <option value="-1">全部</option>
                                         @foreach($provices as $item)
                                             <option @if($area==$item) selected @endif value="{{$item}}">{{$item}}</option>
-                                            @endforeach
+                                        @endforeach
 
                                     </select>
                                     所属品类
@@ -48,14 +48,17 @@
                                         <option @if($label==2) selected @endif value="2">新品推荐</option>
                                         <option @if($label==3) selected @endif value="3">促销商品</option>
                                     </select>
-                                    <div class="input-group col-lg-5">
+                                    <div class="input-group col-lg-4">
                                         <input value="{{$where_str}}" name="where_str" type="text" class="form-control"
                                                placeholder="企业/商铺名称/商品名称/商品标题">
                                         <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit">查询</button>
                                     </span>
                                     </div>
-
+                                    <div class="col-lg-1 col-xs-2 pull-right">
+                                        <a href="{{route('admin.ks.dg.index',['hid'=>$hid])}}" class="btn btn-primary">返回</a>
+                                    </div>
+                                    <input type="hidden" name="hid" value="{{$hid}}">
                                 </div>
                             </form>
 
@@ -63,7 +66,7 @@
                     </div>
                     <!--box-header-->
                     <!--box-body-->
-                    <form id="user_ids">
+                    <form id="ids">
                         <div class="box-body table-responsive no-padding">
                             <table class="table table-hover">
                                 <tr>
@@ -79,16 +82,15 @@
                                     <th>价格2</th>
                                     <th>商品标签</th>
                                     <th>销量</th>
-                                    <th>操作</th>
                                 </tr>
                                 @foreach($infos as $info)
                                     <tr>
-                                        <th><input class="minimal" name="user_ids[]" type="checkbox"
+                                        <th><input class="minimal" name="ids[]" type="checkbox"
                                                    value="{{$info->goods_id}}"></th>
                                         <td>{{$info->goods_id}}</td>
                                         <td>{{$info->provice}}</td>
                                         <td>{{$info->company}}</td>
-                                        <td>{{$info->zybrand}}</td>
+                                        <td>@if(empty($info->zybrand)) 其他 @else {{$info->zybrand}} @endif</td>
                                         <td>{{$info->goods_smallname}}</td>
                                         <td>{{$info->goods_name}}</td>
                                         <td>{{$info->cat_name}}</td>
@@ -97,20 +99,23 @@
                                         <td>xx</td>
                                         <td>@if($info->is_hot==1) <span style="color: #00a7d0">热门商品</span> @endif @if($info->is_new==1) <span style="margin-left: 2px;color: #00a7d0">新品推荐</span> @endif  @if($info->is_cuxiao==1) <span style="margin-left: 2px;color: #00a7d0">促销商品</span> @endif</td>
                                         <td>{{$info->sell_count }}</td>
-                                        <td>
 
-                                            <a class=" op_show" href="{{route('admin.ks.goods.show',$info->goods_id)}}"
-                                               style="margin-right: 10px;display: none">
-                                                    <i class="fa fa-eye " aria-hidden="true">查看</i></a>
-                                        </td>
                                     </tr>
                                 @endforeach
                             </table>
+                            <input type="hidden" value="{{$hid}}" name="hid">
                         </div>
                     </form>
                     <!--box-body-->
                     <!--box-footer-->
                     <div class="box-footer ">
+                        @if(Auth::user()->can('admin.ks.dg.batch_add'))
+                            <div class="btn-group">
+                                <button onclick="selectAll()" type="button" class="btn btn-default">全选</button>
+                                <button onclick="reverse()" type="button" class="btn btn-default">反选</button>
+                                <a href="javascript:batch_add()" class="btn btn-primary">批量添加</a>
+                            </div>
+                        @endif
                         <div style="float: right">
                             {{$infos->appends($where_link)->links()}}
                         </div>
@@ -136,10 +141,43 @@
         });
     </script>
     <script>
-        //有查看权限，显示查看
-        @if(Auth::user()->can('admin.ks.goods.show'))
-             $(".op_show").show();
-        @endif
+
+        //批量添加
+        function batch_add() {
+            $cbs = $('table input[type="checkbox"]:checked');
+            if ($cbs.length > 0) {
+                layer.confirm('确认添加？', {
+                    btn: ['确认', '取消']
+                },function () {
+                    $.ajax({
+                        url: '{{route("admin.ks.dg.batch_add")}}',
+                        type: 'post',
+                        data: $("#ids").serialize(),
+                        success: function (data) {
+                            if (data.msg == 1) {
+                                layer.alert('添加成功');
+                                location.reload();
+                            } else {
+                                layer.alert('添加失败');
+                            }
+                        }
+                    });
+                });
+
+            } else {layer.alert('请选中要添加的列');}}
+        //全选
+        function selectAll() {
+            $('input[type="checkbox"].minimal').iCheck('check')
+        }
+        //反选
+        function reverse() {
+            $('input[type="checkbox"].minimal').each(function () {
+                if ($(this).is(":checked")) {
+                    $(this).iCheck('uncheck');
+                } else {
+                    $(this).iCheck('check');
+                }});}
+
 
     </script>
     @include('admin.common.layer_del')

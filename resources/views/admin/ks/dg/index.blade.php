@@ -1,5 +1,5 @@
 @extends('admin.layouts.default')
-@section('t1','热搜关键字')
+@section('t1',"($title->title)-优惠商品")
 @section('t2','列表')
 @section('content')
     <section class="content">
@@ -9,7 +9,7 @@
                     <!--box-header-->
                     <div class="box-header">
                         <div class="row">
-                            <form class="form-inline" action="{{route('admin.ks.hk.index')}}">
+                            <form class="form-inline" action="{{route('admin.ks.dg.index')}}">
                                 <div class="col-lg-1 col-xs-3">
                                     <select name="page_size" class="form-control">
                                         @foreach($page_sizes as $k=> $v)
@@ -20,25 +20,20 @@
 
 
                                 <div class="col-lg-9 col-xs-10">
-                                    状态
-                                    <select name="is_recommend" class="form-control">
-                                        <option  value="-1">全部</option>
-                                        <option @if($is_recommend==1) selected @endif value="1">推荐</option>
-                                        <option @if($is_recommend==0) selected @endif value="0">未推荐</option>
-                                    </select>
                                     <div class="input-group">
                                         <input value="{{$where_str}}" name="where_str" type="text" class="form-control"
-                                               placeholder="热搜关键字">
+                                               placeholder="商品名称">
                                         <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit">查询</button>
                                     </span>
                                     </div>
 
                                 </div>
+                                <input type="hidden" name="hid" value="{{$hid}}">
                             </form>
-                            @if(Auth::user()->can('admin.ks.hk.create'))
+                            @if(Auth::user()->can('admin.ks.dg.create'))
                                 <div class="col-lg-2 col-xs-2 pull-right">
-                                    <a href="{{route('admin.ks.hk.create')}}" class="btn btn-primary">新增</a>
+                                    <a href="{{route('admin.ks.dg.create',['hid'=>$hid])}}" class="btn btn-primary">添加优惠商品</a> <a href="{{route('admin.ks.dh.index')}}" class="btn btn-primary">返回</a>
                                 </div>
                             @endif
 
@@ -52,9 +47,11 @@
                                 <tr>
                                     <th></th>
                                     <th>ID</th>
-                                    <th width="30%">热搜关键字</th>
-                                    <th>状态</th>
-                                    <th>搜索次数</th>
+                                    <th width="30%">商品名称</th>
+                                    <th>成交量</th>
+                                    <th>订单数</th>
+                                    <th>添加时间</th>
+
                                     <th width="20%">操作</th>
                                 </tr>
                                 @foreach($infos as $info)
@@ -63,17 +60,14 @@
                                                    value="{{$info->id}}"></th>
                                         <td>{{$info->id}}</td>
 
-                                        <td>{{$info->searchname}}</td>
-                                        <td>@if($info->is_recommend==1) 推荐 @else 不推荐 @endif</td>
-                                        <td>{{$info->search_count}}</td>
+                                        <td>{{$info->goods_name}}</td>
+                                        <td>xx</td>
+                                        <td>{{$info->sell_count}}</td>
+                                        <td>{{$info->create_time}}</td>
                                         <td>
-                                            <a class=" op_show" href="javascript:updateStatus('{{route('admin.ks.hk.updateStatus',$info->id)}}')"
-                                               style="margin-right: 10px;display: none">
-                                                <i class="fa fa-eye " aria-hidden="true">@if($info->is_recommend==1) 取消 @else 推荐 @endif</i></a>
-                                            <a class=" op_edit"  href="{{route('admin.ks.hk.edit',$info->id)}}"
-                                               style="margin-right: 10px;display: none">
-                                                <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
-                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.hk.destroy',$info->id)}}')">
+
+
+                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.dg.destroy',$info->id)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
                                         </td>
                                     </tr>
@@ -84,7 +78,7 @@
                     <!--box-body-->
                     <!--box-footer-->
                     <div class="box-footer ">
-                        @if(Auth::user()->can('admin.ks.hk.batch_destroy'))
+                        @if(Auth::user()->can('admin.ks.dg.batch_destroy'))
                             <div class="btn-group">
                                 <button onclick="selectAll()" type="button" class="btn btn-default">全选</button>
                                 <button onclick="reverse()" type="button" class="btn btn-default">反选</button>
@@ -92,7 +86,7 @@
                             </div>
                         @endif
                         <div style="float: right">
-                            {{$infos->appends(['where_str' => $where_str,'page_size'=>$page_size])->links()}}
+                            {{$infos->appends($where_link)->links()}}
                         </div>
                     </div>
                     <!--box-footer-->
@@ -116,33 +110,12 @@
         });
     </script>
     <script>
-        //屏蔽和显示
-        @if(Auth::user()->can('admin.ks.hk.updateStatus'))
-             $(".op_show").show();
-        @endif
-        //有修改权限，显示修改
-        @if(Auth::user()->can('admin.ks.hk.edit'))
-            $(".op_edit").show();
-        @endif
+
+
         //有删除权限，显示删除
-        @if(Auth::user()->can('admin.ks.hk.destroy'))
+        @if(Auth::user()->can('admin.ks.dg.destroy'))
             $(".op_destroy").show();
         @endif
-        function updateStatus(url) {
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function ($data) {
-                    if ($data.msg == 1) {
-                        layer.alert('操作成功');
-                        location.reload();
-                    } else {
-                        layer.alert('操作失败');
-                    }
-                }
-            });
-
-        }
         //批量删除
         function batch_destroy() {
             $cbs = $('table input[type="checkbox"]:checked');
@@ -151,7 +124,7 @@
                     btn: ['确认', '取消']
                 },function () {
                     $.ajax({
-                        url: '{{route("admin.ks.hk.batch_destroy")}}',
+                        url: '{{route("admin.ks.dg.batch_destroy")}}',
                         type: 'post',
                         data: $("#ids").serialize(),
                         success: function (data) {

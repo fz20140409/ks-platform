@@ -85,6 +85,10 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         //优惠头条优化原因
         Route::resource('dhor','DiscountHeadlinesOptimizationReasonsController');
         Route::post('dhor/batch_destroy','DiscountHeadlinesOptimizationReasonsController@batch_destroy')->name('dhor.batch_destroy');
+        //优惠商品管理
+        Route::resource('dg','DiscountGoodsController');
+        Route::post('dg/batch_destroy','DiscountGoodsController@batch_destroy')->name('dg.batch_destroy');
+        Route::post('dg/batch_add','DiscountGoodsController@batch_add')->name('dg.batch_add');
 
 
         //首页热门商品banner

@@ -23,6 +23,7 @@
                                     分类
                                     <select name="cate" class="form-control">
                                         <option value="-1">全部</option>
+                                        <option @if($cate==-2) selected @endif value="-2">其他</option>
                                         @foreach($cates as $item)
                                             <option  @if($cate==$item->id) selected @endif value="{{$item->id}}">  {{$item->catename}}</option>
                                             @endforeach
@@ -73,13 +74,16 @@
                                         <td>{{$info->hid}}</td>
                                         <td>{{$info->createtime}}</td>
                                         <td>{{$info->title}}</td>
-                                        <td>{{$info->catename}}</td>
+                                        <td>@if(empty($info->catename)) 其他 @else {{$info->catename}} @endif</td>
                                         <td>{{$info->view_count}}</td>
                                         <td>{{$info->optimize_count}}</td>
                                         <td>{{$info->num}}</td>
                                         <td>@if($info->enabled==1) 正常 @else 屏蔽 @endif</td>
                                         <td>@if($info->is_top==1) 是 @else 否 @endif</td>
                                         <td>
+                                            <a class=" op_dg"  href="{{route('admin.ks.dg.index',['hid'=>$info->hid])}}"
+                                               style="margin-right: 10px;display: none">
+                                                优惠商品管理</a>
 
                                             <a class=" op_edit"  href="{{route('admin.ks.dh.edit',$info->hid)}}"
                                                style="margin-right: 10px;display: none">
@@ -123,6 +127,10 @@
         });
     </script>
     <script>
+        //优惠商品管理
+        @if(Auth::user()->can('admin.ks.dg.index'))
+             $(".op_dg").show();
+        @endif
         //屏蔽和显示
         @if(Auth::user()->can('admin.ks.dh.updateStatus'))
              $(".op_updateStatus").show();

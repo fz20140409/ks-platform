@@ -27,17 +27,22 @@ class DiscountHeadlinesController extends BaseController
         $cate= isset($request->cate)?$request->cate:-1;
         $str_where='';
         if ($cate!=-1){
-            if($cate==1){
-                $cate1=DB::table('cfg_preferential_cate')->pluck('id')->toArray();
+            if($cate==-2){
+                $arr=DB::select("SELECT hid FROM `headline_cate` AS a
+LEFT JOIN (SELECT id FROM cfg_preferential_cate) AS b ON a.cid=b.id
+WHERE b.id IS NULL");
 
-                $cate2=DB::table('headline_cate')->whereNotIn('cid',$cate1)->pluck('hid')->toArray();
-
-                if (!empty($cate2)){
-                    $temp=implode(',',$cate2);
-                    $str_where.=" and b.cid in($temp)";
+                if (!empty($arr)){
+                    $temp=array();
+                    foreach ($arr as $item){
+                        $temp[]=$item->hid;
+                    }
+                    $temp=implode(',',$temp);
+                    $str_where.=" and a.hid in ($temp)";
                 }else{
-                    $str_where.=" and b.cid in(1)";
+                    $str_where.=" and a.hid = -1";
                 }
+
 
             }else{
                 $str_where.=" and b.cid=$cate";
@@ -96,6 +101,9 @@ class DiscountHeadlinesController extends BaseController
         $display_type=$request->display_type;
         $intro=$request->intro;
         $area=$request->area;
+        if(empty($area)){
+            return redirect()->back()->with('success', '请选择发布范围');
+        }
         $insert=[
             'title'=>$title,
             'is_top'=>$is_top,
