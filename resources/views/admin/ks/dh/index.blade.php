@@ -21,7 +21,7 @@
 
                                 <div class="col-lg-9 col-xs-10">
                                     分类
-                                    <select name="cate" class="form-control">
+                                    <select style="width: 15%" name="cate" class="form-control">
                                         <option value="-1">全部</option>
                                         <option @if($cate==-2) selected @endif value="-2">其他</option>
                                         @foreach($cates as $item)
@@ -65,7 +65,7 @@
                                     <th>状态</th>
                                     <th>置顶</th>
 
-                                    <th>操作</th>
+                                    <th width="30%">操作</th>
                                 </tr>
                                 @foreach($infos as $info)
                                     <tr>
