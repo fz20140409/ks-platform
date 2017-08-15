@@ -101,9 +101,7 @@ WHERE b.id IS NULL");
         $display_type=$request->display_type;
         $intro=$request->intro;
         $area=$request->area;
-        if(empty($area)){
-            return redirect()->back()->with('success', '请选择发布范围');
-        }
+
         $insert=[
             'title'=>$title,
             'is_top'=>$is_top,
@@ -177,6 +175,9 @@ WHERE b.id IS NULL");
         $display_type=$request->display_type;
         $intro=$request->intro;
         $area=$request->area;
+        if(empty($area)){
+            return redirect()->back()->with('success', '请选择发布范围');
+        }
         $update=[
             'title'=>$title,
             'is_top'=>$is_top,

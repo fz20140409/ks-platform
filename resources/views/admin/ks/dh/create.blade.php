@@ -94,8 +94,8 @@
                         <div class="form-group">
                             <label  class="col-sm-2 control-label">是否置顶</label>
                             <div class="col-sm-8" style="margin-top: 6px">
-                                <input @if(isset($info)) @if($info->is_top==1) checked @else   @endif @else checked @endif    name="is_top" type="radio" class="minimal"  value="1">是
-                                <input  @if(isset($info)&&$info->is_top==0) checked @endif  name="is_top" type="radio" class="minimal"  value="0">否
+                                <input @if(isset($info)&&$info->is_top==1) checked @endif   name="is_top" type="radio" class="minimal"  value="1">是
+                                <input @if(isset($info)) @if($info->is_top==0) checked @else   @endif @else checked @endif    name="is_top" type="radio" class="minimal"  value="0">否
                             </div>
                         </div>
                         <div class="form-group">
