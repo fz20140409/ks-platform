@@ -13,6 +13,7 @@
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">
     <link rel="stylesheet" href="/plugins/bootstrap-fileinput/css/fileinput.min.css">
+    <link rel="stylesheet" href="/plugins/bootstrapvalidator/css/bootstrapValidator.min.css">
     @endsection
 @section('js')
     <script src="/adminlte/plugins/iCheck/icheck.min.js"></script>
@@ -21,6 +22,7 @@
     <script src="/plugins/bootstrap-fileinput/js/plugins/purify.min.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
+    <script src="/plugins/bootstrapvalidator/js/bootstrapValidator.js"></script>
     <script>
       $("#icon").fileinput({
             initialPreviewAsData: true,
@@ -39,6 +41,31 @@
             @endif
 
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#form')
+                .bootstrapValidator({
+                    feedbackIcons: {
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        zybrand: {
+                            message: '品牌名称不能为空',
+                            validators: {
+                                notEmpty: {
+                                    message: '品牌名称不能为空'
+                                },
+                                stringLength: {
+                                    max: 35,
+                                    message: '品牌名称长度小于35字符'
+                                },
+                            }
+                        },
+
+                    }
+                })
+        })
     </script>
     <script>
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -63,7 +90,7 @@
         <div class="col-md-12">
             <div class="box box-default">
                 <!-- form start -->
-                <form enctype="multipart/form-data" class="box-header form-horizontal" method="post" action="@if(isset($info)){{ route('admin.ks.brand.update',$info->bid) }}@else{{ route('admin.ks.brand.store') }}@endif">
+                <form id="form" enctype="multipart/form-data" class="box-header form-horizontal" method="post" action="@if(isset($info)){{ route('admin.ks.brand.update',$info->bid) }}@else{{ route('admin.ks.brand.store') }}@endif">
                     {{csrf_field()}}
                     @if(isset($info)){{method_field('PUT')}}@endif
                     @if(isset($show))<fieldset disabled>@endif
