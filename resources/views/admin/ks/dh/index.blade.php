@@ -67,11 +67,11 @@
 
                                     <th width="30%">操作</th>
                                 </tr>
-                                @foreach($infos as $info)
+                                @foreach($infos as $k=>$info)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
                                                    value="{{$info->hid}}"></th>
-                                        <td>{{$info->hid}}</td>
+                                        <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->createtime}}</td>
                                         <td>{{$info->title}}</td>
                                         <td>@if(empty($info->catename)) 其他 @else {{$info->catename}} @endif</td>
