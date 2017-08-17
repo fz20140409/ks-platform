@@ -148,7 +148,7 @@ class SalechanelController extends BaseController
             return response()->json(['msg'=>'存在相同渠道名称']);
         }
 
-        DB::table('cfg_salechanel')->where('sid',$id)->update(['sale_name' => $sale_name]);
+        DB::table('cfg_salechanel')->where('sid',$id)->update(['sale_name' => $sale_name,'updatetime'=>date('Y-m-d H:i:s',time())]);
         return response()->json(['msg'=>1]);
 
     }

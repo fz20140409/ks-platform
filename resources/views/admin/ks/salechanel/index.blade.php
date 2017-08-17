@@ -13,7 +13,7 @@
                                 @if(isset($level))
                                     <input type="hidden" name="level" value="{{$level}}">
                                     @endif
-                                <div class="col-lg-1 col-xs-3">
+                                <div class="col-lg-1 col-xs-4">
                                     <select name="page_size" class="form-control">
                                         @foreach($page_sizes as $k=> $v)
                                             <option @if($page_size==$k) selected @endif value="{{$k}}">{{$v}}</option>
@@ -21,7 +21,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-lg-6 col-xs-10">
+                                <div class="col-lg-6 col-xs-9">
                                     <div class="input-group">
                                         <input value="{{$where_str}}" name="where_str" type="text" class="form-control"
                                                placeholder="渠道名称">
@@ -32,7 +32,7 @@
 
                                 </div>
                                 @if(Auth::user()->can('admin.ks.salechanel.create'))
-                                    <div class="col-lg-2 col-xs-2 pull-right">
+                                    <div class="col-lg-2 col-xs-3 pull-right">
                                         <a href="javascript:ce('{{route('admin.ks.salechanel.create')}}',1)" class="btn btn-primary">新增</a>
                                         @if(isset($level))
                                                 <a href="{{route('admin.ks.salechanel.index')}}" class="btn btn-primary">返回上级</a>
@@ -86,11 +86,11 @@
 
                                     <th>操作</th>
                                 </tr>
-                                @foreach($infos as $info)
+                                @foreach($infos as $k=>$info)
                                     <tr>
                                         <th><input class="minimal" name="ids[]" type="checkbox"
                                                    value="{{$info->sid}}"></th>
-                                        <td>{{$info->sid}}</td>
+                                        <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->sale_name}}</td>
                                         <td>
                                             {{--{{route('admin.ks.salechanel.edit',$info->uid)}}--}}
