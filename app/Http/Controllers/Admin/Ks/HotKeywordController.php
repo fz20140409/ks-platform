@@ -60,6 +60,10 @@ class HotKeywordController extends BaseController
     public function store(Request $request)
     {
         $searchname = $request->searchname;
+        $count = DB::table('cfg_hot_search')->where('searchname',$searchname)->count();
+        if (!empty($count)) {
+            return redirect()->back()->withInput()->with('success', '存在相同关键字');
+        }
         $is_recommend = $request->is_recommend;
         DB::table('cfg_hot_search')->insert([
             'searchname' => $searchname,
@@ -105,6 +109,12 @@ class HotKeywordController extends BaseController
     {
         //
         $searchname = $request->searchname;
+        $where[]=['searchname','=',$searchname];
+        $where[]=['id','!=',$id];
+        $count = DB::table('cfg_hot_search')->where($where)->count();
+        if (!empty($count)) {
+            return redirect()->back()->withInput()->with('success', '存在相同关键字');
+        }
         $is_recommend = $request->is_recommend;
         DB::table('cfg_hot_search')->where('id', $id)->update([
             'searchname' => $searchname,

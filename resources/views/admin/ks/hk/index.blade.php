@@ -57,11 +57,11 @@
                                     <th>搜索次数</th>
                                     <th width="20%">操作</th>
                                 </tr>
-                                @foreach($infos as $info)
+                                @foreach($infos as $k=>$info)
                                     <tr>
                                         <th><input class="minimal" name="ids[]" type="checkbox"
                                                    value="{{$info->id}}"></th>
-                                        <td>{{$info->id}}</td>
+                                        <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
 
                                         <td>{{$info->searchname}}</td>
                                         <td>@if($info->is_recommend==1) 推荐 @else 不推荐 @endif</td>
@@ -69,7 +69,7 @@
                                         <td>
                                             <a class=" op_show" href="javascript:updateStatus('{{route('admin.ks.hk.updateStatus',$info->id)}}')"
                                                style="margin-right: 10px;display: none">
-                                                <i class="fa fa-eye " aria-hidden="true">@if($info->is_recommend==1) 取消 @else 推荐 @endif</i></a>
+                                               @if($info->is_recommend==1) 取消 @else 推荐 @endif</a>
                                             <a class=" op_edit"  href="{{route('admin.ks.hk.edit',$info->id)}}"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
