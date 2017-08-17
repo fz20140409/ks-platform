@@ -21,13 +21,15 @@
                     <!--box-body-->
                     <form id="ids">
                         <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover">
-                                <tr>
+                            <table class="table table-hover table-striped">
+                                <tr >
                                     <th></th>
                                     <th>ID</th>
                                     <th>分类名称</th>
                                     <th>操作</th>
                                 </tr>
+
+                                @if(!empty($infos->total()))
                                 @foreach($infos as $k=>$info)
                                     <tr>
                                         <th><input class="minimal" name="ids[]" type="checkbox"
@@ -48,11 +50,18 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                    @else
+                                    <tr>
+                                        <td style="text-align: center" colspan="4">暂无记录</td>
+                                    </tr>
+
+                                    @endif
                             </table>
                         </div>
                     </form>
                     <!--box-body-->
                     <!--box-footer-->
+                    @if(!empty($infos->total()))
                     <div class="box-footer ">
                         @if(Auth::user()->can('admin.ks.oc.batch_destroy'))
                             <div class="btn-group">
@@ -65,6 +74,7 @@
                             {{$infos->appends(['page_size'=>$page_size])->links()}}
                         </div>
                     </div>
+                    @endif
                     <!--box-footer-->
                 </div>
             </div>
