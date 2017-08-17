@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Tools\Category;
 use App\Http\Controllers\Tools\UploadTool;
+use Illuminate\Support\Facades\Log;
 
 
 class BrandController extends BaseController
@@ -55,30 +56,45 @@ class BrandController extends BaseController
     public function store(Request $request)
     {
         $zybrand = $request->zybrand;
+        $count = DB::table('cfg_brand')->where("zybrand",$zybrand)->count();
+        if (!empty($count)) {
+            return redirect()->back()->withInput()->with('success', '存在品牌名称名称');
+        }
         $ids = $request->ids;
-        $icon = UploadTool::UploadImg($request, 'icon', 'public/upload/img');
-        if (empty($icon)) {
-            return redirect()->back()->with('upload', '请上传图标');
-        }
         if (empty($ids)) {
-            return redirect()->back()->with('success', '请选择所属品类');
+            return redirect()->back()->withInput()->with('success', '请选择所属品类');
 
+        }
+        $icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
+        if (empty($icon)) {
+            return redirect()->back()->withInput()->with('upload', '请上传图标');
+        }
+
+        DB::beginTransaction();
+        try{
+            $id = DB::table('cfg_brand')->insertGetId([
+                'zybrand' => $zybrand,
+                'bicon' => $icon,
+            ]);
+            $data = array();
+            foreach ($ids as $item) {
+                $data[] = array('brand_id' => $id, 'cat_id' => $item);
+
+            }
+            DB::table('brand_category_rela')->insert($data);
+
+            DB::commit();
+            return redirect()->back()->with('success', '添加成功');
+
+        }catch (\Exception $exception){
+            Log::error($exception->getMessage());
+            DB::rollBack();
+            return redirect()->back()->with('error', '添加失败');
         }
 
 
-        $id = DB::table('cfg_brand')->insertGetId([
-            'zybrand' => $zybrand,
-            'bicon' => $icon,
-        ]);
-        $data = array();
-        foreach ($ids as $item) {
-            $data[] = array('brand_id' => $id, 'cat_id' => $item);
-
-        }
-        DB::table('brand_category_rela')->insert($data);
 
 
-        return redirect()->back()->with('success', '添加成功');
 
 
     }
@@ -103,7 +119,7 @@ class BrandController extends BaseController
      */
     public function edit($id)
     {
-        $infos = DB::select('SELECT cat_id AS id,cat_name,parent_id AS pid FROM `cfg_category` WHERE parent_id=0 UNION SELECT cat_id,cat_name,parent_id FROM cfg_category WHERE parent_id IN(SELECT cat_id FROM cfg_category WHERE parent_id=0)');
+        $infos = DB::select('SELECT cat_id AS id,cat_name,parent_id AS pid FROM `cfg_category` WHERE parent_id=0 AND enabled=1 UNION SELECT cat_id,cat_name,parent_id FROM cfg_category WHERE parent_id IN(SELECT cat_id FROM cfg_category WHERE parent_id=0)');
         $infos = json_decode(json_encode($infos), true);
         $infos = Category::toLayer($infos);
         $info = DB::table('cfg_brand')->where('bid', $id)->first();
@@ -121,39 +137,63 @@ class BrandController extends BaseController
      */
     public function update(Request $request, $id)
     {
+        //品牌同名检测
         $zybrand = $request->zybrand;
-        $ids = isset($request->ids) ? $request->ids : array();
-        $icon = UploadTool::UploadImg($request, 'icon', 'public/upload/img');
-        //品牌更新的数据
-        $update['zybrand'] = $zybrand;
-        if (!empty($icon)) {
-            $update['bicon'] = $icon;
+        $where[] = ['zybrand', '=', $zybrand];
+        $where[] = ['bid', '!=', $id];
+        $count = DB::table('cfg_brand')->where($where)->count();
+        if (!empty($count)) {
+            return redirect()->back()->withInput()->with('success', '存在品牌名称名称');
         }
-        DB::table('cfg_brand')->where('bid', $id)->update($update);
 
-        //原数据
-        $cat_ids = DB::table('brand_category_rela')->where('brand_id', $id)->pluck('cat_id');
-        if (!empty($cat_ids)) {
-            $cat_ids = json_decode(json_encode($cat_ids), true);
-            //数据变化
-            if (!empty(array_diff($cat_ids, $ids))) {
-                //删除原数据
-                DB::table('brand_category_rela')->where('brand_id', $id)->delete();
+        //品类
+        $ids = isset($request->ids) ? $request->ids : array();
+        if (empty($ids)) {
+            return redirect()->back()->withInput()->with('success', '请选择所属品类');
+
+        }
+        $icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
+
+
+        DB::beginTransaction();
+        try{
+            //品牌更新的数据
+            $update['zybrand'] = $zybrand;
+            if (!empty($icon)) {
+                $update['bicon'] = $icon;
+            }
+            DB::table('cfg_brand')->where('bid', $id)->update($update);
+
+            //原数据
+            $cat_ids = DB::table('brand_category_rela')->where('brand_id', $id)->pluck('cat_id');
+            if (!empty($cat_ids)) {
+                $cat_ids = json_decode(json_encode($cat_ids), true);
+                //数据变化
+                if (!empty(array_diff($cat_ids, $ids))) {
+                    //删除原数据
+                    DB::table('brand_category_rela')->where('brand_id', $id)->delete();
+
+                }
+            }
+            $data = array();
+            foreach ($ids as $item) {
+                $data[] = array('brand_id' => $id, 'cat_id' => $item);
 
             }
-        }
-        $data = array();
-        foreach ($ids as $item) {
-            $data[] = array('brand_id' => $id, 'cat_id' => $item);
+            if (!empty($data)) {
+                //更新品牌和品类关联
+                DB::table('brand_category_rela')->insert($data);
+            }
 
-        }
-        if (!empty($data)) {
-            //更新品牌和品类关联
-            DB::table('brand_category_rela')->insert($data);
+            DB::commit();
+            return redirect()->back()->with('success', '更新成功');
+
+        }catch (\Exception $exception){
+            Log::error($exception->getMessage());
+            DB::rollBack();
+            return redirect()->back()->with('error', '更新失败');
         }
 
-
-        return redirect()->back()->with('success', '更新成功');
 
     }
 
@@ -166,23 +206,46 @@ class BrandController extends BaseController
     public function destroy($id)
     {
         //
-        DB::table('cfg_brand')->where('bid', $id)->delete();
-        DB::table('brand_category_rela')->where('brand_id', $id)->delete();
+        DB::beginTransaction();
+        try{
+            DB::table('cfg_brand')->where('bid', $id)->delete();
+            DB::table('brand_category_rela')->where('brand_id', $id)->delete();
+            DB::commit();
+            return response()->json([
+                'msg' => 1
+            ]);
 
-        return response()->json([
-            'msg' => 1
-        ]);
+        }catch (\Exception $exception){
+            Log::error($exception->getMessage());
+            DB::rollBack();
+            return response()->json([
+                'msg' => 0
+            ]);
+        }
+
     }
 
     function batch_destroy(Request $request)
     {
         $ids = $request->ids;
+        DB::beginTransaction();
+        try{
+            DB::table('cfg_brand')->whereIn('bid', $ids)->delete();
+            DB::table('brand_category_rela')->whereIn('brand_id', $ids)->delete();
+            DB::commit();
+            return response()->json([
+                'msg' => 1
+            ]);
 
-        DB::table('cfg_brand')->whereIn('bid', $ids)->delete();
-        DB::table('brand_category_rela')->whereIn('brand_id', $ids)->delete();
-        return response()->json([
-            'msg' => 1
-        ]);
+        }catch (\Exception $exception){
+            Log::error($exception->getMessage());
+            DB::rollBack();
+            return response()->json([
+                'msg' => 0
+            ]);
+        }
+
+
 
 
     }
