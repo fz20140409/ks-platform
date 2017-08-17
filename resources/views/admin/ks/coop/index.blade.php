@@ -79,13 +79,13 @@
                                         <td>{{$info->createtime}}</td>
                                         <td>{{$info->cat}}</td>
                                         <td>{{$info->company}}</td>
-                                        <td>{{$info->title}}</td>
+                                        <td width="20%">{{$info->title}}</td>
                                         <td>@if(empty($info->view_count)) 0 @else {{$info->view_count}} @endif</td>
                                         <td>@if(empty($info->assess_count)) 0 @else {{$info->assess_count}} @endif</td>
                                         <td>@if(empty($info->optimize_count)) 0 @else {{$info->optimize_count}} @endif</td>
                                         <td>{{$info->type_name}}</td>
                                         <td>@if($info->state==1) 推荐 @else 未推荐 @endif</td>
-                                        <td>
+                                        <td width="15%">
 
                                             <a class=" op_show" href="{{route('admin.ks.coop.show',$info->id)}}"
                                                style="margin-right: 10px;display: none">
