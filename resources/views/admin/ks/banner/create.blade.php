@@ -26,6 +26,11 @@
             initialPreviewAsData: true,
             language: 'zh',
             maxFileSize: 1500,
+          @if(isset($info))
+          showRemove: false,
+          @else
+          showRemove: true,
+          @endif
             showUpload: false,
             allowedFileExtensions: ["jpg", "png", "gif"],
             @if(isset($info)&&!empty($info->url))

@@ -52,12 +52,12 @@
                                     <th>跳转页面</th>
                                     <th>操作</th>
                                 </tr>
-                                @foreach($infos as $info)
+                                @foreach($infos as $k=>$info)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
                                                    value="{{$info->id}}"></th>
-                                        <td>{{$info->id}}</td>
-                                        <td>@if(!empty($info->url))<img width="200px"  src="{{$info->url}}"> @endif</td>
+                                        <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
+                                        <td width="15%">@if(!empty($info->url))<img class="img-responsive center-block"  src="{{$info->url}}"> @endif</td>
                                         <td>{{$info->title}}</td>
                                         <td>@if($info->type==0) 外部链接 @else
                                                @if($info->type==2)

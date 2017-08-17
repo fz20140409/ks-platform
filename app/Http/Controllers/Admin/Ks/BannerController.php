@@ -58,10 +58,7 @@ class BannerController extends BaseController
      */
     public function store(Request $request)
     {
-        $url=UploadTool::UploadImg($request,'url','public/upload/img');
-        if (empty($url)){
-            return redirect()->back()->with('upload', '请上传轮播图');
-        }
+
         $title=$request->title;
         $type=$request->type;
         $r_url=$request->r_url;
@@ -69,20 +66,24 @@ class BannerController extends BaseController
             switch ($type){
                 case 2:
                     //厂家
-                    return redirect()->back()->with('success', '请选择厂家/商家主页');
+                    return redirect()->back()->withInput()->with('success', '请选择厂家/商家主页');
                     break;
                 case 3:
                     //头条
-                    return redirect()->back()->with('success', '请选择优惠头条');
+                    return redirect()->back()->withInput()->with('success', '请选择优惠头条');
                     break;
                 case 4:
                     //机会
-                    return redirect()->back()->with('success', '请选择合作机会');
+                    return redirect()->back()->withInput()->with('success', '请选择合作机会');
                     break;
                 default:
-                    return redirect()->back()->with('success', '请输入网址');
+                    return redirect()->back()->withInput()->with('success', '请输入网址');
 
             }
+        }
+        $url=UploadTool::UploadImg($request,'url','public/upload/img');
+        if (empty($url)){
+            return redirect()->back()->withInput()->with('upload', '请上传轮播图');
         }
         DB::table('cfg_banner')->insert([
             'title'=>$title,
@@ -135,6 +136,26 @@ class BannerController extends BaseController
         $title=$request->title;
         $type=$request->type;
         $r_url=$request->r_url;
+        if(empty($r_url)){
+            switch ($type){
+                case 2:
+                    //厂家
+                    return redirect()->back()->withInput()->with('success', '请选择厂家/商家主页');
+                    break;
+                case 3:
+                    //头条
+                    return redirect()->back()->withInput()->with('success', '请选择优惠头条');
+                    break;
+                case 4:
+                    //机会
+                    return redirect()->back()->withInput()->with('success', '请选择合作机会');
+                    break;
+                default:
+                    return redirect()->back()->withInput()->with('success', '请输入网址');
+
+            }
+        }
+
         $update=[
             'title'=>$title,
             'type'=>$type,
