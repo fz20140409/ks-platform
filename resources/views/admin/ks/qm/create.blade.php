@@ -58,11 +58,11 @@
                                     <th>企业/商铺名称</th>
                                     <th>操作</th>
                                 </tr>
-                                @foreach($infos as $info)
+                                @foreach($infos as $k=>$info)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
                                                    value="{{$info->mid}}"></th>
-                                        <td>{{$info->mid}}</td>
+                                        <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->provice}}</td>
                                         <td>{{$info->company}}</td>
                                         <td>
