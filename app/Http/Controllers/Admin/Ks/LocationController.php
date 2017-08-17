@@ -78,14 +78,14 @@ class LocationController extends BaseController
         $city=$request->city;
         $county=$request->county;
         if($province==-1){
-            return redirect()->back()->with('success', '请选择省');
+            return redirect()->back()->withInput()->with('success', '请选择省');
         }
         if($city==-1){
-            return redirect()->back()->with('success', '请选择市');
+            return redirect()->back()->withInput()->with('success', '请选择市');
         }
         $count=DB::table('cfg_locations')->where('parent_id',$city)->where('name',$county)->count();
         if (!empty($count)){
-            return redirect()->back()->with('success', '同一个省市下不允许同名区县');
+            return redirect()->back()->withInput()->with('success', '同一个省市下不允许同名区县');
         }
 
         DB::table('cfg_locations')->insert([
@@ -138,15 +138,15 @@ class LocationController extends BaseController
         $city=$request->city;
         $county=$request->county;
         if($province==-1){
-            return redirect()->back()->with('success', '请选择省');
+            return redirect()->back()->withInput()->with('success', '请选择省');
         }
         if($city==-1){
-            return redirect()->back()->with('success', '请选择市');
+            return redirect()->back()->withInput()->with('success', '请选择市');
         }
 
         $count=DB::table('cfg_locations')->where('parent_id',$city)->where('name',$county)->where('id','!=',$id)->count();
         if (!empty($count)){
-            return redirect()->back()->with('success', '同一个省市下不允许同名区县');
+            return redirect()->back()->withInput()->with('success', '同一个省市下不允许同名区县');
         }
 
         DB::table('cfg_locations')->where('id',$id)->update([
