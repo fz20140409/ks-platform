@@ -61,13 +61,13 @@
 
                                     <th width="30%">操作</th>
                                 </tr>
-                                @foreach($infos as $info)
+                                @foreach($infos as $k=>$info)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
                                                    value="{{$info->id}}"></th>
-                                        <td>{{$info->id}}</td>
+                                        <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
 
-                                        <td><img width="10%" src="{{$info->icon}}"></td>
+                                        <td width="10%"><img class="img-responsive center-block" src="{{$info->icon}}"></td>
                                         <td>{{$info->name}}</td>
                                         <td>@if($info->type==1)常用功能 @elseif($info->type==2) 网店功能 @elseif($info->type==3) 生产贸易商功能 @else @endif</td>
                                         <td>@if($info->status==1) 正常 @else 屏蔽 @endif</td>

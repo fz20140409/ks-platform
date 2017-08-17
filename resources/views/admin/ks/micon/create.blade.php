@@ -29,7 +29,11 @@
             language: 'zh',
             maxFileSize: 1500,
             showUpload: false,
-            showRemove: false,
+          @if(isset($info))
+          showRemove: false,
+          @else
+          showRemove: true,
+          @endif
             showClose: false,
             allowedFileExtensions: ["jpg", "png", "gif"],
             @if(isset($info)&&!empty($info->icon))

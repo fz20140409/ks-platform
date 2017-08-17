@@ -71,7 +71,7 @@ class MoreIconController extends BaseController
         $type=$request->type;
         $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
         if (empty($icon)){
-            return redirect()->back()->with('upload', '请上传图标');
+            return redirect()->back()->withInput()->with('upload', '请上传图标');
         }
 
         DB::table('cfg_user_function')->insert([
