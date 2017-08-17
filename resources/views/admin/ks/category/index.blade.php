@@ -1,6 +1,6 @@
 @extends('admin.layouts.default')
 @if(isset($parent))
-    @section('t1',$parent->cat_name)
+    @section('t1',$parent)
     @else
     @section('t1','品类')
     @endif
@@ -19,7 +19,7 @@
                                 @if(isset($level))
                                     <input type="hidden" name="level" value="{{$level}}">
                                 @endif
-                                <div class="col-lg-1 col-xs-3">
+                                <div class="col-lg-1 col-xs-4">
                                     <select name="page_size" class="form-control">
                                         @foreach($page_sizes as $k=> $v)
                                             <option @if($page_size==$k) selected @endif value="{{$k}}">{{$v}}</option>
@@ -27,7 +27,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-lg-6 col-xs-10">
+                                <div class="col-lg-6 col-xs-9">
                                     <div class="input-group">
                                         <input value="{{$where_str}}" name="where_str" type="text" class="form-control"
                                                placeholder="品类名称">
@@ -38,7 +38,7 @@
 
                                 </div>
                                 @if(Auth::user()->can('admin.ks.category.create'))
-                                    <div class="col-lg-2 col-xs-2 pull-right">
+                                    <div class="col-lg-2 col-xs-3 pull-right">
                                         @if(isset($pid))
                                             <a href="{{route('admin.ks.category.create',['pid'=>$pid,'level'=>$level])}}"
                                                class="btn btn-primary">新增</a>
@@ -86,13 +86,13 @@
 
                                     <th>操作</th>
                                 </tr>
-                                @foreach($infos as $info)
+                                @foreach($infos as $k=>$info)
                                     <tr>
                                         <th><input class="minimal" name="ids[]" type="checkbox"
                                                    value="{{$info->cat_id}}"></th>
-                                        <td>{{$info->cat_id}}</td>
+                                        <td>{{$k+1}}</td>
                                         @if(!(isset($level)&&$level==3))
-                                            <td width="20%">@if(!empty($info->cat_icon)) <img width="30%" src="{{$info->cat_icon}}"> @endif</td>
+                                            <td width="10%">@if(!empty($info->cat_icon)) <img class="img-responsive center-block" src="{{$info->cat_icon}}"> @endif</td>
                                         @endif
                                         <td>{{$info->cat_name}}</td>
                                         <td>

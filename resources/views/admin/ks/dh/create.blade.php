@@ -25,17 +25,50 @@
     <script src="/adminlte/plugins/select2/select2.min.js"></script>
     <script src="/adminlte/plugins/select2/i18n/zh-CN.js"></script>
     <script>
+
         $("#icon").fileinput({
             initialPreviewAsData: true,
+            showCaption: false,
             language: 'zh',
-            maxFileSize: 1500,
-            showUpload: false,
-            allowedFileExtensions: ["jpg", "png", "gif"],
-            @if(isset($info)&&!empty($info->icon))
-            initialPreview: ["{{$info->icon}}"],
+            showClose: false,
+            showRemove: false,
+            uploadAsync: false,
+            enctype: 'multipart/form-data',
+            uploadUrl: '{{ route('admin.ks.dh.store') }}', //上传的地址
+            allowedFileExtensions :  ["jpg", "png", "gif"],//接收的文件后缀
+            @if(isset($info)&&!empty($video->attr_value))
+            initialPreview: ["{{$video->attr_value}}"],
+            initialPreviewConfig: [
+                {type: "video", filetype: "video/mp4", key: 1},
+            ],
             @endif
+        }).on('fileuploaded',
+            function(event, data, id, index) {
+                //console.log(data.response.icons.icons)
+                alert('111s')
 
-        });
+            });
+
+        $("#video").fileinput({
+            initialPreviewAsData: true,
+            showCaption: false,
+            language: 'zh',
+            showClose: false,
+            showRemove: false,
+            enctype: 'multipart/form-data',
+            uploadUrl: '{{ route('admin.ks.dh.store') }}', //上传的地址
+            allowedFileExtensions : ['flv', 'swf', 'mkv', 'avi', 'rm', 'rmvb', 'mpeg', 'mpg', 'ogg', 'ogv', 'mov', 'wmv', 'mp4', 'webm', 'mp3'],//接收的文件后缀
+            @if(isset($info)&&!empty($video->attr_value))
+            initialPreview: ["{{$video->attr_value}}"],
+            initialPreviewConfig: [
+                {type: "video", filetype: "video/mp4", key: 1},
+            ],
+            @endif
+        }).on('fileuploaded',
+            function(event, data, id, index) {
+                    $('#url').val(data.response.url);
+                    layer.msg('上传成功');
+                });
     </script>
     <script>
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -122,7 +155,7 @@
                         <div class="form-group">
                             <label for="icon" class="col-sm-2 control-label">图片</label>
                             <div  class="col-sm-8">
-                                <input id="icon" name="icon" type="file"  >
+                                <input id="icon" name="icon[]" type="file"  multiple class="file-loading">
                                 @if(session()->has('upload'))
                                     <div class="alert alert-error">{{session('upload')}}</div>
                                 @endif
@@ -132,9 +165,10 @@
                             <label for="video" class="col-sm-2 control-label">视频</label>
 
                             <div class="col-sm-8">
-                                <input value="" name="video" type="text" class="form-control" id="video" >
-                                @if ($errors->has('video'))
-                                    <div class="alert alert-warning">{{ $errors->first('video') }}</div>
+                                <input id="video" name="video" type="file"  >
+                                <input type="hidden" name="url" id="url">
+                                @if(session()->has('video'))
+                                    <div class="alert alert-error">{{session('video')}}</div>
                                 @endif
                             </div>
                         </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Ks;
 use App\Http\Controllers\Admin\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Tools\UploadTool;
 
 /**
  * 优惠头条
@@ -94,6 +95,24 @@ WHERE b.id IS NULL");
     public function store(Request $request)
     {
 
+
+        if($request->ajax()){
+            //图片集
+            $icons=UploadTool::UploadMultipleImg($request,'icon','public/upload/img');
+            if (!empty($icons)){
+                return response()->json(['icons'=>$icons]);
+            }
+
+            //视频
+            $video=UploadTool::UploadVideo($request,'video','public/upload/video');
+            if (!empty($video)){
+                return response()->json(['url'=>$video]);
+            }
+        }
+        $url=$request->url;
+        if (empty($url)){
+            return redirect()->back()->with('video', '请上传视频');
+        }
         $title=$request->title;
         $is_top=$request->is_top;
         $cate=$request->cate;
@@ -101,6 +120,9 @@ WHERE b.id IS NULL");
         $display_type=$request->display_type;
         $intro=$request->intro;
         $area=$request->area;
+        if (empty($area)){
+            return redirect()->back()->with('success', '请选择发布范围');
+        }
 
         $insert=[
             'title'=>$title,
@@ -125,6 +147,15 @@ WHERE b.id IS NULL");
                 'enabled'=>1
             ]);
         }
+        //视频
+        DB::table('headline_attr')->insert([
+            'hid'=>$id,
+            'attr_value'=>$url,
+            'enabled'=>1,
+            'attr_type'=>'mv',
+            'create_time'=>date('Y-m-d H:i:s',time())
+        ]);
+
         return redirect()->back()->with('success', '添加成功');
 
 
@@ -149,6 +180,7 @@ WHERE b.id IS NULL");
      */
     public function edit($id)
     {
+        $video=DB::table("headline_attr")->where('hid',$id)->where('attr_type','mv')->first();
         $info=DB::table("headline_info")->where('hid',$id)->first();
         $cate=DB::table("headline_cate")->where('hid',$id)->first();
         $area_arr=DB::table("headline_area_range")->where('hid',$id)->pluck('area_id')->toArray();
@@ -156,7 +188,9 @@ WHERE b.id IS NULL");
         $cates=DB::table('cfg_preferential_cate')->get();
         $areas=DB::table('cfg_locations')->select('id','name')->where('level',1)->get();
 
-        return view('admin.ks.dh.create',compact('cates','areas','info','area_arr','cate'));
+
+
+        return view('admin.ks.dh.create',compact('cates','areas','info','area_arr','cate','video'));
     }
 
     /**
