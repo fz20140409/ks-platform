@@ -58,10 +58,14 @@ class MenuController extends BaseController
     {
 
         $menu_name=$request->menu_name;
+        $count = DB::table('cfg_menu')->where('menu_name',$menu_name)->count();
+        if (!empty($count)) {
+            return redirect()->back()->withInput()->with('success', '存在相同名称');
+        }
         $m_url=$request->m_url;
         $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
        if (empty($icon)){
-           return redirect()->back()->with('upload', '请上传图标');
+           return redirect()->back()->withInput()->with('upload', '请上传图标');
        }
 
         DB::table('cfg_menu')->insert([
@@ -107,6 +111,12 @@ class MenuController extends BaseController
     public function update(Request $request, $id)
     {
         $menu_name=$request->menu_name;
+        $where[]=['menu_name','=',$menu_name];
+        $where[]=['id','!=',$id];
+        $count = DB::table('cfg_menu')->where($where)->count();
+        if (!empty($count)) {
+            return redirect()->back()->withInput()->with('success', '存在相同名称');
+        }
         $m_url=$request->m_url;
         $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
         $update=['menu_name'=>$menu_name, 'm_url'=>$m_url];
