@@ -90,7 +90,7 @@
                                     <tr>
                                         <th><input class="minimal" name="ids[]" type="checkbox"
                                                    value="{{$info->cat_id}}"></th>
-                                        <td>{{$k+1}}</td>
+                                        <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         @if(!(isset($level)&&$level==3))
                                             <td width="10%">@if(!empty($info->cat_icon)) <img class="img-responsive center-block" src="{{$info->cat_icon}}"> @endif</td>
                                         @endif

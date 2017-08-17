@@ -103,6 +103,7 @@ LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where) as g";
         $infos = DB::table(DB::raw($sql))->paginate($this->page_size);
 
 
+
         return view('admin.ks.goods.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str,'where_link' => $where_link,'provices'=>$provices,'brands'=>$brands,'area'=>$area,'brand'=>$brand,'label'=>$label]);
 
     }
