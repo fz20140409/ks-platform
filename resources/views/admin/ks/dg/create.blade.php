@@ -29,11 +29,11 @@
 
                                     </select>
                                     所属品类
-                                    <select name="" class="form-control">
+                                    <select name="" class="form-control" style="width: 10%">
                                         <option>xxx</option>
                                     </select>
                                     所属品牌
-                                    <select name="brand" class="form-control">
+                                    <select name="brand" class="form-control" style="width: 10%">
                                         <option value="-1">全部</option>
                                         @foreach($brands as $item)
                                             <option  @if($brand==$item->bid) selected @endif value="{{$item->bid}}">{{$item->zybrand}}</option>
