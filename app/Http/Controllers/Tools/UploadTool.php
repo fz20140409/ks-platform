@@ -24,13 +24,13 @@ class UploadTool
     static function UploadVideo($request,$field,$store_path)
     {
         //todo
-        $ClientMimeType=['video/mp4','image/gif','image/png'];
+        $ClientMimeType=['video/mp4'];
         if ($request->hasFile($field)) {
             $file=$request->file($field);
             if(in_array($file->getClientMimeType(),$ClientMimeType)){
-                return $avatar = Storage::url($file->store($store_path));
+                return $avatar = env('APP_URL').Storage::url($file->store($store_path));
             }else{
-                return redirect()->back()->with('upload', '只支持 mp4, png, gif');
+                return redirect()->back()->with('upload', '只支持 mp4');
             }
         }else{
             return '';
@@ -47,7 +47,7 @@ class UploadTool
             $avatar=[];
             foreach ($files as $file){
                 if(in_array($file->getClientMimeType(),$ClientMimeType)){
-                    $avatar[] = Storage::url($file->store($store_path));
+                    $avatar[] = env('APP_URL').Storage::url($file->store($store_path));
                 }else{
                     return redirect()->back()->with('upload', '只支持 jpg, png, gif');
                 }
