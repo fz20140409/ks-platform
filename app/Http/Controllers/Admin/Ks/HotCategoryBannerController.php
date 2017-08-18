@@ -35,7 +35,7 @@ class HotCategoryBannerController extends BaseController
      */
     public function create()
     {
-        $cats=DB::select('SELECT cat_id,cat_name FROM `cfg_category` WHERE parent_id=0');
+        $cats=DB::select('SELECT cat_id,cat_name FROM `cfg_category` WHERE parent_id=0 AND enabled=1');
         //
         return view('admin.ks.hcb.create',compact('cats'));
     }
@@ -85,7 +85,7 @@ class HotCategoryBannerController extends BaseController
     public function edit($id)
     {
         //
-        $cats=DB::select('SELECT cat_id,cat_name FROM `cfg_category` WHERE parent_id=0');
+        $cats=DB::select('SELECT cat_id,cat_name FROM `cfg_category` WHERE parent_id=0 AND enabled=1');
         $info=DB::table('cfg_hot_category')->where('id',$id)->first();
         return view('admin.ks.hcb.create',compact('info','cats'));
     }

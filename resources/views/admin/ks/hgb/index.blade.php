@@ -21,7 +21,7 @@
                                         <th><input class="minimal" name="ids[]" type="checkbox"
                                                    value="{{$info->id}}"></th>
                                         <td>{{$info->id}}</td>
-                                        <td><img width="10%" src="{{$info->img}}"></td>
+                                        <td width="10%"><img class="img-responsive center-block" src="{{$info->img}}"></td>
                                         <td>{{$info->cat_name}}</td>
                                         <td>
 

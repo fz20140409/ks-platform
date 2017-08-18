@@ -23,7 +23,6 @@
                                     分类
                                     <select style="width: 15%" name="cate" class="form-control">
                                         <option value="-1">全部</option>
-                                        <option @if($cate==-2) selected @endif value="-2">其他</option>
                                         @foreach($cates as $item)
                                             <option  @if($cate==$item->id) selected @endif value="{{$item->id}}">  {{$item->catename}}</option>
                                             @endforeach
@@ -74,7 +73,7 @@
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->createtime}}</td>
                                         <td>{{$info->title}}</td>
-                                        <td>@if(empty($info->catename)) 其他 @else {{$info->catename}} @endif</td>
+                                        <td> {{$info->catename}}</td>
                                         <td>{{$info->view_count}}</td>
                                         <td>{{$info->optimize_count}}</td>
                                         <td>{{$info->num}}</td>

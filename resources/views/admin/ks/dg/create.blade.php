@@ -35,7 +35,6 @@
                                     所属品牌
                                     <select name="brand" class="form-control">
                                         <option value="-1">全部</option>
-                                        <option @if($brand==-2) selected @endif value="-2">其他</option>
                                         @foreach($brands as $item)
                                             <option  @if($brand==$item->bid) selected @endif value="{{$item->bid}}">{{$item->zybrand}}</option>
                                         @endforeach
@@ -90,7 +89,7 @@
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->provice}}</td>
                                         <td>{{$info->company}}</td>
-                                        <td>@if(empty($info->zybrand)) 其他 @else {{$info->zybrand}} @endif</td>
+                                        <td>{{$info->zybrand}}</td>
                                         <td>{{$info->goods_smallname}}</td>
                                         <td>{{$info->goods_name}}</td>
                                         <td>{{$info->cat_name}}</td>

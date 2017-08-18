@@ -113,6 +113,12 @@ class DiscountHeadlinesCategoryController extends BaseController
     public function destroy($id)
     {
         //
+        $count=DB::table('headline_cate')->where('cid', $id)->count();
+        if(!empty($count)){
+            return response()->json([
+                'msg' => -1
+            ]);
+        }
         DB::table('cfg_preferential_cate')->where('id', $id)->delete();
         return response()->json([
             'msg' => 1

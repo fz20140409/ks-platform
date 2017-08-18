@@ -31,14 +31,14 @@
 
                                     <th>操作</th>
                                 </tr>
-                                @foreach($infos as $info)
+                                @foreach($infos as $k=>$info)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
                                                    value="{{$info->id}}"></th>
-                                        <td>{{$info->id}}</td>
-                                        <td width="20%">{{$info->cat_name}}</td>
-                                        <td><img width="20%" src="{{$info->img}}"></td>
-                                        <td width="20%">
+                                        <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
+                                        <td>{{$info->cat_name}}</td>
+                                        <td width="10%"><img class="img-responsive center-block" src="{{$info->img}}"></td>
+                                        <td >
                                             <a class=" op_edit"  href="{{route('admin.ks.hcb.edit',$info->id)}}"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>

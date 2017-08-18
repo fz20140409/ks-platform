@@ -82,24 +82,7 @@ class DiscountGoodsController extends BaseController
         //品牌
         $brand= isset($request->brand)?$request->brand:-1;
         if($brand!=-1){
-            //其他
-            if($brand==-2){
-                $arr=DB::select("SELECT a.goods_id FROM `goods` AS a
-LEFT JOIN (SELECT bid AS i FROM cfg_brand ) AS b
-ON a.bid=b.i WHERE b.i IS NULL");
-                $temp=array();
-                foreach ($arr as $item){
-                    $temp[]=$item->goods_id;
-                }
-                if (!empty($temp)){
-                    $temp=implode(',',$temp);
-                }
-                $str_where.=" and a.goods_id in ($temp)";
-
-
-            }else{
-                $str_where.=" and a.bid=$brand";
-            }
+            $str_where.=" and a.bid=$brand";
 
             $where_link['brand']=$brand;
 
@@ -136,7 +119,7 @@ ON a.bid=b.i WHERE b.i IS NULL");
             $provices[]=$provice->provice;
         }
         //品牌数组
-        $brands=DB::select("SELECT bid,zybrand FROM cfg_brand WHERE bid in (SELECT DISTINCT bid FROM goods)");
+        $brands=DB::select("SELECT bid,zybrand FROM cfg_brand");
 
 
 
