@@ -56,7 +56,7 @@
                                     <th></th>
                                     <th>ID</th>
                                     <th>发布时间</th>
-                                    <th>标题</th>
+                                    <th width="15%">标题</th>
                                     <th>分类</th>
                                     <th>浏览量</th>
                                     <th>被优化次数</th>
