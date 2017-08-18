@@ -35,8 +35,11 @@ class HotCategoryBannerController extends BaseController
      */
     public function create()
     {
-        $cats=DB::select('SELECT cat_id,cat_name FROM `cfg_category` WHERE parent_id=0 AND enabled=1');
+        $cats=DB::select('SELECT cat_id,cat_name FROM cfg_category WHERE parent_id=0 AND enabled=1  AND cat_id NOT in(SELECT cat_id FROM cfg_hot_category WHERE type=2)');
         //
+        if(empty($cats)){
+           return redirect()->route('admin.ks.hcb.index')->with('success', '无法新增,分类都被占用');
+        }
         return view('admin.ks.hcb.create',compact('cats'));
     }
 
@@ -61,6 +64,10 @@ class HotCategoryBannerController extends BaseController
             'img'=>$img,
             'type'=>2,
         ]);
+        $cats=DB::select('SELECT cat_id,cat_name FROM cfg_category WHERE parent_id=0 AND enabled=1  AND cat_id NOT in(SELECT cat_id FROM cfg_hot_category WHERE type=2)');
+        if(empty($cats)){
+            return redirect()->route('admin.ks.hcb.index')->with('success', '添加成功');
+        }
         return redirect()->back()->with('success', '添加成功');
 
     }
@@ -85,8 +92,10 @@ class HotCategoryBannerController extends BaseController
     public function edit($id)
     {
         //
-        $cats=DB::select('SELECT cat_id,cat_name FROM `cfg_category` WHERE parent_id=0 AND enabled=1');
         $info=DB::table('cfg_hot_category')->where('id',$id)->first();
+        $cat_id=$info->cat_id;
+        $cats=DB::select("SELECT cat_id,cat_name FROM cfg_category WHERE parent_id=0 AND enabled=1  AND cat_id NOT in(SELECT cat_id FROM cfg_hot_category WHERE type=2) OR cat_id=$cat_id");
+
         return view('admin.ks.hcb.create',compact('info','cats'));
     }
 

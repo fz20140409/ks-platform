@@ -92,4 +92,5 @@
 
     </script>
     @include('admin.common.layer_del')
+    @include('admin.common.layer_tip')
 @endsection
