@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Tools\UploadTool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Tools\Category;
 
 
 /**
@@ -165,6 +166,44 @@ class CategoryController extends BaseController
      */
     public function destroy(Request $request, $id)
     {
+        $data[]=intval($id);
+        //一级
+        if($request->level==2){
+            //二级
+            $two=DB::table('cfg_category')->where('parent_id', $id)->pluck('cat_id')->toArray();
+            if (!empty($two)){
+                $data=array_merge($two,$data);
+                //三级
+                $three=DB::table('cfg_category')->whereIn('parent_id', $two)->pluck('cat_id')->toArray();
+                if (!empty($three)){
+                    $data=array_merge($three,$data);
+                }
+            }
+        }
+        //二级
+        if($request->level==3){
+            //三级
+            $three=DB::table('cfg_category')->where('parent_id', $id)->pluck('cat_id')->toArray();
+            if (!empty($three)){
+                $data=array_merge($three,$data);
+
+            }
+
+        }
+        //品牌，品类的关联
+        $count=DB::table('brand_category_rela')->whereIn('cat_id', $data)->count();
+        if(!empty($count)){
+            return response()->json(['msg' => -1,'info'=>'无法删除，已被品牌使用']);
+        }
+        //商品，品类的关联
+        $count=DB::table('goods_category_rela')->whereIn('cat_id', $data)->count();
+        if(!empty($count)){
+            return response()->json(['msg' => -1,'info'=>'无法删除，已被商品使用']);
+        }
+
+
+
+
 
         //确认删除子分类
         if (isset($request->flag)) {

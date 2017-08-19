@@ -118,7 +118,7 @@
                                             @endif
 
                                             <a style="display: none" class=" op_destroy"
-                                               href="javascript:del('{{route('admin.ks.category.destroy',$info->cat_id)}}')">
+                                               href="javascript:del('@if(isset($level)&&$level==2){{route('admin.ks.category.destroy',[$info->cat_id,'level'=>3])}}@else{{route('admin.ks.category.destroy',[$info->cat_id,'level'=>2])}}@endif')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
                                         </td>
                                     </tr>
@@ -129,13 +129,13 @@
                     <!--box-body-->
                     <!--box-footer-->
                     <div class="box-footer ">
-                        @if(Auth::user()->can('admin.ks.category.batch_destroy'))
+                        {{--@if(Auth::user()->can('admin.ks.category.batch_destroy'))
                             <div class="btn-group">
                                 <button onclick="selectAll()" type="button" class="btn btn-default">全选</button>
                                 <button onclick="reverse()" type="button" class="btn btn-default">反选</button>
                                 <a href="javascript:batch_destroy()" class="btn btn-danger">批量删除</a>
                             </div>
-                        @endif
+                        @endif--}}
                         <div style="float: right">
                             @if(isset($level))
                                 {{$infos->appends(['where_str' => $where_str,'page_size'=>$page_size,'level'=>$level])->links()}}
@@ -183,14 +183,14 @@
         @if(Auth::user()->can('admin.ks.category.showSub'))
             $(".op_showSub").show();
         @endif
-        //批量删除
+       {{-- //批量删除
         function batch_destroy() {
             $cbs = $('table input[type="checkbox"]:checked');
             if ($cbs.length > 0) {
                 layer.confirm('确认删除？', {
                     btn: ['确认', '取消']
                 }, function () {
-                    var url = '{{route("admin.ks.category.batch_destroy")}}';
+                    var url = '';
                     $.ajax({
                         url: url,
                         type: 'post',
@@ -241,7 +241,7 @@
                     $(this).iCheck('check');
                 }
             });
-        }
+        }--}}
 
         //删除
         function del(url) {
@@ -252,6 +252,10 @@
                     url: url,
                     type: 'DELETE',
                     success: function (data) {
+                        if (data.msg == -1) {
+                            layer.alert(data.info);
+                            return false;
+                        }
                         if (data.msg == 1) {
                             layer.alert('删除成功');
                             location.reload();

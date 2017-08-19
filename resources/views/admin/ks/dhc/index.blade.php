@@ -54,13 +54,13 @@
                     <!--box-body-->
                     <!--box-footer-->
                     <div class="box-footer ">
-                        @if(Auth::user()->can('admin.ks.dhc.batch_destroy'))
+                       {{-- @if(Auth::user()->can('admin.ks.dhc.batch_destroy'))
                             <div class="btn-group">
                                 <button onclick="selectAll()" type="button" class="btn btn-default">全选</button>
                                 <button onclick="reverse()" type="button" class="btn btn-default">反选</button>
                                 <a href="javascript:batch_destroy()" class="btn btn-danger">批量删除</a>
                             </div>
-                        @endif
+                        @endif--}}
                         <div style="float: right">
                             {{$infos->appends(['page_size'=>$page_size])->links()}}
                         </div>
@@ -102,7 +102,7 @@
             $(".op_destroy").show();
         @endif
 
-        //批量删除
+        /*//批量删除
         function batch_destroy() {
             $cbs = $('table input[type="checkbox"]:checked');
             if ($cbs.length > 0) {
@@ -110,7 +110,7 @@
                     btn: ['确认', '取消']
                 },function () {
                     $.ajax({
-                        url: '{{route("admin.ks.dhc.batch_destroy")}}',
+                        url: '',
                         type: 'post',
                         data: $("#ids").serialize(),
                         success: function (data) {
@@ -136,7 +136,7 @@
                     $(this).iCheck('uncheck');
                 } else {
                     $(this).iCheck('check');
-                }});}
+                }});}*/
     </script>
     @include('admin.common.layer_del')
 @endsection

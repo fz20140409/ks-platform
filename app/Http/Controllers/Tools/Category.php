@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Tools;
 
 class Category
 {
-    //一维
+    //一维 array
     static function toLevel($cates, $pid = 0, $delimiter = '--', $level = 0)
     {
         $data = array();
@@ -80,6 +80,7 @@ class Category
         }
         return $html;
     }
+
 
 
 

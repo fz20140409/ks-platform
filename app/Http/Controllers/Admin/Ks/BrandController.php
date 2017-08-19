@@ -205,6 +205,11 @@ class BrandController extends BaseController
      */
     public function destroy($id)
     {
+        //商品，品牌的关联
+        $count=DB::table('goods')->where('bid', $id)->count();
+        if(!empty($count)){
+            return response()->json(['msg' => -1,'info'=>'无法删除，已被商品使用']);
+        }
         //
         DB::beginTransaction();
         try{

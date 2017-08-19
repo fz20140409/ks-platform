@@ -112,12 +112,10 @@ class OpportunityCategoryController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        //合作机会分类，合作机会关联
         $count=DB::table('cooperation_opportunity_cate')->where('cid', $id)->count();
         if(!empty($count)){
-            return response()->json([
-                'msg' => -1
-            ]);
+            return response()->json(['msg' => -1,'info'=>'无法删除，已被合作机会使用']);
         }
         DB::table('cfg_coop_cate')->where('id', $id)->delete();
         return response()->json([

@@ -115,9 +115,7 @@ class DiscountHeadlinesCategoryController extends BaseController
         //
         $count=DB::table('headline_cate')->where('cid', $id)->count();
         if(!empty($count)){
-            return response()->json([
-                'msg' => -1
-            ]);
+            return response()->json(['msg' => -1,'info'=>'无法删除，已被优惠头条使用']);
         }
         DB::table('cfg_preferential_cate')->where('id', $id)->delete();
         return response()->json([
