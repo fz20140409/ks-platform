@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin\Ks;
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Tools\UploadTool;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\User;
 
 
 /**
@@ -86,6 +88,43 @@ class OtherController extends BaseController
 
 
 
+
+    }
+    //个人中心
+    function user_center(){
+        $user=Auth::user();
+        return view('admin.ks.other.user_center',compact('user'));
+    }
+    //个人中心
+    function do_user_center(Request $request){
+        //
+        $table=config('entrust.users_table');
+        $user = User::findOrFail(Auth::id());
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'email' => "required|string|email|max:255|unique:$table,email,$user->id",
+            'password' => 'nullable|string|min:6|confirmed',
+        ]);
+        DB::beginTransaction();
+        try {
+            $data = ['name' => $request->name, 'email' => $request->email];
+            $avatar=UploadTool::UploadImg($request,'avatar','public/avatars');
+            if(!empty($avatar)){
+                $data['avatar']=$avatar;
+            }
+            //不填密码，不更新原密码
+            if (!empty($request->password)) {
+                $data['password'] = bcrypt($request->password);
+            }
+            $user->update($data);
+
+            DB::commit();
+            return redirect()->back()->with('success', '更新成功');
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
+            DB::rollBack();
+            return redirect()->back()->with('error', '更新失败');
+        }
 
     }
 

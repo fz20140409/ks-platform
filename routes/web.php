@@ -109,6 +109,10 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         //模块设置
         Route::get('other/module_settings','OtherController@module_settings')->name('other.module_settings');
         Route::post('other/do_module_settings','OtherController@do_module_settings')->name('other.do_module_settings');
+        //用户中心
+        Route::get('other/user_center','OtherController@user_center')->name('other.user_center');
+        Route::post('other/do_user_center','OtherController@do_user_center')->name('other.do_user_center');
+
 
 
         //合作机会

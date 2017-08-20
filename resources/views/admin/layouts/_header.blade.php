@@ -248,7 +248,7 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">个人中心</a>
+                                <a href="{{route('admin.ks.other.user_center')}}" class="btn btn-default btn-flat">个人中心</a>
                             </div>
                             <div class="pull-right">
                                 <a onclick="event.preventDefault();

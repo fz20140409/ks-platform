@@ -18,8 +18,8 @@ class AdminPermissionAuth
     public function handle($request, Closure $next)
     {
         $action = Route::currentRouteName();
-        if(!Auth::user()->can($action)){
 
+        if(!Auth::user()->can($action)){
             return redirect('/');
 
         }
