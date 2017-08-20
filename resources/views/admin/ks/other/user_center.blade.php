@@ -23,7 +23,7 @@
             showRemove: false,
             showUpload: false,
             allowedFileExtensions: ["jpg", "png", "gif"],
-            initialPreview: ["@if(isset($user)){{$user->avatar}}@else /img/default_avatar_male.jpg @endif"],
+            initialPreview: ["@if(isset($user)&&!empty($user->avatar)){{$user->avatar}}@else /img/default_avatar_male.jpg @endif"],
 
         });
     </script>
