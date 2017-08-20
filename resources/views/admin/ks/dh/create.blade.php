@@ -35,6 +35,7 @@
             layoutTemplates:{
                 actionUpload:'',
             },
+            maxFileSize: 300,
             maxFileCount: 5,
             enctype: 'multipart/form-data',
             uploadUrl: '{{ route('admin.ks.dh.store') }}', //上传的地址
@@ -58,10 +59,12 @@
             layoutTemplates:{
                 actionUpload:'',
             },
+            maxFileSize: 1024*20,
+            maxFileCount: 1,
             enctype: 'multipart/form-data',
             uploadUrl: '{{ route('admin.ks.dh.store') }}', //上传的地址
             allowedFileExtensions: ['flv', 'swf', 'mkv', 'avi', 'rm', 'rmvb', 'mpeg', 'mpg', 'ogg', 'ogv', 'mov', 'wmv', 'mp4', 'webm', 'mp3'],//接收的文件后缀
-            @if(isset($info)&&!empty($video->attr_value)&&($video->video_type==2))
+            @if(isset($info)&&isset($video)&&!empty($video->attr_value)&&($video->video_type==2))
             initialPreview: ["{{$video->attr_value}}"],
             initialPreviewConfig: [
                 {type: "video", filetype: "video/mp4", key: 1},
@@ -194,14 +197,14 @@
                                     <div class="form-group" id="video_type">
                                         <label class="col-sm-2 control-label">上传视频方式</label>
                                         <div class="col-sm-8" style="margin-top: 6px">
-                                            <input  @if(isset($info)) @if($video->video_type==2) checked
+                                            <input  @if(isset($info)) @if(isset($video)&&$video->video_type==2) checked
                                                     @else   @endif @else checked @endif   name="video_type"
                                                    type="radio" class="minimal" value="2" id="tt2">本地上传
-                                            <input @if(isset($info)&&$video->video_type==1) checked
+                                            <input @if(isset($info)&&isset($video)&&$video->video_type==1) checked
                                                    @endif name="video_type" type="radio" class="minimal" value="1" id="tt1">url地址
                                         </div>
                                     </div>
-                                    <div id="vv" class="form-group" @if(isset($info)&&$video->video_type!=2) style="display: none" @endif>
+                                    <div id="vv" class="form-group" @if(isset($info)&&isset($video)&&$video->video_type!=2) style="display: none" @endif>
                                         <label  class="col-sm-2 control-label">视频</label>
 
                                         <div class="col-sm-8">
@@ -212,11 +215,11 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="form-group" id="video_url"   style="display: @if(isset($info)&&$video->video_type==1) show  @endif none">
+                                    <div class="form-group" id="video_url"   style="display: @if(isset($info)&&isset($video)&&$video->video_type==1) show  @endif none">
                                         <label  class="col-sm-2 control-label">视频地址</label>
 
                                         <div class="col-sm-8">
-                                            <input value="@if(isset($info)&&$video->video_type==1){{$video->attr_value}}@else{{old('video_url')}}@endif"
+                                            <input value="@if(isset($info)&&isset($video)&&$video->video_type==1){{$video->attr_value}}@else{{old('video_url')}}@endif"
                                                    name="video_url" type="text" class="form-control">
                                             @if ($errors->has('video_url'))
                                                 <div class="alert alert-warning">{{ $errors->first('video_url') }}</div>

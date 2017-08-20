@@ -130,16 +130,18 @@ class DiscountHeadlinesController extends BaseController
                 ]);
             }
             //视频
-            if (!empty($url)) {
-                DB::table('headline_attr')->insert([
-                    'video_type' => $request->video_type,
-                    'hid' => $id,
-                    'attr_value' => $url,
-                    'enabled' => 1,
-                    'attr_type' => 'mv',
-                    'create_time' => date('Y-m-d H:i:s', time())
-                ]);
+            if (empty($url)){
+                $url='';
             }
+            DB::table('headline_attr')->insert([
+                'video_type' => $request->video_type,
+                'hid' => $id,
+                'attr_value' => $url,
+                'enabled' => 1,
+                'attr_type' => 'mv',
+                'create_time' => date('Y-m-d H:i:s', time())
+            ]);
+
             //图集
             if (!empty($icons)) {
                 foreach ($icons as $icon) {
@@ -259,14 +261,11 @@ class DiscountHeadlinesController extends BaseController
                     ]);
                 }
             }
-            //更新本地视频
-            if (!empty($url)) {
+            if ($request->video_type==1){
+                //更新url
+                DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->update(['attr_value' => $video_url, 'video_type' => $request->video_type]);
+            }else{
                 DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->update(['attr_value' => $url, 'video_type' => $request->video_type]);
-            } else {
-                if ($request->video_type==1){
-                    //更新url
-                    DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->update(['attr_value' => $video_url, 'video_type' => $request->video_type]);
-                }
             }
 
             //更新图片集
@@ -286,7 +285,7 @@ class DiscountHeadlinesController extends BaseController
             }
             DB::commit();
             return redirect()->back()->with('success', '更新成功');
-        } catch (\Exception $exception) {
+        }catch (\Exception $exception) {
             Log::error($exception->getMessage());
             DB::rollBack();
             return redirect()->back()->with('error', '更新失败');
