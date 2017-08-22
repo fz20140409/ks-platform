@@ -21,20 +21,28 @@
 
                                 <div class="col-lg-8 col-xs-10">
                                     所在区域
-                                    <select name="" class="form-control">
-                                        <option>xxx</option>
+                                    <select name="area" class="form-control">
+                                        <option value="-1">全部</option>
+                                        @foreach($provices as $item)
+                                            <option @if($area==$item->provice) selected @endif value="{{$item->provice}}">{{$item->provice}}</option>
+                                            @endforeach
                                     </select>
                                     类型
-                                    <select name="" class="form-control">
-                                        <option>xxx</option>
+                                    <select name="type" class="form-control">
+                                        <option value="-1">全部</option>
+                                        @foreach($types as $item)
+                                            <option @if($type==$item->type_name) selected @endif value="{{$item->type_name}}">{{$item->type_name}}</option>
+                                        @endforeach
                                     </select>
                                     认证信息
-                                    <select name="" class="form-control">
-                                        <option>xxx</option>
+                                    <select name="is_auth" class="form-control">
+                                        <option value="-1">全部</option>
+                                        <option  @if($is_auth==1) selected @endif value="1">已认证</option>
+                                        <option @if($is_auth==0) selected @endif value="0">未认证</option>
                                     </select>
                                     <div class="input-group">
                                         <input value="{{$where_str}}" name="where_str" type="text" class="form-control"
-                                               placeholder="手机号码/厂家姓名">
+                                               placeholder="手机号码">
                                         <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit">查询</button>
                                     </span>
@@ -64,20 +72,20 @@
                                     <th>优质厂家/商家</th>
                                     <th>操作</th>
                                 </tr>
-                                @foreach($infos as $info)
+                                @foreach($infos as $k=>$info)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
                                                    value="{{$info->sr_id}}"></th>
-                                        <td>{{$info->sr_id}}</td>
+                                        <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->phone}}</td>
                                         <td>{{$info->provice}}</td>
                                         <td>{{$info->type_name}}</td>
                                         <td>{{$info->company}}</td>
-                                        <td>{{$info->iscertifi}}</td>
+                                        <td>@if($info->iscertifi==1) 已认证 @else 未认证 @endif</td>
                                         <td>{{$info->honesty}}</td>
                                         <td>{{$info->favor}}</td>
                                         <td>{{$info->goods_num}}</td>
-                                        <td>{{$info->is_yz}}</td>
+                                        <td>@if($info->is_yz==1) 是 @else 否 @endif</td>
                                         <td>
 
                                             <a class=" op_show" href="{{route('admin.ks.user_info.show',$info->sr_id)}}"
@@ -93,7 +101,7 @@
                     <!--box-footer-->
                     <div class="box-footer ">
                         <div style="float: right">
-                            {{$infos->appends(['where_str' => $where_str,'page_size'=>$page_size])->links()}}
+                            {{$infos->appends($where_link)->links()}}
                         </div>
                     </div>
                     <!--box-footer-->

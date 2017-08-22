@@ -127,6 +127,12 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         Route::resource('oc','OpportunityCategoryController');
         Route::post('oc/batch_destroy','OpportunityCategoryController@batch_destroy')->name('oc.batch_destroy');
 
+        //系统消息
+        Route::resource('sysm','SysMessageController');
+
+        //有话说分类
+        Route::resource('sc','SpeakerCateController');
+
 
 
 

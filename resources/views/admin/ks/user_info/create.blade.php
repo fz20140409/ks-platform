@@ -21,35 +21,35 @@
                     <table class=" table table-hover table-bordered">
                         <tr>
                             <td width="20%">头像</td>
-                            <td width="80%"><img src=""  class="img-rounded"></td>
+                            <td><img style="float: left" width="10%"  class="img-responsive center-block" src="{{$info->uicon}}"></td>
                         </tr>
                         <tr>
                             <td>店铺名称</td>
-                            <td>xxx</td>
+                            <td>{{$info->company}}</td>
                         </tr>
                         <tr>
                             <td>企业类型</td>
-                            <td>生产商或大型贸易商</td>
+                            <td>{{$info->type_name}}</td>
                         </tr>
                         <tr>
                             <td>认证信息</td>
-                            <td>已认证</td>
+                            <td>{{$info->iscertifi}}</td>
                         </tr>
                         <tr>
                             <td>诚信值</td>
-                            <td>xxx</td>
+                            <td>{{$info->honesty}}</td>
                         </tr>
                         <tr>
                             <td>在乎数</td>
-                            <td>xxx</td>
+                            <td>{{$info->favor}}</td>
                         </tr>
                         <tr>
                             <td>优质厂商</td>
-                            <td>xxx</td>
+                            <td>{{$info->is_yz}}</td>
                         </tr>
                         <tr>
                             <td>商品数</td>
-                            <td>xxx</td>
+                            <td>{{$info->goods_num}}</td>
                         </tr>
                         <tr>
                             <td>订单数</td>
