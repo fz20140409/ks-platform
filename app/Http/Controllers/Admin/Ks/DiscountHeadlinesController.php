@@ -347,4 +347,9 @@ class DiscountHeadlinesController extends BaseController
         ]);
 
     }
+
+    function getOptimize($id){
+        $data=DB::select("SELECT rid,COUNT(*) AS num,b.r_name FROM `user_prcate_reducereason` LEFT JOIN cfg_pr_reducereason AS b ON rid=b.r_id WHERE hid=$id GROUP BY rid");
+        return view('admin.ks.coop.optimize',compact('data'));
+    }
 }

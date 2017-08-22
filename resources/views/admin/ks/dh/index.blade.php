@@ -75,7 +75,7 @@
                                         <td>{{$info->title}}</td>
                                         <td> {{$info->catename}}</td>
                                         <td>{{$info->view_count}}</td>
-                                        <td>{{$info->optimize_count}}</td>
+                                        <td>@if(empty($info->optimize_count)) 0 @else <a href="javascript:showOptimize('{{route('admin.ks.dh.getOptimize',$info->hid)}}')">{{$info->optimize_count}}</a> @endif</td>
                                         <td>{{$info->num}}</td>
                                         <td>@if($info->enabled==1) 正常 @else 屏蔽 @endif</td>
                                         <td>@if($info->is_top==1) 是 @else 否 @endif</td>
@@ -154,6 +154,21 @@
                     } else {
                         layer.alert('操作失败');
                     }
+                }
+            });
+
+        }
+        function showOptimize(url) {
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function (data) {
+                    layer.alert(data,{
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0, //不显示关闭按钮
+                    })
+
+
                 }
             });
 

@@ -82,7 +82,7 @@
                                         <td width="20%">{{$info->title}}</td>
                                         <td>@if(empty($info->view_count)) 0 @else {{$info->view_count}} @endif</td>
                                         <td>@if(empty($info->assess_count)) 0 @else {{$info->assess_count}} @endif</td>
-                                        <td>@if(empty($info->optimize_count)) 0 @else {{$info->optimize_count}} @endif</td>
+                                        <td>@if(empty($info->optimize_count)) 0 @else <a href="javascript:showOptimize('{{route('admin.ks.coop.getOptimize',$info->id)}}')">{{$info->optimize_count}}</a> @endif</td>
                                         <td>{{$info->type_name}}</td>
                                         <td>@if($info->state==1) 推荐 @else 未推荐 @endif</td>
                                         <td>
@@ -160,7 +160,22 @@
                     }
                 }
             });
+        }
+        
+        function showOptimize(url) {
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function (data) {
+                    layer.alert(data,{
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0, //不显示关闭按钮
+                    })
 
+
+                }
+            });
+            
         }
 
     </script>

@@ -150,4 +150,11 @@ class CooperationOpportunityController extends BaseController
         ]);
 
     }
+
+    function getOptimize($id){
+       $data=DB::select("SELECT rid,COUNT(*) AS num,b.r_name FROM `user_coopcate_reducereason` LEFT JOIN cfg_coop_reducereason AS b ON rid=b.r_id WHERE coop_id=$id GROUP BY rid");
+       return view('admin.ks.coop.optimize',compact('data'));
+    }
+
+
 }

@@ -83,6 +83,7 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         //优惠头条管理
         Route::resource('dh','DiscountHeadlinesController');
         Route::get('dh/updateStatus/{id}','DiscountHeadlinesController@updateStatus')->name('dh.updateStatus');
+        Route::get('dh/getOptimize/{id}','DiscountHeadlinesController@getOptimize')->name('dh.getOptimize');
         //优惠头条分类
         Route::resource('dhc','DiscountHeadlinesCategoryController');
         Route::post('dhc/batch_destroy','DiscountHeadlinesCategoryController@batch_destroy')->name('dhc.batch_destroy');
@@ -118,6 +119,7 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         //合作机会
         Route::resource('coop','CooperationOpportunityController');
         Route::get('coop/updateStatus/{id}','CooperationOpportunityController@updateStatus')->name('coop.updateStatus');
+        Route::get('coop/getOptimize/{id}','CooperationOpportunityController@getOptimize')->name('coop.getOptimize');
         //优化原因设置
         Route::resource('or','OptimizationReasonsController');
         Route::post('or/batch_destroy','OptimizationReasonsController@batch_destroy')->name('or.batch_destroy');
