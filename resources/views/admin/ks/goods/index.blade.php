@@ -35,7 +35,6 @@
                                     所属品牌
                                     <select name="brand" class="form-control">
                                         <option value="-1">全部</option>
-                                        <option @if($brand==-2) selected @endif value="-2">其他</option>
                                         @foreach($brands as $item)
                                             <option  @if($brand==$item->bid) selected @endif value="{{$item->bid}}">{{$item->zybrand}}</option>
                                         @endforeach
