@@ -63,6 +63,7 @@
                                     <th>商品数量</th>
                                     <th>状态</th>
                                     <th>置顶</th>
+                                    <th>是否添加商品</th>
 
                                     <th width="30%">操作</th>
                                 </tr>
@@ -79,10 +80,8 @@
                                         <td>{{$info->num}}</td>
                                         <td>@if($info->enabled==1) 正常 @else 屏蔽 @endif</td>
                                         <td>@if($info->is_top==1) 是 @else 否 @endif</td>
+                                        <td>@if($info->has_good==1) 是 @else 否 @endif</td>
                                         <td>
-                                            <a class=" op_dg"  href="{{route('admin.ks.dg.index',['hid'=>$info->hid])}}"
-                                               style="margin-right: 10px;display: none">
-                                                优惠商品管理</a>
 
                                             <a class=" op_edit"  href="{{route('admin.ks.dh.edit',$info->hid)}}"
                                                style="margin-right: 10px;display: none">
@@ -92,6 +91,13 @@
                                                 <i class="fa fa-eye " aria-hidden="true">@if($info->enabled==1) 屏蔽  @else 显示 @endif</i></a>
                                             <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.dh.destroy',$info->hid)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
+
+                                            @if($info->has_good==1)
+                                                <a class=" op_dg"  href="{{route('admin.ks.dg.index',['hid'=>$info->hid])}}"
+                                                   style="margin-left: 10px;display: none">
+                                                    优惠商品管理</a>
+                                            @else
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

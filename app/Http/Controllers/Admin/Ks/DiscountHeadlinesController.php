@@ -47,7 +47,7 @@ class DiscountHeadlinesController extends BaseController
         }
         $cates = DB::select("SELECT * FROM cfg_preferential_cate");
 
-        $sql = "(SELECT a.hid, a.createtime ,a.title,(SELECT catename FROM cfg_preferential_cate WHERE id=b.cid ) catename,a.view_count,a.optimize_count,(SELECT COUNT(*) FROM headline_attr WHERE hid=a.hid AND enabled=1 and attr_type='good') num,a.enabled,a.is_top FROM `headline_info` AS a LEFT JOIN headline_cate AS b ON a.hid=b.hid where 1=1 $str_where order by a.createtime desc ) as d";
+        $sql = "(SELECT a.hid, a.createtime ,a.title,(SELECT catename FROM cfg_preferential_cate WHERE id=b.cid ) catename,a.view_count,a.has_good,a.optimize_count,(SELECT COUNT(*) FROM headline_attr WHERE hid=a.hid AND enabled=1 and attr_type='good') num,a.enabled,a.is_top FROM `headline_info` AS a LEFT JOIN headline_cate AS b ON a.hid=b.hid where 1=1 $str_where order by a.createtime desc ) as d";
         $infos = DB::table(DB::raw($sql))->paginate($this->page_size);
         return view('admin.ks.dh.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_link' => $where_link, 'cates' => $cates, 'cate' => $cate, 'status' => $status, 'title' => $title]);
 
