@@ -43,6 +43,9 @@ rm .user.ini
 php.ini把cgi.force_redirect = 1这个做法不好，可能是配置文件的问题
 
 
+test
+
+
 
 
 
