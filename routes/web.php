@@ -140,8 +140,10 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         Route::get('um/getTransactorInfo/{id}','UserManageController@getTransactorInfo')->name('um.getTransactorInfo');
         Route::get('um/getCompanyInfo/{id}','UserManageController@getCompanyInfo')->name('um.getCompanyInfo');
 
-
-
+        //app版本管理
+        Route::resource('av','AppVersionController');
+        Route::post('av/batch_destroy','AppVersionController@batch_destroy')->name('av.batch_destroy');
+        Route::post('av/update_post/{id}','AppVersionController@update_post')->name('av.update_post');
 
     });
 
