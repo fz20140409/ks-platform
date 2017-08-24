@@ -1,0 +1,56 @@
+<table class=" table table-hover table-bordered">
+
+    <tr>
+        <td>姓名</td>
+        <td>xxx</td>
+    </tr>
+    <tr>
+        <td>电话</td>
+        <td>xxx</td>
+    </tr>
+    <tr>
+        <td>座机</td>
+        <td>xxx</td>
+    </tr>
+    <tr>
+        <td>微信</td>
+        <td>xxx</td>
+    </tr>
+    <tr>
+        <td>习惯和喜欢的方式</td>
+        <td>xxx</td>
+    </tr>
+    <tr>
+        <td>姓名</td>
+        <td>xxx</td>
+    </tr>
+    <tr>
+        <td>姓名</td>
+        <td>xxx</td>
+    </tr>
+    <tr>
+        <td>姓名</td>
+        <td>xxx</td>
+    </tr>
+    <tr>
+        <td>姓名</td>
+        <td>xxx</td>
+    </tr>
+    <tr>
+        <td>姓名</td>
+        <td>xxx</td>
+    </tr>
+    <tr>
+        <td>姓名</td>
+        <td>xxx</td>
+    </tr>
+    <tr>
+        <td>姓名</td>
+        <td>xxx</td>
+    </tr>
+    <tr>
+        <td>姓名</td>
+        <td>xxx</td>
+    </tr>
+
+</table>
