@@ -103,6 +103,8 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         //地区数据字典
         Route::resource('location','LocationController');
         Route::post('location/getData','LocationController@getData')->name('location.getData');
+        //背景及icon设置
+        Route::resource('mb','MerchantBackgroundController');
 
         //上传材料范例
         Route::get('other/material_example','OtherController@material_example')->name('other.material_example');
@@ -116,7 +118,6 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         //客服设置
         Route::get('other/kefu_setting','OtherController@kefu_setting')->name('other.kefu_setting');
         Route::post('other/kefu_setting_update','OtherController@kefu_setting_update')->name('other.kefu_setting_update');
-
 
         //合作机会
         Route::resource('coop','CooperationOpportunityController');
