@@ -113,7 +113,9 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         //用户中心
         Route::get('other/user_center','OtherController@user_center')->name('other.user_center');
         Route::post('other/do_user_center','OtherController@do_user_center')->name('other.do_user_center');
-
+        //客服设置
+        Route::get('other/kefu_setting','OtherController@kefu_setting')->name('other.kefu_setting');
+        Route::post('other/kefu_setting_update','OtherController@kefu_setting_update')->name('other.kefu_setting_update');
 
 
         //合作机会

@@ -128,5 +128,26 @@ class OtherController extends BaseController
 
     }
 
+    // 客服设置
+    function kefu_setting()
+    {
+        $kefu = DB::table('cfg_kefu')->where('sr_id', 0)->where('enabled', 1)->first();
+        return view('admin.ks.other.kefu_setting', compact('kefu'));
+    }
 
+    // 客服设置
+    function kefu_setting_update(Request $request)
+    {
+        $data['tel'] = $request->tel;
+
+        $kefu = DB::table('cfg_kefu')->where('sr_id', 0)->where('enabled', 1)->first();
+        if ($kefu) {
+            DB::table('cfg_kefu')->where('sr_id', 0)->where('enabled', 1)->update($data);
+        } else {
+            DB::table('cfg_kefu')->where('sr_id', 0)->where('enabled', 1)->insert($data);
+        }
+
+        return redirect()->back()->with('success', '操作成功');
+
+    }
 }
