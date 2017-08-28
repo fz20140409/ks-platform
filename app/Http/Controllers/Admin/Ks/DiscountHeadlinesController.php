@@ -25,9 +25,27 @@ class DiscountHeadlinesController extends BaseController
 
 
         $where_link = array();
+        $str_where = '';
+        //时间
+        $stime=$request->stime;
+        $etime=$request->etime;
+        if(isset($stime)&&isset($etime)&&$stime>$etime){
+            return redirect()->with('success', '起始时间大于结束时间');
+        }
+        //起始时间
+        if(isset($stime)){
+            $str_where .= " and a.createtime>='$stime'";
+            $where_link['stime'] = $stime;
+        }
+        //结束时间
+        if(isset($etime)){
+            $str_where .= " and a.createtime<='$etime'";
+            $where_link['etime'] = $etime;
+        }
+
         //分类
         $cate = isset($request->cate) ? $request->cate : -1;
-        $str_where = '';
+
         if ($cate != -1) {
             $str_where .= " and b.cid=$cate";
             $where_link['cate'] = $cate;
@@ -49,7 +67,9 @@ class DiscountHeadlinesController extends BaseController
 
         $sql = "(SELECT a.hid, a.createtime ,a.title,(SELECT catename FROM cfg_preferential_cate WHERE id=b.cid ) catename,a.view_count,a.has_good,a.optimize_count,(SELECT COUNT(*) FROM headline_attr WHERE hid=a.hid AND enabled=1 and attr_type='good') num,a.enabled,a.is_top FROM `headline_info` AS a LEFT JOIN headline_cate AS b ON a.hid=b.hid where 1=1 $str_where order by a.createtime desc ) as d";
         $infos = DB::table(DB::raw($sql))->paginate($this->page_size);
-        return view('admin.ks.dh.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_link' => $where_link, 'cates' => $cates, 'cate' => $cate, 'status' => $status, 'title' => $title]);
+        return view('admin.ks.dh.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_link' => $where_link, 'cates' => $cates, 'cate' => $cate, 'status' => $status, 'title' => $title,
+            'stime'=>$stime,'etime'=>$etime
+            ]);
 
     }
 
@@ -93,6 +113,7 @@ class DiscountHeadlinesController extends BaseController
         }
         //图片集
         $icons = UploadTool::UploadMultipleImg($request, 'icon', 'public/upload/img');
+        $vd_icons = UploadTool::UploadMultipleImg($request, 'vd_icon', 'public/upload/img');
 
         $title = $request->title;
         //$is_top = $request->is_top;
@@ -101,6 +122,7 @@ class DiscountHeadlinesController extends BaseController
         $display_type = $request->display_type;
         $intro = $request->intro;
         $area = $request->area;
+        $keyword = $request->keyword;
         if (empty($area)) {
             return redirect()->back()->with('success', '请选择发布范围');
         }
@@ -112,6 +134,7 @@ class DiscountHeadlinesController extends BaseController
                 'has_good' => $has_good,
                 'display_type' => $display_type,
                 'intro' => $intro,
+                'keyword'=>$keyword,
                 'createtime' => date('Y-m-d H:i:s', time())
             ];
             $id = DB::table('headline_info')->insertGetId($insert);
@@ -133,14 +156,20 @@ class DiscountHeadlinesController extends BaseController
             if (empty($url)){
                 $url='';
             }
-            DB::table('headline_attr')->insert([
+            $vd=[
                 'video_type' => $request->video_type,
                 'hid' => $id,
                 'attr_value' => $url,
                 'enabled' => 1,
                 'attr_type' => 'mv',
                 'create_time' => date('Y-m-d H:i:s', time())
-            ]);
+            ];
+            if (!empty($vd_icons)){
+                $vd_icons=implode(',',$vd_icons);
+                $vd['remark']=$vd_icons;
+
+            }
+            DB::table('headline_attr')->insert($vd);
 
             //图集
             if (!empty($icons)) {
@@ -217,6 +246,7 @@ class DiscountHeadlinesController extends BaseController
 
         //图片集
         $icons = UploadTool::UploadMultipleImg($request, 'icon', 'public/upload/img');
+        $vd_icons = UploadTool::UploadMultipleImg($request, 'vd_icon', 'public/upload/img');
         $url=isset($request->url)?$request->url:'';
         $video_url=isset($request->video_url)?$request->video_url:'';
         $title = $request->title;
@@ -226,6 +256,7 @@ class DiscountHeadlinesController extends BaseController
         $display_type = $request->display_type;
         $intro = $request->intro;
         $area = $request->area;
+        $keyword = $request->keyword;
 
         if (empty($area)) {
             return redirect()->back()->with('success', '请选择发布范围');
@@ -236,6 +267,7 @@ class DiscountHeadlinesController extends BaseController
             'has_good' => $has_good,
             'display_type' => $display_type,
             'intro' => $intro,
+            'keyword'=>$keyword,
             'updatetime' => date('Y-m-d H:i:s', time())
         ];
         DB::beginTransaction();
@@ -261,11 +293,18 @@ class DiscountHeadlinesController extends BaseController
                     ]);
                 }
             }
+            if (empty(!$vd_icons)){
+                $vd_icons=implode(',',$vd_icons);
+                $remark=$vd_icons;
+            }else{
+                $remark='';
+            }
+
             if ($request->video_type==1){
                 //更新url
-                DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->update(['attr_value' => $video_url, 'video_type' => $request->video_type]);
+                DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->update(['attr_value' => $video_url, 'video_type' => $request->video_type,'remark'=>$remark]);
             }else{
-                DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->update(['attr_value' => $url, 'video_type' => $request->video_type]);
+                DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->update(['attr_value' => $url, 'video_type' => $request->video_type,'remark'=>$remark]);
             }
 
             //更新图片集

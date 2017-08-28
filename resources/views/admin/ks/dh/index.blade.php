@@ -20,6 +20,10 @@
 
 
                                 <div class="col-lg-9 col-xs-10">
+                                    发布时间
+                                    <input name="stime" value="{{$stime}}" type="text"   class="form_datetime form-control">
+                                    至
+                                    <input name="etime" value="{{$etime}}" type="text"   class="form_datetime form-control">
                                     分类
                                     <select style="width: 15%" name="cate" class="form-control">
                                         <option value="-1">全部</option>
@@ -120,9 +124,12 @@
 
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">
+    <link rel="stylesheet" href="/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
 @endsection
 
 @section('js')
+    <script src="/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="/plugins/layer/layer.js"></script>
     <script src="/adminlte/plugins/iCheck/icheck.min.js"></script>
     <script>
@@ -130,6 +137,13 @@
             checkboxClass: 'icheckbox_minimal-blue',
             radioClass: 'iradio_minimal-blue'
         });
+        $(".form_datetime").datetimepicker({ format: "yyyy-mm-dd hh:ii:ss",
+            language: 'zh-CN'
+        });
+        /*$(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd hh:ii:ss",
+            language: 'zh-CN',//显示中文
+        });*/
     </script>
     <script>
         //优惠商品管理
@@ -182,5 +196,6 @@
 
 
     </script>
+    @include('admin.common.layer_tip')
     @include('admin.common.layer_del')
 @endsection

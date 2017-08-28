@@ -34,6 +34,7 @@
             showUpload:false,
             layoutTemplates:{
                 actionUpload:'',
+                actionDelete:'',
             },
             maxFileSize: 300,
             maxFileCount: 5,
@@ -46,6 +47,30 @@
                     "{{$img}}",
                 @endforeach
                 ],
+            @endif
+
+        });
+        $("#vd_icon").fileinput({
+            initialPreviewAsData: true,
+            showCaption: false,
+            language: 'zh',
+            showClose: false,
+            showUpload:false,
+            layoutTemplates:{
+                actionUpload:'',
+                actionDelete:'',
+            },
+            maxFileSize: 300,
+            maxFileCount: 5,
+            enctype: 'multipart/form-data',
+            uploadUrl: '{{ route('admin.ks.dh.store') }}', //上传的地址
+            allowedFileExtensions: ["jpg", "png", "gif"],//接收的文件后缀
+            @if(isset($info)&&!empty($video->remark))
+            initialPreview: [
+                @foreach(explode(',',$video->remark) as $img)
+                    "{{$img}}",
+                @endforeach
+            ],
             @endif
 
         });
@@ -125,9 +150,11 @@
                                         <label for="title" class="col-sm-2 control-label">标题</label>
 
                                         <div class="col-sm-8">
+
                                             <input value="@if(isset($info)){{$info->title}}@else{{old('title')}}@endif"
                                                    name="title" type="text" class="form-control" id="title"
-                                                   placeholder="名称" required autofocus>
+                                                   placeholder="标题" required autofocus>
+
                                             @if ($errors->has('title'))
                                                 <div class="alert alert-warning">{{ $errors->first('title') }}</div>
                                             @endif
@@ -227,11 +254,21 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label for="vd_icon" class="col-sm-2 control-label">上传视频缩略图</label>
+                                        <div class="col-sm-8">
+                                            <input id="vd_icon" name="vd_icon[]" type="file" multiple class="file-loading">
+                                            @if(session()->has('upload'))
+                                                <div class="alert alert-error">{{session('upload')}}</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="keyword" class="col-sm-2 control-label">关键字</label>
 
                                         <div class="col-sm-8">
                                             <input value="@if(isset($info)){{$info->keyword}}@else{{old('keyword')}}@endif"
                                                    name="keyword" type="text" class="form-control" id="keyword">
+                                            <span style="color: red">关键字用;分割，例如 test;test2;test3</span>
                                             @if ($errors->has('keyword'))
                                                 <div class="alert alert-warning">{{ $errors->first('keyword') }}</div>
                                             @endif
@@ -242,7 +279,7 @@
 
                                         <div class="col-sm-8">
                                             <select name="area[]" class="form-control select2" multiple="multiple"
-                                                    data-placeholder="请选择" style="width: 100%;">
+                                                    data-placeholder="请选择" style="width: 100%;" required>
                                                 @foreach($areas as $item)
                                                     <option @if(isset($info)) @if(in_array($item->id,$area_arr)) selected
                                                             @endif @endif  value="{{$item->id}}">{{$item->name}}</option>
