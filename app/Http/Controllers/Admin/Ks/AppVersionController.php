@@ -191,7 +191,7 @@ class AppVersionController extends BaseController
         );
 
 
-        if( DB::table('cfg_app_version')->update($insert) ){
+        if( DB::table('cfg_app_version')->where('id', $id)->update($insert) ){
             return response()->json(['msg'=>1]);
         }
     }
