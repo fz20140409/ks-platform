@@ -135,6 +135,12 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
 
         //有话说分类
         Route::resource('sc','SpeakerCateController');
+
+        //平台客服电话设置
+        Route::resource('mk', 'MerchantKfController');
+        Route::post('mk/batch_destroy','MerchantKfController@batch_destroy')->name('mk.batch_destroy');
+        Route::post('mk/update_post/{id}','MerchantKfController@update_post')->name('mk.update_post');
+
         //用户管理
         Route::resource('um','UserManageController');
         Route::get('um/getPersonInfo/{id}','UserManageController@getPersonInfo')->name('um.getPersonInfo');
