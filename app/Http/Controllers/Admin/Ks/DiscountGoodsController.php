@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\Ks;
 use App\Http\Controllers\Admin\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\Controllers\Tools\Category;
 /**
  * 优惠商品管理
  * Class DiscountGoodsController
@@ -79,6 +79,16 @@ class DiscountGoodsController extends BaseController
             $str_where.=" and c.company like '%$where_str%' or a.goods_smallname like '%$where_str%' or a.goods_name like '%$where_str%'";
             $where_link['where_str']=$where_str;
         }
+        //品类
+        $cates=DB::table('cfg_category')->select('cat_id as id','parent_id as pid','cat_name')->where('enabled',1)->get()->toArray();
+        $cates = array_map('get_object_vars', $cates);
+        $cates=Category::toLevel($cates,0,"&nbsp;&nbsp;");
+        $cate_name= isset($request->cate_name)?$request->cate_name:-1;
+        if($cate_name!=-1){
+            $str_where.=" and f.cat_name='$cate_name'";
+            $where_link['cat_name']=$cate_name;
+        }
+
         //品牌
         $brand= isset($request->brand)?$request->brand:-1;
         if($brand!=-1){
@@ -133,7 +143,7 @@ LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where) as g";
         $infos = DB::table(DB::raw($sql))->paginate($this->page_size);
 
 
-        return view('admin.ks.dg.create', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str,'where_link' => $where_link,'provices'=>$provices,'brands'=>$brands,'area'=>$area,'brand'=>$brand,'label'=>$label,'hid'=>$hid,'title'=>$title]);
+        return view('admin.ks.dg.create', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str,'where_link' => $where_link,'provices'=>$provices,'brands'=>$brands,'area'=>$area,'brand'=>$brand,'label'=>$label,'hid'=>$hid,'title'=>$title,'cates'=>$cates,'cate_name'=>$cate_name]);
 
 
     }

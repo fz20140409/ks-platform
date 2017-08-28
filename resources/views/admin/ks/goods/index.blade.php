@@ -29,11 +29,14 @@
 
                                     </select>
                                     所属品类
-                                    <select name="" class="form-control">
-                                        <option>xxx</option>
+                                    <select name="cate_name" class="form-control" style="width: 10%">
+                                        <option value="-1">全部</option>
+                                        @foreach($cates as $cate)
+                                            <option @if($cate['cat_name']==$cate_name) selected @endif  value="{{$cate['cat_name']}}">{{$cate['delimiter'].$cate['cat_name']}}</option>
+                                        @endforeach
                                     </select>
                                     所属品牌
-                                    <select name="brand" class="form-control">
+                                    <select name="brand" class="form-control" style="width: 10%">
                                         <option value="-1">全部</option>
                                         @foreach($brands as $item)
                                             <option  @if($brand==$item->bid) selected @endif value="{{$item->bid}}">{{$item->zybrand}}</option>
