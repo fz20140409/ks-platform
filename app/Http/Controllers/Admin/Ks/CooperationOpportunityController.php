@@ -110,9 +110,11 @@ class CooperationOpportunityController extends BaseController
     public function show($id)
     {
         //
-        $comments=DB::select("SELECT a.content,a.create_time,b.username,b.uicon FROM `coop_comment` AS a LEFT JOIN `user` AS b ON a.uid=b.uid WHERE a.coop_id=$id");
+        $comments=DB::table('coop_comment as a')->select('a.content','a.create_time','b.username','b.uicon')->leftJoin('user as b','a.uid','=','b.uid')->where('a.coop_id',$id)->paginate(2);
+        //$comments=DB::select("SELECT a.content,a.create_time,b.username,b.uicon FROM `coop_comment` AS a LEFT JOIN `user` AS b ON a.uid=b.uid WHERE a.coop_id=$id");
         $info=DB::select("SELECT a.createtime,b.company ,(SELECT catename FROM cfg_coop_cate WHERE id=c.cid) catename,a.title ,a.intro,a.icon FROM `cooperation_opportunity` AS a LEFT JOIN `user` AS b ON a.uid=b.uid LEFT JOIN cooperation_opportunity_cate AS c ON a.id=c.coop_id WHERE a.id=$id")[0];
-        return view('admin.ks.coop.create',compact('info','comments'));
+        $imgs=DB::select("select * from cooperation_opportunity_attr where coop_id=$id and attr_type='img'");
+        return view('admin.ks.coop.create',compact('info','comments','imgs'));
 
     }
 

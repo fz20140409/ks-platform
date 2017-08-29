@@ -5,11 +5,13 @@
        <style>
            .box-body #xq tr td:first-child{
                color: #00a7d0;
+               width: 20%;
            }
        </style>
         @endsection
 @section('js')
     <script src="/plugins/bootstrap/tab.js"></script>
+
 @endsection
 @section('content')
     <section class="content">
@@ -21,10 +23,10 @@
                     <ul id="myTab" class="nav nav-tabs">
                         <li class="active">
                             <a href="#home" data-toggle="tab">
-                                内容详情
+                                评论与回复
                             </a>
                         </li>
-                        <li><a href="#ios" data-toggle="tab">评论与回复</a></li>
+                        <li ><a href="#ios" data-toggle="tab">内容详情</a></li>
                     </ul>
 
                 </div>
@@ -32,6 +34,32 @@
                 <div class=" box-body table-responsive no-padding">
                     <div id="myTabContent" class="tab-content">
                         <div class="tab-pane fade in active" id="home">
+                            <table class=" table table-hover table-bordered">
+                                <tr>
+                                    <td>用户</td>
+                                    <td>内容</td>
+                                    <td>图片</td>
+                                    <td>时间</td>
+                                </tr>
+                                @foreach($comments as $comment)
+                                    <tr>
+                                        <td width="20%">
+                                            <img class="img-circle" width="10%" src="{{$comment->uicon}}">
+                                            <p style="margin-top: 10px">{{$comment->username}}</p>
+                                        </td>
+                                        <td>{{$comment->content}}</td>
+                                        <td>{{$comment->uicon}}</td>
+                                        <td>{{$comment->create_time}}</td>
+                                    </tr>
+                                @endforeach
+
+
+                            </table>
+                            <div style="float: right">
+                                {{$comments->links()}}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="ios">
                             <table id="xq" class=" table table-hover table-bordered">
                                 <tr>
                                     <td>发布者</td>
@@ -55,32 +83,17 @@
                                 </tr>
                                 <tr>
                                     <td>图片</td>
-                                    <td><img width="20%" src="{{$info->icon}}"></td>
+                                    <td>
+                                        @if(!empty($imgs))
+                                            @foreach($imgs as $item)
+                                                <img width="20%" src="{{$item->attr_value}}">
+                                            @endforeach
+                                        @endif
+                                    </td>
                                 </tr>
                             </table>
-                        </div>
-                        <div class="tab-pane fade" id="ios">
-                            <table class=" table table-hover table-bordered">
-                                <tr>
-                                    <td>用户</td>
-                                    <td>内容</td>
-                                    <td>图片</td>
-                                    <td>时间</td>
-                                </tr>
-                                @foreach($comments as $comment)
-                                    <tr>
-                                        <td width="20%">
-                                            <img class="img-circle" width="10%" src="{{$comment->uicon}}">
-                                            <p style="margin-top: 10px">{{$comment->username}}</p>
-                                        </td>
-                                        <td>{{$comment->content}}</td>
-                                        <td>{{$comment->uicon}}</td>
-                                        <td>{{$comment->create_time}}</td>
-                                    </tr>
-                                    @endforeach
 
 
-                            </table>
 
                         </div>
                     </div>
