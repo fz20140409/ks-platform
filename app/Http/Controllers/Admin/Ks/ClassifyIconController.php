@@ -233,15 +233,23 @@ class ClassifyIconController extends BaseController
             $where[] = ['cname', 'like', '%' . $where_str . '%'];
         }
 
-        if ($request->level == 2) {
-            $parent = DB::table('usay_lbl_classify')->where('cid', $id)->select('cname')->get()[0]->cname;
-        }
-        if ($request->level == 3) {
-            $name1 = DB::table('usay_lbl_classify')->where('cid', $id)->select('cname')->get()[0];
-            $name2 = DB::select("SELECT b.cname FROM `usay_lbl_classify` AS a LEFT JOIN usay_lbl_classify AS b ON a.fid=b.cid WHERE a.cid=$id")[0];
-            $parent = $name2->cname . "-->" . $name1->cname;
+        $where_all = array();
+        $where_all[] = ['uid', '=', 0];
+        $where_all[] = ['utype', '=', 0];
+        $where_all[] = ['enabled', '=', 1];
 
+        //条件
+        $sub_classifys = DB::table('usay_lbl_classify')->where($where_all)->select('cname', 'cid as id', 'fid as pid')->get()->toArray();
+        $sub_classifys = array_map('get_object_vars', $sub_classifys);
+        $sub = Category::getParents($sub_classifys, $id);
+        $sub[] = array_column($sub_classifys, null, 'id')[$id];
+
+        $parent = array();
+        if ($sub) {
+            $sub = array_column($sub, 'cname');
+            $parent = implode('-->', $sub);
         }
+
         //条件
         $infos = DB::table('usay_lbl_classify')->select(['cname', 'cid', 'cicon', 'is_show'])->where($where)->paginate($this->page_size);
 

@@ -81,8 +81,19 @@ class Category
         return $html;
     }
 
+    // 子集找父集【一维数组】
+    static function getParents ($data, $childId, $is_processed = false) {
+        $tmp = array();
+        if (!$is_processed) {
+            $data = array_column($data,null, 'id');
+        }
+        $parentId = $data[$childId]['pid'];
+        if (isset($data[$parentId])) {
+            array_unshift($tmp, $data[$parentId]);
+            $tmp = array_merge(self::getParents($data, $parentId, true), $tmp);
+        }
 
-
-
+        return $tmp;
+    }
 
 }
