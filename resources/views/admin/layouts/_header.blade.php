@@ -16,9 +16,11 @@
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <!-- Messages: style can be found in dropdown.less-->
+                @if(Auth::user()->can('admin.home.flushCache'))
                 <li>
                     <a href="javascript:updateCacheMneu()"><i class="fa fa-cloud-download" aria-hidden="true"></i></a>
                 </li>
+                @endif
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-envelope-o"></i>

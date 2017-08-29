@@ -268,6 +268,7 @@
     });
     function updateCacheMneu() {
         $.ajax({
+            async: false,
             url:'{{route("admin.home.flushCache")}}',
             success:function ($data) {
                if( $data.status==1){
