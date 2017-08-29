@@ -30,8 +30,12 @@
                                 </tr>
                                 @foreach($infos as $k=>$info)
                                     <tr>
-                                        <th><input class="minimal" name="ids[]" type="checkbox"
-                                                   value="{{$info->r_id}}"></th>
+                                        <th>
+                                            @if($info->r_id!=1)
+                                            <input class="minimal" name="ids[]" type="checkbox"
+                                                   value="{{$info->r_id}}">
+                                                @endif
+                                        </th>
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->r_name}}</td>
                                         <td>
@@ -42,9 +46,10 @@
                                             <a class=" op_edit"  href="{{route('admin.ks.or.edit',$info->r_id)}}"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
-
+                                            @if($info->r_id!=1)
                                             <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.or.destroy',$info->r_id)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
+                                                @endif
                                         </td>
                                     </tr>
                                 @endforeach

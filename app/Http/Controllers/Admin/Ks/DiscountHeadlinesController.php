@@ -123,9 +123,7 @@ class DiscountHeadlinesController extends BaseController
         $intro = $request->intro;
         $area = $request->area;
         $keyword = $request->keyword;
-        if (empty($area)) {
-            return redirect()->back()->with('success', '请选择发布范围');
-        }
+
         DB::beginTransaction();
         try {
             $insert = [
@@ -144,14 +142,17 @@ class DiscountHeadlinesController extends BaseController
                 'cid' => $cate,
                 'enabled' => 1
             ]);
-            //发布区域
-            foreach ($area as $item) {
-                DB::table('headline_area_range')->insert([
-                    'hid' => $id,
-                    'area_id' => $item,
-                    'enabled' => 1
-                ]);
+            if (!empty($area)) {
+                //发布区域
+                foreach ($area as $item) {
+                    DB::table('headline_area_range')->insert([
+                        'hid' => $id,
+                        'area_id' => $item,
+                        'enabled' => 1
+                    ]);
+                }
             }
+
             //视频
             if (empty($url)){
                 $url='';
@@ -258,9 +259,7 @@ class DiscountHeadlinesController extends BaseController
         $area = $request->area;
         $keyword = $request->keyword;
 
-        if (empty($area)) {
-            return redirect()->back()->with('success', '请选择发布范围');
-        }
+
         $update = [
             'title' => $title,
          /*   'is_top' => $is_top,*/
@@ -278,21 +277,25 @@ class DiscountHeadlinesController extends BaseController
             DB::table('headline_cate')->where('hid', $id)->update([
                 'cid' => $cate
             ]);
-            //原始地区
-            $arr = DB::table("headline_area_range")->where('hid', $id)->pluck('area_id')->toArray();
 
-            if (count($arr)!=count($area)||array_diff($arr,$area)) {
-                //删除原始数据
-                DB::table("headline_area_range")->where('hid', $id)->delete();
-                //发布区域
-                foreach ($area as $item) {
-                    DB::table('headline_area_range')->insert([
-                        'hid' => $id,
-                        'area_id' => $item,
-                        'enabled' => 1
-                    ]);
+            if (!empty($area)) {
+            //原始地区
+                $arr = DB::table("headline_area_range")->where('hid', $id)->pluck('area_id')->toArray();
+
+                if (count($arr)!=count($area)||array_diff($arr,$area)) {
+                    //删除原始数据
+                    DB::table("headline_area_range")->where('hid', $id)->delete();
+                    //发布区域
+                    foreach ($area as $item) {
+                        DB::table('headline_area_range')->insert([
+                            'hid' => $id,
+                            'area_id' => $item,
+                            'enabled' => 1
+                        ]);
+                    }
                 }
             }
+
             if (empty(!$vd_icons)){
                 $vd_icons=implode(',',$vd_icons);
                 $remark=$vd_icons;
