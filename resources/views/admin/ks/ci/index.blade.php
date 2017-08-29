@@ -83,6 +83,7 @@
                                         @endif
 
                                     </th>
+                                    <th>状态</th>
 
                                     <th>操作</th>
                                 </tr>
@@ -96,9 +97,13 @@
 
                                         <td>{{$info->cname}}</td>
                                         <td>
+                                            <a class="op_show" href="javascript:updateStatus('{{route('admin.ks.ci.updateStatus',$info->cid)}}')"
+                                               style="margin-right: 10px;display: none;">
+                                                <i class="fa fa-eye " aria-hidden="true">@if($info->is_show==1) 屏蔽 @else 显示 @endif</i></a>
+                                        </td>
+                                        <td>
                                             {{--{{route('admin.ks.ci.edit',$info->uid)}}--}}
                                             @if(isset($pid))
-
                                                 <a class=" op_edit"
                                                    href="{{route('admin.ks.ci.edit',[$info->cid,'pid'=>$pid,'level'=>$level])}}"
                                                    style="margin-right: 10px;display: none">
@@ -109,7 +114,6 @@
                                                    style="margin-right: 10px;display: none">
                                                     <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
                                             @endif
-
 
                                                 <a class=" op_showSub"
                                                    href=" @if(isset($level)&&$level==2){{route('admin.ks.ci.showSub',[$info->cid,'level'=>3])}}@else{{route('admin.ks.ci.showSub',[$info->cid,'level'=>2])}}@endif"
@@ -171,6 +175,10 @@
         });
     </script>
     <script>
+        //屏蔽和显示
+        @if(Auth::user()->can('admin.ks.ci.updateStatus'))
+            $(".op_show").show();
+        @endif
         //有修改权限，显示修改
         @if(Auth::user()->can('admin.ks.ci.edit'))
             $(".op_edit").show();
@@ -281,6 +289,22 @@
                     }
                 });
             });
+        }
+
+        function updateStatus(url) {
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function ($data) {
+                    if ($data.msg == 1) {
+                        layer.alert('操作成功');
+                        location.reload();
+                    } else {
+                        layer.alert('操作失败');
+                    }
+                }
+            });
+
         }
 
     </script>

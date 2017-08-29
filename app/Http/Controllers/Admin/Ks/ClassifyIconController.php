@@ -36,7 +36,7 @@ class ClassifyIconController extends BaseController
         }
 
         //条件
-        $infos = DB::table('usay_lbl_classify')->select(['cname', 'cid', 'cicon'])->where($where)->paginate($this->page_size);
+        $infos = DB::table('usay_lbl_classify')->select(['cname', 'cid', 'cicon', 'is_show'])->where($where)->paginate($this->page_size);
 
         return view('admin.ks.ci.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str]);
 
@@ -232,6 +232,7 @@ class ClassifyIconController extends BaseController
         if (isset($where_str)) {
             $where[] = ['cname', 'like', '%' . $where_str . '%'];
         }
+
         if ($request->level == 2) {
             $parent = DB::table('usay_lbl_classify')->where('cid', $id)->select('cname')->get()[0]->cname;
         }
@@ -242,9 +243,28 @@ class ClassifyIconController extends BaseController
 
         }
         //条件
-        $infos = DB::table('usay_lbl_classify')->select(['cname', 'cid', 'cicon'])->where($where)->paginate($this->page_size);
+        $infos = DB::table('usay_lbl_classify')->select(['cname', 'cid', 'cicon', 'is_show'])->where($where)->paginate($this->page_size);
 
         return view('admin.ks.ci.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str, 'level' => $request->level, 'pid' => $id, 'parent' => $parent]);
 
+    }
+
+    /**
+     * 屏蔽和显示
+     * @param $id
+     */
+    function updateStatus($id){
+        $info = DB::table('usay_lbl_classify')->where('cid',$id)->first();
+        if($info->is_show == 1){
+            DB::table('usay_lbl_classify')->where('cid',$id)->update([
+                'is_show'=>0
+            ]);
+        }else{
+            DB::table('usay_lbl_classify')->where('cid',$id)->update([
+                'is_show'=>1
+            ]);
+        }
+
+        return response()->json(['msg' => 1]);
     }
 }

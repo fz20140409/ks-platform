@@ -141,6 +141,7 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         Route::resource('ci','ClassifyIconController');
         Route::post('ci/batch_destroy','ClassifyIconController@batch_destroy')->name('ci.batch_destroy');
         Route::get('ci/showSub/{id}','ClassifyIconController@showSub')->name('ci.showSub');
+        Route::get('ci/updateStatus/{id}','ClassifyIconController@updateStatus')->name('ci.updateStatus');
 
         //用户管理
         Route::resource('um','UserManageController');
