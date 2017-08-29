@@ -49,11 +49,16 @@
                                     <th>最后登录时间</th>
                                     <th>操作</th>
                                 </tr>
-                                @foreach($users as $user)
+                                @foreach($users as $k=>$user)
                                     <tr>
-                                        <th><input class="minimal" name="user_ids[]" type="checkbox"
-                                                   value="{{$user->id}}"></th>
-                                        <td>{{$user->id}}</td>
+
+                                        <td>
+                                            @if($user->id!=1)
+                                            <input class="minimal" name="user_ids[]" type="checkbox" value="{{$user->id}}">
+                                            @endif
+                                        </td>
+
+                                        <td>{{$k+1+($users->currentPage() -1)*$users->perPage()}}</td>
                                         <td>{{$user->email}}</td>
                                         <td>{{$user->name}}</td>
                                         <td>{{long2ip($user->ip)}}</td>
@@ -67,9 +72,10 @@
                                             <a class=" op_edit"  href="{{route('admin.user.edit',$user->id)}}"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
-
+                                            @if($user->id!=1)
                                             <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.user.destroy',$user->id)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
+                                                @endif
 
                                         </td>
                                     </tr>

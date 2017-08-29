@@ -279,7 +279,7 @@
 
                                         <div class="col-sm-8">
                                             <select name="area[]" class="form-control select2" multiple="multiple"
-                                                    data-placeholder="请选择" style="width: 100%;" >
+                                                    data-placeholder="全国" style="width: 100%;" >
                                                 @foreach($areas as $item)
                                                     <option @if(isset($info)) @if(in_array($item->id,$area_arr)) selected
                                                             @endif @endif  value="{{$item->id}}">{{$item->name}}</option>
