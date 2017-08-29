@@ -36,6 +36,7 @@
                 actionUpload:'',
                 actionDelete:'',
             },
+            dropZoneEnabled:false,
             maxFileSize: 300,
             maxFileCount: 5,
             enctype: 'multipart/form-data',
@@ -53,6 +54,7 @@
         $("#vd_icon").fileinput({
             initialPreviewAsData: true,
             showCaption: false,
+            dropZoneEnabled:false,
             language: 'zh',
             showClose: false,
             showUpload:false,
