@@ -134,7 +134,7 @@ class QualityMerchantsController extends BaseController
             'msg' => 1
         ]);
     }
-    //添加优质厂家
+    //添加优质商家
     function add_qum($id){
         DB::table('great_merchant')->insert([
             'mid'=>$id,
@@ -151,6 +151,23 @@ class QualityMerchantsController extends BaseController
     {
         $ids = $request->ids;
         DB::table('great_merchant')->whereIn('mid',$ids)->delete();
+        return response()->json([
+            'msg' => 1
+        ]);
+
+    }
+
+    //批量添加优质商家
+    public function batch_add(Request $request)
+    {
+        $ids = $request->ids;
+        $insert=[
+            'create_time'=>date('Y-m-d H:i:s',time()),
+        ];
+        foreach ($ids as $id){
+            $insert['mid']=$id;
+            DB::table('great_merchant')->insert($insert);
+        }
         return response()->json([
             'msg' => 1
         ]);
