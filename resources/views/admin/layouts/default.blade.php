@@ -281,6 +281,10 @@
             }
         });
     }
+    $(function () {
+        $("li a[href='{{URL::current()}}']").parent().addClass('active');
+        $("li a[href='{{URL::current()}}']").parent().parent().parent().addClass('active');
+    })
 </script>
 @yield('js')
 <!-- AdminLTE App -->
