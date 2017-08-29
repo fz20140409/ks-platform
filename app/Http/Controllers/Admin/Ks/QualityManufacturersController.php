@@ -156,4 +156,20 @@ class QualityManufacturersController extends BaseController
         ]);
 
     }
+    //批量添加优质厂家
+    public function batch_add(Request $request)
+    {
+        $ids = $request->ids;
+        $insert=[
+            'create_time'=>date('Y-m-d H:i:s',time()),
+        ];
+        foreach ($ids as $id){
+            $insert['mid']=$id;
+            DB::table('great_merchant')->insert($insert);
+        }
+        return response()->json([
+            'msg' => 1
+        ]);
+
+    }
 }

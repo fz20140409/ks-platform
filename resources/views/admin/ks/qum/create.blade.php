@@ -48,7 +48,7 @@
                     </div>
                     <!--box-header-->
                     <!--box-body-->
-                    <form id="user_ids">
+                    <form id="ids">
                         <div class="box-body table-responsive no-padding">
                             <table class="table table-hover">
                                 <tr>
@@ -60,7 +60,7 @@
                                 </tr>
                                 @foreach($infos as $k=>$info)
                                     <tr>
-                                        <th><input class="minimal" name="user_ids[]" type="checkbox"
+                                        <th><input class="minimal" name="ids[]" type="checkbox"
                                                    value="{{$info->mid}}"></th>
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->provice}}</td>
@@ -77,6 +77,13 @@
                     <!--box-body-->
                     <!--box-footer-->
                     <div class="box-footer ">
+                        @if(Auth::user()->can('admin.ks.qum.batch_add'))
+                            <div class="btn-group">
+                                <button onclick="selectAll()" type="button" class="btn btn-default">全选</button>
+                                <button onclick="reverse()" type="button" class="btn btn-default">反选</button>
+                                <a href="javascript:batch_add()" class="btn btn-primary">批量添加</a>
+                            </div>
+                        @endif
                         <div style="float: right">
                             {{$infos->appends($link_where)->links()}}
                         </div>
@@ -102,6 +109,41 @@
         });
     </script>
     <script>
+        //批量添加
+        function batch_add() {
+            $cbs = $('table input[type="checkbox"]:checked');
+            if ($cbs.length > 0) {
+                layer.confirm('确认添加？', {
+                    btn: ['确认', '取消']
+                },function () {
+                    $.ajax({
+                        url: '{{route("admin.ks.qum.batch_add")}}',
+                        type: 'post',
+                        data: $("#ids").serialize(),
+                        success: function (data) {
+                            if (data.msg == 1) {
+                                layer.alert('添加成功');
+                                location.reload();
+                            } else {
+                                layer.alert('添加失败');
+                            }
+                        }
+                    });
+                });
+
+            } else {layer.alert('请选中要添加的列');}}
+        //全选
+        function selectAll() {
+            $('input[type="checkbox"].minimal').iCheck('check')
+        }
+        //反选
+        function reverse() {
+            $('input[type="checkbox"].minimal').each(function () {
+                if ($(this).is(":checked")) {
+                    $(this).iCheck('uncheck');
+                } else {
+                    $(this).iCheck('check');
+                }});}
         //添加优质商家
         @if(Auth::user()->can('admin.ks.qum.add_qum'))
              $(".op_add_qum").show();
