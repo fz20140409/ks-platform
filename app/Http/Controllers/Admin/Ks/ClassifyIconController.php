@@ -175,71 +175,45 @@ class ClassifyIconController extends BaseController
         $where[] = ['enabled', '=', 1];
 
         //条件
-        $sub_classifys = DB::table('usay_lbl_classify')->where($where)->get(['cname', 'cid', 'cicon', 'fid as pid'])->toArray();
+        $sub_classifys = DB::table('usay_lbl_classify')->where($where)->select('cname', 'cid as id', 'cicon', 'fid as pid')->get()->toArray();
+        $sub_classifys = array_map('get_object_vars', $sub_classifys);
+        $sub_classifys = Category::toLevel($sub_classifys, $id);
 
-//        $sub = array();
-//        //有子菜单
-//        if (!empty($sub_classifys)) {
-//            foreach ($sub_classifys as $sub_classify) {
-//                $sub[] = $sub_classify['id'];
-//            }
-//            $sub[] = $sub_classify->cid;
-//        } else {
-//            //无子菜单
-//            $sub=$sub_classifys->cid;
-//        }
-//        DB::beginTransaction();
-//        try {
-//            $sub_classify->roles()->detach($sub);
-//            Permission::destroy($sub);
-//            DB::commit();
-//            return response()->json([
-//                'msg' => 1
-//            ]);
-//        } catch (\Exception $exception) {
-//            Log::error($exception->getMessage());
-//            DB::rollBack();
-//            return response()->json([
-//                'msg' => 0
-//            ]);
-//        }
+        $sub = array_column($sub_classifys, 'id');
+        $sub[] = $id;
+        DB::table('usay_lbl_classify')->whereIn('cid', $sub)->update([
+            'enabled' => 0
+        ]);
 
+        return response()->json(['msg' => 1]);
     }
 
     function batch_destroy(Request $request)
     {
         $ids = $request->ids;
 
-        //确认删除子分类
-        if (isset($request->flag)) {
-            //当前分类下，子分类
-            $infos = DB::table('usay_lbl_classify')->whereIn('fid', $ids)->select('cid')->get()->toArray();
-            $idss = array();
-            foreach ($infos as $info) {
-                $idss[] = $info->cid;
-            }
-            DB::table('usay_lbl_classify')->whereIn('fid', $idss)->update([
-                'enabled' => 0
-            ]);//子分类的子分类
-            DB::table('usay_lbl_classify')->whereIn('cid', $idss)->update([
-                'enabled' => 0
-            ]);//子分类
-            DB::table('usay_lbl_classify')->whereIn('cid', $ids)->update([
-                'enabled' => 0
-            ]);//当前分类
+        $where[] = ['uid', '=', 0];
+        $where[] = ['utype', '=', 0];
+        $where[] = ['enabled', '=', 1];
 
-            return response()->json(['msg' => 1]);
-        }
-        $count = DB::table('usay_lbl_classify')->whereIn('fid', $ids)->where('enabled', 1)->count();
-        if (!empty($count)) {
-            return response()->json(['msg' => '该分类下有子分类，是否一起删除?']);
+        //条件
+        $sub_classifys = DB::table('usay_lbl_classify')->where($where)->select('cname', 'cid as id', 'cicon', 'fid as pid')->get()->toArray();
+        $sub_classifys = array_map('get_object_vars', $sub_classifys);
+
+        $sub_classify_list = array();
+        foreach ($ids as $id) {
+            $sub_classify_tmp = Category::toLevel($sub_classifys, $id);
+            $sub_classify_list = array_merge($sub_classify_list, $sub_classify_tmp);
         }
 
-        DB::table('usay_lbl_classify')->whereIn('cid', $ids)->update([
+
+        $sub = array_column($sub_classify_list, 'id');
+        $sub = array_merge($sub, $ids);
+        DB::table('usay_lbl_classify')->whereIn('cid', $sub)->update([
             'enabled' => 0
         ]);
-        return response()->json(['msg' => 1]);
 
+        return response()->json(['msg' => 1]);
     }
 
     /**

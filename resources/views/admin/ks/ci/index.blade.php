@@ -1,9 +1,9 @@
 @extends('admin.layouts.default')
 @if(isset($parent))
     @section('t1',$parent)
-    @else
+@else
     @section('t1','分类图标')
-    @endif
+@endif
 
 @section('t2','设置')
 @section('content')
