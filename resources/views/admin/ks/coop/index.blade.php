@@ -20,6 +20,10 @@
 
 
                                 <div class="col-lg-11 col-xs-10">
+                                    发布时间
+                                    <input name="stime" value="{{$stime}}" type="text"   class="form_datetime form-control">
+                                    至
+                                    <input name="etime" value="{{$etime}}" type="text"   class="form_datetime form-control">
                                     用户类型
                                     <select name="type" class="form-control">
                                         <option value="-1">全部</option>
@@ -40,10 +44,10 @@
                                         <option @if($state==1) selected @endif value="1">推荐</option>
                                         <option @if($state==0) selected @endif value="0">不推荐</option>
                                     </select>
-                                    标题
-                                    <input value="{{$title}}" name="title" class="form-control">
-                                    公司或店铺名称
-                                    <input value="{{$company}}" name="company"  class="form-control">
+
+                                    <input placeholder="标题" value="{{$title}}" name="title" class="form-control">
+
+                                    <input placeholder="公司或店铺名称" value="{{$company}}" name="company"  class="form-control">
                                     <button class="btn btn-default" type="submit">查询</button>
 
                                 </div>
@@ -122,15 +126,21 @@
 
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">
+    <link rel="stylesheet" href="/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
 @endsection
 
 @section('js')
+    <script src="/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="/plugins/layer/layer.js"></script>
     <script src="/adminlte/plugins/iCheck/icheck.min.js"></script>
     <script>
         $('input[type="checkbox"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-blue',
             radioClass: 'iradio_minimal-blue'
+        });
+        $(".form_datetime").datetimepicker({ format: "yyyy-mm-dd hh:ii:ss",
+            language: 'zh-CN'
         });
     </script>
     <script>
@@ -180,4 +190,6 @@
 
     </script>
     @include('admin.common.layer_del')
+    @include('admin.common.layer_tip')
+
 @endsection

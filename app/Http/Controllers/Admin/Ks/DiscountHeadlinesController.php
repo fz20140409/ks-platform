@@ -30,7 +30,7 @@ class DiscountHeadlinesController extends BaseController
         $stime=$request->stime;
         $etime=$request->etime;
         if(isset($stime)&&isset($etime)&&$stime>$etime){
-            return redirect()->with('success', '起始时间大于结束时间');
+            return redirect()->back()->with('success', '起始时间大于结束时间');
         }
         //起始时间
         if(isset($stime)){
