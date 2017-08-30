@@ -15,6 +15,7 @@
 
     <link rel="stylesheet" href="/plugins/bootstrapvalidator/css/bootstrapValidator.min.css">
     <link rel="stylesheet" href="/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     @endsection
 @section('js')
     <script type="text/javascript" charset="utf-8" src="/plugins/ueditor/ueditor.config.js"></script>
@@ -27,13 +28,15 @@
     <script src="/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
     <script src="/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="/plugins/bootstrapvalidator/js/bootstrapValidator.js"></script>
+    <script src="/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 
     <script>
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-blue',
             radioClass: 'iradio_minimal-blue',
         });
-        var ue = UE.getEditor('editor');
+        /*var ue = UE.getEditor('editor');*/
+    $('#editor').wysihtml5();
         $(".form_datetime").datetimepicker({
             format: "yyyy-mm-dd hh:ii:ss",
             language: 'zh-CN',//显示中文
@@ -94,7 +97,7 @@
                             <label for="content" class="col-sm-2 control-label">消息内容</label>
 
                             <div class="col-sm-8">
-                                <textarea name="content" style="height: 400px" id="editor">@if(isset($info)){{$info->content}}@else{{old('content')}}@endif</textarea>
+                                <textarea name="content" style="width: 100%; height: 400px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="editor">@if(isset($info)){{$info->content}}@else{{old('content')}}@endif</textarea>
                             </div>
                         </div>
                         <div class="form-group">

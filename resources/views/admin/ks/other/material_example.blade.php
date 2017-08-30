@@ -4,6 +4,7 @@
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">
     <link rel="stylesheet" href="/plugins/bootstrap-fileinput/css/fileinput.min.css">
+    <link rel="stylesheet" href="/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     @endsection
 @section('js')
     <script type="text/javascript" charset="utf-8" src="/plugins/ueditor/ueditor.config.js"></script>
@@ -17,6 +18,7 @@
     <script src="/plugins/bootstrap-fileinput/js/plugins/purify.min.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
+    <script src="/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
     <script>
       $("#yy").fileinput({
             initialPreviewAsData: true,
@@ -63,7 +65,8 @@
             checkboxClass: 'icheckbox_minimal-blue',
             radioClass: 'iradio_minimal-blue',
         });
-        var ue = UE.getEditor('editor');
+      /*  var ue = UE.getEditor('editor');*/
+      $('#editor').wysihtml5();
     </script>
     @include('admin.common.layer_tip')
     @endsection
@@ -82,7 +85,7 @@
                             <label for="menu_name" class="col-sm-2 control-label">文字说明</label>
 
                             <div class="col-sm-8">
-                                <textarea name="remark" style="height: 400px" id="editor">{{$yy->remark}}</textarea>
+                                <textarea name="remark" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="editor">{{$yy->remark}}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
