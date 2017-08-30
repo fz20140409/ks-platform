@@ -71,8 +71,10 @@
                                             <a class=" op_edit"  href="{{route('admin.ks.menu.edit',$info->id)}}"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
+                                            @if($info->id>7)
                                             <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.menu.destroy',$info->id)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
+                                                @endif
                                         </td>
                                     </tr>
                                 @endforeach
