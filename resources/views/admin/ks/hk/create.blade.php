@@ -44,8 +44,8 @@
                                     message: '热搜关键字不能为空'
                                 },
                                 stringLength: {
-                                    max: 35,
-                                    message: '热搜关键字长度小于35字符'
+                                    max: 10,
+                                    message: '热搜关键字最多只能输入10个字符'
                                 },
                             }
                         },

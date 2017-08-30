@@ -124,6 +124,7 @@
                                 @endif
                             </div>
                         </div>
+                        @if(!(isset($info)&&$info->id<=7))
                         <div class="form-group">
                             <label for="m_url" class="col-sm-2 control-label">链接</label>
 
@@ -134,6 +135,7 @@
                                 @endif
                             </div>
                         </div>
+                            @endif
 
 
                     </div>

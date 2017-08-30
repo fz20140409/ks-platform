@@ -53,11 +53,11 @@
 
                                     <th>操作</th>
                                 </tr>
-                                @foreach($infos as $info)
+                                @foreach($infos as $k=>$info)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
                                                    value="{{$info->id}}"></th>
-                                        <td>{{$info->id}}</td>
+                                        <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
 
                                         <td width="10%"><img class="img-responsive center-block" src="{{$info->icon}}"></td>
                                         <td>{{$info->menu_name}}</td>
