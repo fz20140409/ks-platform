@@ -71,11 +71,14 @@ class ClassifyIconController extends BaseController
         $where['utype'] = 0;
         $where['enabled'] = 1;
 
+        // 字符长度限制
+        if (mb_strlen($cname) > 6) {
+            return redirect()->back()->withInput()->with('error', '分类图标名称字数不能大于6个汉字');
+        }
         //同名判断
         $count = DB::table('usay_lbl_classify')->where($where)->count();
         if (!empty($count)) {
-            return redirect()->back()->withInput()->with('success', '存在相同分类图标名称');
-
+            return redirect()->back()->withInput()->with('error', '存在相同分类图标名称');
         }
         //图片
         $icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
@@ -83,7 +86,6 @@ class ClassifyIconController extends BaseController
 
         if (empty($icon) && empty($flag)) {
             return redirect()->back()->with('upload', '请上传图片');
-
         }
 
         $insert = [
@@ -144,9 +146,15 @@ class ClassifyIconController extends BaseController
         $where[] = ['uid', '=', 0];
         $where[] = ['utype', '=', 0];
         $where[] = ['enabled', '=', 1];
+
+        // 字符长度限制
+        if (mb_strlen($cname) > 6) {
+            return redirect()->back()->withInput()->with('error', '分类图标名称字数不能大于6个汉字');
+        }
+
         $count = DB::table('usay_lbl_classify')->where($where)->count();
         if (!empty($count)) {
-            return redirect()->back()->with('success', '存在相同分类图标名称');
+            return redirect()->back()->with('error', '存在相同分类图标名称');
         }
         $icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
         //更新的数据
