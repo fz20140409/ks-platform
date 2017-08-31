@@ -20,7 +20,12 @@ class AdminPermissionAuth
         $action = Route::currentRouteName();
 
         if(!Auth::user()->can($action)){
-            return redirect('/');
+            //上一个请求
+            $data['url']=$_SERVER['HTTP_REFERER'];
+            $data['jump_time']=3;
+            $data['info']='无权访问';
+            return response()->view('errors.nop',compact('data'));
+            //return redirect('/');
 
         }
         return $next($request);
