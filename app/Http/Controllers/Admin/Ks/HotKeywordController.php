@@ -23,6 +23,7 @@ class HotKeywordController extends BaseController
         //
         $where_str = $request->where_str;
         $is_recommend = isset($request->is_recommend) ? $request->is_recommend : -1;
+        $search_count = isset($request->search_count) ? $request->search_count : 'desc';
         $where = array(['enabled', '=', 1]);
 
         if (isset($where_str)) {
@@ -32,9 +33,10 @@ class HotKeywordController extends BaseController
         if ($is_recommend != -1) {
             $where[] = ['is_recommend', '=', $is_recommend];
         }
+        $search_order_by = ($search_count == 'desc') ? 'asc' : 'desc';
 
         //条件
-        $infos = DB::table('cfg_hot_search')->where($where)->orderBy('search_count', 'desc')->paginate($this->page_size);
+        $infos = DB::table('cfg_hot_search')->where($where)->orderBy('search_count', $search_count)->paginate($this->page_size);
 
         return view('admin.ks.hk.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str, 'is_recommend' => $is_recommend]);
 

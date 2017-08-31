@@ -9,7 +9,7 @@
                     <!--box-header-->
                     <div class="box-header">
                         <div class="row">
-                            <form class="form-inline" action="{{route('admin.ks.hk.index')}}">
+                            <form id="search" class="form-inline" action="{{route('admin.ks.hk.index')}}">
                                 <div class="col-lg-1 col-xs-3">
                                     <select name="page_size" class="form-control">
                                         @foreach($page_sizes as $k=> $v)
@@ -26,6 +26,7 @@
                                         <option @if($is_recommend==1) selected @endif value="1">推荐</option>
                                         <option @if($is_recommend==0) selected @endif value="0">未推荐</option>
                                     </select>
+                                    <input type="hidden" name="search_count" >
                                     <div class="input-group">
                                         <input value="{{$where_str}}" name="where_str" type="text" class="form-control"
                                                placeholder="热搜关键字">
@@ -54,7 +55,7 @@
                                     <th>ID</th>
                                     <th width="30%">热搜关键字</th>
                                     <th>状态</th>
-                                    <th>搜索次数</th>
+                                    <th onclick="search_count_order('{{ $search_order_by or 'asc' }}');">搜索次数</th>
                                     <th width="20%">操作</th>
                                 </tr>
                                 @foreach($infos as $k=>$info)
@@ -142,6 +143,11 @@
                 }
             });
 
+        }
+
+        function search_count_order(orderBy) {
+            $("input[name='search_count']").val(orderBy);
+            $("#search").submit();
         }
         //批量删除
         function batch_destroy() {
