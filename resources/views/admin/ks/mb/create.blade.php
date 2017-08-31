@@ -49,47 +49,6 @@
         });
     </script>
     <script>
-        $(document).ready(function() {
-            $('#form')
-                .bootstrapValidator({
-                    feedbackIcons: {
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        name: {
-                            message: '名称不能为空',
-                            validators: {
-                                notEmpty: {
-                                    message: '名称不能为空'
-                                },
-                                stringLength: {
-                                    max: 35,
-                                    message: '名称长度小于35字符'
-                                },
-                            }
-                        },
-                        m_url: {
-                            message: '链接不能为空',
-                            validators: {
-                                notEmpty: {
-                                    message: '链接不能为空'
-                                },
-                                stringLength: {
-                                    max: 200,
-                                    message: '名称长度小于200字符'
-                                },
-                                uri: {
-                                    allowLocal: true,
-                                    message: '输入必须是url'
-                                }
-                            }
-                        },
-
-                    }
-                })
-        })
-    </script>
-    <script>
         $("#type").change(function () {
             var type = $(this).val();
             switch (type) {

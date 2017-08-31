@@ -112,23 +112,6 @@
         @if(Auth::user()->can('admin.ks.mb.destroy'))
             $(".op_destroy").show();
         @endif
-        
-        function updateStatus(url) {
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function ($data) {
-                    if ($data.msg == 1) {
-                        layer.alert('操作成功');
-                        location.reload();
-                    } else {
-                        layer.alert('操作失败');
-                    }
-                }
-            });
-            
-        }
-
     </script>
     @include('admin.common.layer_del')
 @endsection
