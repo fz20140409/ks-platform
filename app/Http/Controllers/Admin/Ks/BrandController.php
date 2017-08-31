@@ -58,7 +58,7 @@ class BrandController extends BaseController
         $zybrand = $request->zybrand;
         $count = DB::table('cfg_brand')->where("zybrand",$zybrand)->count();
         if (!empty($count)) {
-            return redirect()->back()->withInput()->with('success', '存在品牌名称名称');
+            return redirect()->back()->withInput()->with('success', '品牌名称不允许重名');
         }
         $ids = $request->ids;
         if (empty($ids)) {
@@ -151,7 +151,7 @@ class BrandController extends BaseController
         $where[] = ['bid', '!=', $id];
         $count = DB::table('cfg_brand')->where($where)->count();
         if (!empty($count)) {
-            return redirect()->back()->withInput()->with('success', '存在品牌名称名称');
+            return redirect()->back()->withInput()->with('success', '品牌名称不允许重名');
         }
 
         //品类
@@ -161,12 +161,7 @@ class BrandController extends BaseController
 
         }
         //$icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
-        if ($request->hasFile('icon')) {
-            $icon=UploadTool::UploadImgForm($request,'icon');
-            if (isset($icon['error'])){
-                return redirect()->back()->with('upload', $icon['error']);
-            }
-        }
+
 
 
         DB::beginTransaction();
@@ -174,7 +169,7 @@ class BrandController extends BaseController
             //品牌更新的数据
             $update['zybrand'] = $zybrand;
             if (!empty($icon)) {
-                $update['bicon'] = $icon['url'];
+                $update['bicon'] = $icon;
             }
             DB::table('cfg_brand')->where('bid', $id)->update($update);
 

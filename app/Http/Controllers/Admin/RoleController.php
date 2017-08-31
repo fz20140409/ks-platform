@@ -172,7 +172,7 @@ class RoleController extends BaseController
         $permissions = Category::toLevel($permissions, 0, '&nbsp;&nbsp;&nbsp;&nbsp;');
 
 
-        return view('admin.role.permission', compact(['permissions', 'id', 'role_permissions']));
+        return view('admin.role.permission', compact(['permissions', 'id', 'role_permissions','role']));
     }
 
     public function doPermission(Request $request)

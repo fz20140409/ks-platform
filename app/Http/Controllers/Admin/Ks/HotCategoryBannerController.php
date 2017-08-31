@@ -71,6 +71,7 @@ class HotCategoryBannerController extends BaseController
             'cat_id'=>$cat_id,
             'img'=>$img['url'],
             'type'=>2,
+            'enabled'=>1
         ]);
         $cats=DB::select('SELECT cat_id,cat_name FROM cfg_category WHERE parent_id=0 AND enabled=1  AND cat_id NOT in(SELECT cat_id FROM cfg_hot_category WHERE type=2)');
         if(empty($cats)){

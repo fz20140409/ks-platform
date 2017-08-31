@@ -1,5 +1,5 @@
 @extends('admin.layouts.default')
-@section('t1','角色')
+@section('t1',"($role->display_name)角色")
 @section('t2','权限')
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">

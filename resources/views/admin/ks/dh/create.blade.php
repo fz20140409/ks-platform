@@ -131,6 +131,11 @@
             $("select").select2({language: "zh-CN"});
         });
     </script>
+    <script>
+        window.onbeforeunload = function(){
+            return "确定离开当前页面d？";
+        }
+    </script>
     @include('admin.common.layer_tip')
 @endsection
 @section('content')
