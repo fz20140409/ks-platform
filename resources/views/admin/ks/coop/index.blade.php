@@ -1,6 +1,7 @@
 @extends('admin.layouts.default')
 @section('t1','合作机会')
 @section('t2','列表')
+
 @section('content')
     <section class="content">
         <div class="row">
@@ -21,9 +22,9 @@
 
                                 <div class="col-lg-11 col-xs-10">
                                     发布时间
-                                    <input name="stime" value="{{$stime}}" type="text"   class="form_datetime form-control">
+                                    <input name="stime" value="{{$stime}}" type="text" style="width: 145px;" class="form_datetime form-control">
                                     至
-                                    <input name="etime" value="{{$etime}}" type="text"   class="form_datetime form-control">
+                                    <input name="etime" value="{{$etime}}" type="text" style="width: 145px;" class="form_datetime form-control">
                                     用户类型
                                     <select name="type" class="form-control">
                                         <option value="-1">全部</option>
@@ -45,9 +46,9 @@
                                         <option @if($state==0) selected @endif value="0">不推荐</option>
                                     </select>
 
-                                    <input placeholder="标题" value="{{$title}}" name="title" class="form-control">
+                                    <input placeholder="标题" value="{{$title}}" name="title" style="width: 145px;" class="form-control">
 
-                                    <input placeholder="公司或店铺名称" value="{{$company}}" name="company"  class="form-control">
+                                    <input placeholder="公司或店铺名称" value="{{$company}}" name="company" style="width: 145px;" class="form-control">
                                     <button class="btn btn-default" type="submit">查询</button>
 
                                 </div>
