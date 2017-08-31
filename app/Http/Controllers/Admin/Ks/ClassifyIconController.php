@@ -82,15 +82,18 @@ class ClassifyIconController extends BaseController
         }
         //图片
         $icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
-        $flag = $request->flag;
-
-        if (empty($icon) && empty($flag)) {
-            return redirect()->back()->with('upload', '请上传图片');
+        if ($request->hasFile('icon')) {
+            $icon = UploadTool::UploadImgForm($request,'icon');
+            if ( isset($icon['error']) ){
+                return redirect()->back()->withInput()->with('upload', $icon['error']);
+            }
+        }else{
+            return redirect()->back()->withInput()->with('upload', '请上传图片');
         }
 
         $insert = [
             'cname' => $cname,
-            'cicon' => $icon,
+            'cicon' => $icon['url'],
             'fid' => $pid,
             'uid' => 0,
             'utype' => 0,
@@ -137,7 +140,6 @@ class ClassifyIconController extends BaseController
      */
     public function update(Request $request, $id)
     {
-
         $cname = $request->cname;
         //同名判断
         $where = array();
@@ -156,13 +158,20 @@ class ClassifyIconController extends BaseController
         if (!empty($count)) {
             return redirect()->back()->with('error', '存在相同分类图标名称');
         }
-        $icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
+
+        if ($request->hasFile('icon')) {
+            $icon = UploadTool::UploadImgForm($request,'icon');
+            if (isset($icon['error'])){
+                return redirect()->back()->with('upload', $icon['error']);
+            }
+        }
+
         //更新的数据
         $update['cname'] = $cname;
         $update['updatetime'] = date('Y-m-d H:i:s', time());
         //有重新上传图片，才更新
         if (!empty($icon)) {
-            $update['cicon'] = $icon;
+            $update['cicon'] = $icon['url'];
         }
 
         DB::table('usay_lbl_classify')->where('cid', $id)->update($update);
