@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Tools;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class UploadTool
@@ -57,6 +58,30 @@ class UploadTool
         }else{
             return '';
         }
+    }
+
+    //单图片上传-表单
+    static function UploadImgForm(Request $request,$field){
+        $file=$request->file($field);
+        //是否有效
+        if(!$file->isValid()){
+            return ['error'=>'上传图片无效'];
+        }
+        //是否是支持的图片类型
+        $ClientMimeType=['image/jpeg','image/gif','image/png'];
+        if(!in_array($file->getClientMimeType(),$ClientMimeType)){
+            return ['error'=>'只支持 jpg, png, gif'];
+        }
+        //上传大小限制
+        if($file->getClientSize()>1024*1024){
+            return ['error'=>'图片大小限制1M'];
+        }
+        //存储格式-日期存储
+        $storage_path=config('admin.upload_img_path').'/'.date('Y-m-d');
+        $url=env('APP_URL').Storage::url($file->store($storage_path));
+
+        return ['url'=>$url];
+
     }
 
 

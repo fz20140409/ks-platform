@@ -92,7 +92,7 @@
                                                    value="{{$info->cat_id}}"></th>
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         @if(!(isset($level)&&$level==3))
-                                            <td width="10%">@if(!empty($info->cat_icon)) <img class="img-responsive center-block" src="{{$info->cat_icon}}"> @endif</td>
+                                            <td width="10%">@if(!empty($info->cat_icon)) <a href="{{$info->cat_icon}}"><img class="img-responsive center-block" src="{{$info->cat_icon}}"></a> @endif</td>
                                         @endif
                                         <td>{{$info->cat_name}}</td>
                                         <td>

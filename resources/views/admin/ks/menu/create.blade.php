@@ -27,7 +27,7 @@
       $("#icon").fileinput({
             initialPreviewAsData: true,
             language: 'zh',
-            maxFileSize: 1500,
+            maxFileSize: 1024,
             showUpload: false,
           @if(isset($info))
           showRemove: false,

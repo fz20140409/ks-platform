@@ -57,7 +57,7 @@
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
                                                    value="{{$info->id}}"></th>
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
-                                        <td width="15%">@if(!empty($info->url))<img class="img-responsive center-block"  src="{{$info->url}}"> @endif</td>
+                                        <td width="15%">@if(!empty($info->url))<a href="{{$info->url}}"><img class="img-responsive center-block"  src="{{$info->url}}"></a> @endif</td>
                                         <td>{{$info->title}}</td>
                                         <td>@if($info->type==0) 外部链接 @else
                                                @if($info->type==2)

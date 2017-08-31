@@ -55,7 +55,7 @@
                                         <th><input class="minimal" name="ids[]" type="checkbox"
                                                    value="{{$info->bid}}"></th>
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
-                                        <td  width="10%"><img class="img-responsive center-block" src="{{$info->bicon}}"></td>
+                                        <td  width="10%"><a href="{{$info->bicon}}"><img class="img-responsive center-block" src="{{$info->bicon}}"></a></td>
                                         <td>{{$info->zybrand}}</td>
                                         <td>
 

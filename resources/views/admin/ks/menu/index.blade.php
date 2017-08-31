@@ -59,7 +59,7 @@
                                                    value="{{$info->id}}"></th>
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
 
-                                        <td width="10%"><img class="img-responsive center-block" src="{{$info->icon}}"></td>
+                                        <td width="10%"><a href="{{$info->icon}}"><img class="img-responsive center-block" src="{{$info->icon}}"></a></td>
                                         <td>{{$info->menu_name}}</td>
                                         <td>{{$info->m_url}}</td>
                                         <td>@if($info->enabled==1) 正常 @else 屏蔽 @endif</td>

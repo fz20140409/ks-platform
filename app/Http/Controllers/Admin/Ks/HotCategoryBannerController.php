@@ -54,14 +54,22 @@ class HotCategoryBannerController extends BaseController
 
 
         $cat_id=$request->cat_id;
-        $img=UploadTool::UploadImg($request,'img','public/upload/img');
+       /* $img=UploadTool::UploadImg($request,'img','public/upload/img');
         if (empty($img)){
             return redirect()->back()->with('upload', '请上传图片');
+        }*/
+        if ($request->hasFile('img')) {
+            $img=UploadTool::UploadImgForm($request,'img');
+            if (isset($img['error'])){
+                return redirect()->back()->withInput()->with('upload', $img['error']);
+            }
+        }else{
+            return redirect()->back()->withInput()->with('upload', '请上传图片');
         }
 
         DB::table('cfg_hot_category')->insert([
             'cat_id'=>$cat_id,
-            'img'=>$img,
+            'img'=>$img['url'],
             'type'=>2,
         ]);
         $cats=DB::select('SELECT cat_id,cat_name FROM cfg_category WHERE parent_id=0 AND enabled=1  AND cat_id NOT in(SELECT cat_id FROM cfg_hot_category WHERE type=2)');
@@ -109,11 +117,17 @@ class HotCategoryBannerController extends BaseController
     public function update(Request $request, $id)
     {
         $cat_id=$request->cat_id;
-        $img=UploadTool::UploadImg($request,'img','public/upload/img');
+       // $img=UploadTool::UploadImg($request,'img','public/upload/img');
+        if ($request->hasFile('img')) {
+            $img=UploadTool::UploadImgForm($request,'img');
+            if (isset($img['error'])){
+                return redirect()->back()->with('upload', $img['error']);
+            }
+        }
         $update=array();
         $update['cat_id']=$cat_id;
         if (!empty($img)){
-            $update['img']=$img;
+            $update['img']=$img['url'];
         }
         DB::table('cfg_hot_category')->where('id',$id)->update($update);
         return redirect()->back()->with('success', '更新成功');

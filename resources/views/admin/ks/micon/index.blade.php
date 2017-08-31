@@ -67,7 +67,7 @@
                                                    value="{{$info->id}}"></th>
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
 
-                                        <td width="10%"><img class="img-responsive center-block" src="{{$info->icon}}"></td>
+                                        <td width="10%"><a href="{{$info->icon}}"><img class="img-responsive center-block" src="{{$info->icon}}"></a></td>
                                         <td>{{$info->name}}</td>
                                         <td>@if($info->type==1)常用功能 @elseif($info->type==2) 网店功能 @elseif($info->type==3) 生产贸易商功能 @else @endif</td>
                                         <td>@if($info->status==1) 正常 @else 屏蔽 @endif</td>

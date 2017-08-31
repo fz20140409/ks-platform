@@ -90,11 +90,17 @@ class HotGoodsBannerController extends BaseController
     public function update(Request $request, $id)
     {
         $cat_id=$request->cat_id;
-        $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
+        //$icon=UploadTool::UploadImg($request,'icon','public/upload/img');
+        if ($request->hasFile('icon')) {
+            $icon=UploadTool::UploadImgForm($request,'icon');
+            if (isset($icon['error'])){
+                return redirect()->back()->with('upload', $icon['error']);
+            }
+        }
         $data=array();
         $data['cat_id']=$cat_id;
         if (!empty($icon)){
-            $data['img']=$icon;
+            $data['img']=$icon['url'];
         }
         DB::table('cfg_hot_category')->where('id',$id)->update($data);
         return redirect()->back()->with('success', '更新成功');

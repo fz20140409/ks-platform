@@ -74,19 +74,32 @@ class CategoryController extends BaseController
             return redirect()->back()->withInput()->with('success', '存在相同品类名称');
 
         }
-        //图片
-        $icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
         $flag = $request->flag;
 
+        if ($request->hasFile('icon')) {
+            $icon=UploadTool::UploadImgForm($request,'icon');
+            if (isset($icon['error'])){
+                return redirect()->back()->withInput()->with('upload', $icon['error']);
+            }
+        }else{
+            if(empty($flag)){
+                return redirect()->back()->withInput()->with('upload', '请上传图片');
+            }
+
+        }
+       /* //图片
+        $icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
+
+        $flag = $request->flag;
         if (empty($icon) && empty($flag)) {
             return redirect()->back()->with('upload', '请上传图片');
 
-        }
+        }*/
 
 
         $insert = [
             'cat_name' => $cat_name,
-            'cat_icon' => $icon,
+            'cat_icon' => $icon['url'],
             'parent_id' => $pid,
             'createtime' => date('Y-m-d H:i:s', time()),
 
@@ -144,13 +157,19 @@ class CategoryController extends BaseController
         if (!empty($count)) {
             return redirect()->back()->with('success', '存在相同品类名称');
         }
-        $icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
+        //$icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
+        if ($request->hasFile('icon')) {
+            $icon=UploadTool::UploadImgForm($request,'icon');
+            if (isset($icon['error'])){
+                return redirect()->back()->with('upload', $icon['error']);
+            }
+        }
         //更新的数据
         $update['cat_name'] = $cat_name;
         $update['updatetime'] = date('Y-m-d H:i:s', time());
         //有重新上传图片，才更新
         if (!empty($icon)) {
-            $update['cat_icon'] = $icon;
+            $update['cat_icon'] = $icon['url'];
         }
 
         DB::table('cfg_category')->where('cat_id', $id)->update($update);

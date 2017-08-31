@@ -63,15 +63,20 @@ class MenuController extends BaseController
             return redirect()->back()->withInput()->with('success', '存在相同名称');
         }
         $m_url=$request->m_url;
-        $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
-       if (empty($icon)){
-           return redirect()->back()->withInput()->with('upload', '请上传图标');
-       }
+        //$icon=UploadTool::UploadImg($request,'icon','public/upload/img');
+        if ($request->hasFile('icon')) {
+            $icon=UploadTool::UploadImgForm($request,'icon');
+            if (isset($icon['error'])){
+                return redirect()->back()->withInput()->with('upload', $icon['error']);
+            }
+        }else{
+            return redirect()->back()->withInput()->with('upload', '请上传图片');
+        }
 
         DB::table('cfg_menu')->insert([
             'menu_name'=>$menu_name,
             'm_url'=>$m_url,
-            'icon'=>$icon,
+            'icon'=>$icon['url'],
         ]);
         return redirect()->back()->with('success', '添加成功');
 
@@ -118,12 +123,19 @@ class MenuController extends BaseController
             return redirect()->back()->withInput()->with('success', '存在相同名称');
         }
         $m_url=$request->m_url;
-        $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
+        //$icon=UploadTool::UploadImg($request,'icon','public/upload/img');
+        if ($request->hasFile('icon')) {
+            $icon=UploadTool::UploadImgForm($request,'icon');
+            if (isset($icon['error'])){
+                return redirect()->back()->with('upload', $icon['error']);
+            }
+        }
         $update=['menu_name'=>$menu_name, 'm_url'=>$m_url];
         if (!empty($icon)){
-            $update['icon']=$icon;
+            $update['icon']=$icon['url'];
         }
         DB::table('cfg_menu')->where('id',$id)->update($update);
+
         return redirect()->back()->with('success', '更新成功');
     }
 

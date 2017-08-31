@@ -65,8 +65,16 @@ class BrandController extends BaseController
             return redirect()->back()->withInput()->with('success', '请选择所属品类');
 
         }
-        $icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
+        /*$icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
         if (empty($icon)) {
+            return redirect()->back()->withInput()->with('upload', '请上传图标');
+        }*/
+        if ($request->hasFile('icon')) {
+            $icon=UploadTool::UploadImgForm($request,'icon');
+            if (isset($icon['error'])){
+                return redirect()->back()->withInput()->with('upload', $icon['error']);
+            }
+        }else{
             return redirect()->back()->withInput()->with('upload', '请上传图标');
         }
 
@@ -74,7 +82,7 @@ class BrandController extends BaseController
         try{
             $id = DB::table('cfg_brand')->insertGetId([
                 'zybrand' => $zybrand,
-                'bicon' => $icon,
+                'bicon' => $icon['url'],
             ]);
             $data = array();
             foreach ($ids as $item) {
@@ -152,7 +160,13 @@ class BrandController extends BaseController
             return redirect()->back()->withInput()->with('success', '请选择所属品类');
 
         }
-        $icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
+        //$icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
+        if ($request->hasFile('icon')) {
+            $icon=UploadTool::UploadImgForm($request,'icon');
+            if (isset($icon['error'])){
+                return redirect()->back()->with('upload', $icon['error']);
+            }
+        }
 
 
         DB::beginTransaction();
@@ -160,7 +174,7 @@ class BrandController extends BaseController
             //品牌更新的数据
             $update['zybrand'] = $zybrand;
             if (!empty($icon)) {
-                $update['bicon'] = $icon;
+                $update['bicon'] = $icon['url'];
             }
             DB::table('cfg_brand')->where('bid', $id)->update($update);
 

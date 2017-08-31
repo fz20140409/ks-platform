@@ -37,7 +37,7 @@
                                                    value="{{$info->id}}"></th>
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->cat_name}}</td>
-                                        <td width="10%"><img class="img-responsive center-block" src="{{$info->img}}"></td>
+                                        <td width="10%"><a href="{{$info->img}}"><img class="img-responsive center-block" src="{{$info->img}}"></a></td>
                                         <td >
                                             <a class=" op_edit"  href="{{route('admin.ks.hcb.edit',$info->id)}}"
                                                style="margin-right: 10px;display: none">

@@ -81,15 +81,25 @@ class BannerController extends BaseController
 
             }
         }
-        $url=UploadTool::UploadImg($request,'url','public/upload/img');
+       /* $url=UploadTool::UploadImg($request,'url','public/upload/img');
         if (empty($url)){
             return redirect()->back()->withInput()->with('upload', '请上传轮播图');
+        }*/
+
+        if ($request->hasFile('url')) {
+            $url=UploadTool::UploadImgForm($request,'url');
+            if (isset($url['error'])){
+                return redirect()->back()->withInput()->with('upload', $url['error']);
+            }
+        }else{
+            return redirect()->back()->withInput()->with('upload', '请上传图片');
         }
+
         DB::table('cfg_banner')->insert([
             'title'=>$title,
             'type'=>$type,
             'r_url'=>$r_url,
-            'url'=>$url,
+            'url'=>$url['url'],
         ]);
         return redirect()->back()->with('success', '添加成功');
 
@@ -132,7 +142,14 @@ class BannerController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        $url=UploadTool::UploadImg($request,'url','public/upload/img');
+        /*$url=UploadTool::UploadImg($request,'url','public/upload/img');*/
+        if ($request->hasFile('url')) {
+            $url=UploadTool::UploadImgForm($request,'url');
+            if (isset($url['error'])){
+                return redirect()->back()->with('upload', $url['error']);
+            }
+        }
+
         $title=$request->title;
         $type=$request->type;
         $r_url=$request->r_url;
@@ -162,7 +179,7 @@ class BannerController extends BaseController
             'r_url'=>$r_url,
         ];
         if (!empty($url)){
-            $update['url']=$url;
+            $update['url']=$url['url'];
         }
         DB::table('cfg_banner')->where('id',$id)->update($update);
         return redirect()->back()->with('success', '更新成功');

@@ -69,15 +69,25 @@ class MoreIconController extends BaseController
 
         $name=$request->name;
         $type=$request->type;
-        $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
+        /*$icon=UploadTool::UploadImg($request,'icon','public/upload/img');
         if (empty($icon)){
             return redirect()->back()->withInput()->with('upload', '请上传图标');
+        }*/
+
+        if ($request->hasFile('icon')) {
+            $icon=UploadTool::UploadImgForm($request,'icon');
+            if (isset($icon['error'])){
+                return redirect()->back()->withInput()->with('upload', $icon['error']);
+            }
+        }else{
+            return redirect()->back()->withInput()->with('upload', '请上传图片');
         }
+
 
         DB::table('cfg_user_function')->insert([
             'name'=>$name,
             'enabled'=>1,
-            'icon'=>$icon,
+            'icon'=>$icon['url'],
             'type'=>$type,
             'status'=>1
         ]);
@@ -120,10 +130,16 @@ class MoreIconController extends BaseController
     {
         $name=$request->name;
         $type=$request->type;
-        $icon=UploadTool::UploadImg($request,'icon','public/upload/img');
+        //$icon=UploadTool::UploadImg($request,'icon','public/upload/img');
+        if ($request->hasFile('icon')) {
+            $icon=UploadTool::UploadImgForm($request,'icon');
+            if (isset($icon['error'])){
+                return redirect()->back()->with('upload', $icon['error']);
+            }
+        }
         $update=['name'=>$name, 'type'=>$type];
         if (!empty($icon)){
-            $update['icon']=$icon;
+            $update['icon']=$icon['url'];
         }
         DB::table('cfg_user_function')->where('id',$id)->update($update);
         return redirect()->back()->with('success', '更新成功');
