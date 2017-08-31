@@ -68,7 +68,7 @@
                         <div class="box-body table-responsive no-padding">
                             <table class="table table-hover">
                                 <tr>
-                                    <th></th>
+                                    {{--<th></th>--}}
                                     <th>序号</th>
                                     @if(!(isset($level)&&$level==3))
                                         <th>图片</th>
@@ -88,8 +88,8 @@
                                 </tr>
                                 @foreach($infos as $k=>$info)
                                     <tr>
-                                        <th><input class="minimal" name="ids[]" type="checkbox"
-                                                   value="{{$info->cat_id}}"></th>
+                                        {{--<th><input class="minimal" name="ids[]" type="checkbox"--}}
+                                                   {{--value="{{$info->cat_id}}"></th>--}}
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         @if(!(isset($level)&&$level==3))
                                             <td width="10%">@if(!empty($info->cat_icon)) <a href="{{$info->cat_icon}}"><img class="img-responsive center-block" src="{{$info->cat_icon}}"></a> @endif</td>

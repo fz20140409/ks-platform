@@ -23,15 +23,15 @@
                         <div class="box-body table-responsive no-padding">
                             <table class="table table-hover">
                                 <tr>
-                                    <th></th>
+                                    {{--<th></th>--}}
                                     <th>ID</th>
                                     <th>分类名称</th>
                                     <th>操作</th>
                                 </tr>
                                 @foreach($infos as $k=>$info)
                                     <tr>
-                                        <th><input class="minimal" name="ids[]" type="checkbox"
-                                                   value="{{$info->id}}"></th>
+                                        {{--<th><input class="minimal" name="ids[]" type="checkbox"--}}
+                                                   {{--value="{{$info->id}}"></th>--}}
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->catename}}</td>
                                         <td>
