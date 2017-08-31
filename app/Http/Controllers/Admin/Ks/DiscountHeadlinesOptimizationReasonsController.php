@@ -113,6 +113,12 @@ class DiscountHeadlinesOptimizationReasonsController extends BaseController
     public function destroy($id)
     {
         //
+        $count=DB::table('user_prcate_reducereason')->where('rid',$id)->count();
+        if($count){
+            return response()->json([
+                'msg' => -1,'info'=>'已经被使用无法删除'
+            ]);
+        }
         DB::table('cfg_pr_reducereason')->where('r_id', $id)->delete();
         return response()->json([
             'msg' => 1
@@ -121,7 +127,14 @@ class DiscountHeadlinesOptimizationReasonsController extends BaseController
 
     function batch_destroy(Request $request)
     {
+
         $ids = $request->ids;
+        $count=DB::table('user_prcate_reducereason')->whereIn('rid',$ids)->count();
+        if($count){
+            return response()->json([
+                'msg' => -1,'info'=>'已经被使用无法删除'
+            ]);
+        }
         DB::table('cfg_pr_reducereason')->whereIn('r_id', $ids)->delete();
         return response()->json([
             'msg' => 1

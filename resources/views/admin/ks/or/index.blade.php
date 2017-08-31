@@ -119,6 +119,10 @@
                         type: 'post',
                         data: $("#ids").serialize(),
                         success: function (data) {
+                            if (data.msg == -1) {
+                                layer.alert(data.info);
+                                return false;
+                            }
                             if (data.msg == 1) {
                                 layer.alert('删除成功');
                                 location.reload();

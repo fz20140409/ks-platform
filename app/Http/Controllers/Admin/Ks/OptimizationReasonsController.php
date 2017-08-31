@@ -113,6 +113,12 @@ class OptimizationReasonsController extends BaseController
     public function destroy($id)
     {
         //
+        $count=DB::table('user_coopcate_reducereason')->where('rid',$id)->count();
+        if($count){
+            return response()->json([
+                'msg' => -1,'info'=>'已经被使用无法删除'
+            ]);
+        }
         DB::table('cfg_coop_reducereason')->where('r_id', $id)->delete();
         return response()->json([
             'msg' => 1
@@ -122,6 +128,12 @@ class OptimizationReasonsController extends BaseController
     function batch_destroy(Request $request)
     {
         $ids = $request->ids;
+        $count=DB::table('user_coopcate_reducereason')->whereIn('rid',$ids)->count();
+        if($count){
+            return response()->json([
+                'msg' => -1,'info'=>'已经被使用无法删除'
+            ]);
+        }
         DB::table('cfg_coop_reducereason')->whereIn('r_id', $ids)->delete();
         return response()->json([
             'msg' => 1
