@@ -59,13 +59,22 @@ class MerchantBackgroundController extends BaseController
     public function store(Request $request)
     {
         $type = $request->type;
-        $icon = UploadTool::UploadImg($request,'icon','public/upload/img');
-        if (empty($icon)){
+//        $icon = UploadTool::UploadImg($request,'icon','public/upload/img');
+//        if (empty($icon)){
+//            return redirect()->back()->withInput()->with('upload', '请上传图片');
+//        }
+
+        if ($request->hasFile('icon')) {
+            $icon = UploadTool::UploadImgForm($request,'icon');
+            if ( isset($icon['error']) ){
+                return redirect()->back()->withInput()->with('upload', $icon['error']);
+            }
+        }else{
             return redirect()->back()->withInput()->with('upload', '请上传图片');
         }
 
         $data = array(
-            'bgurl' => $icon,
+            'bgurl' => $icon['url'],
             'createtime' => date('Y-m-d H:i:s'),
             'enabled' => 1
         );
@@ -120,11 +129,18 @@ class MerchantBackgroundController extends BaseController
     public function update(Request $request, $id)
     {
         $old_type = $request->old_type;
-        $icon = UploadTool::UploadImg($request,'icon','public/upload/img');
+//        $icon = UploadTool::UploadImg($request,'icon','public/upload/img');
+
+        if ($request->hasFile('icon')) {
+            $icon = UploadTool::UploadImgForm($request,'icon');
+            if (isset($icon['error'])){
+                return redirect()->back()->with('upload', $icon['error']);
+            }
+        }
 
         $update = array();
         if (!empty($icon)){
-            $update['bgurl'] = $icon;
+            $update['bgurl'] = $icon['url'];
         }
         // 只许更改
         if ($old_type == 2) {
