@@ -120,44 +120,18 @@ class MerchantBackgroundController extends BaseController
     public function update(Request $request, $id)
     {
         $old_type = $request->old_type;
-        $type = $request->type;
         $icon = UploadTool::UploadImg($request,'icon','public/upload/img');
 
-        // 因为名片图片和网店背景不一样所以修改时需增加删除相应的表记录
-        if ($type == 2) {
-            if ($old_type == 2) {
-                $update = array();
-                if (!empty($icon)){
-                    $update['bgurl'] = $icon;
-                }
-                DB::table('user_card_background')->where('id',$id)->update($update);
-            } else {
-                $data = array(
-                    'bgurl' => $icon,
-                    'createtime' => date('Y-m-d H:i:s'),
-                    'enabled' => 1
-                );
-                DB::table('user_card_background')->insert($data);
-                DB::table('merchant_background')->where('id', $id)->delete();
-            }
+        $update = array();
+        if (!empty($icon)){
+            $update['bgurl'] = $icon;
+        }
+        // 只许更改
+        if ($old_type == 2) {
+            DB::table('user_card_background')->where('id',$id)->update($update);
         } else {
-            if ($old_type != 2) {
-                $update = array();
-                if (!empty($icon)){
-                    $update['bgurl'] = $icon;
-                }
-                $update['type'] = $type;
-                DB::table('merchant_background')->where('id',$id)->update($update);
-            } else {
-                $data = array(
-                    'bgurl' => $icon,
-                    'createtime' => date('Y-m-d H:i:s'),
-                    'enabled' => 1,
-                    'type' => $type
-                );
-                DB::table('merchant_background')->insert($data);
-                DB::table('user_card_background')->where('id', $id)->delete();
-            }
+            $update['type'] = $old_type;
+            DB::table('merchant_background')->where('id',$id)->update($update);
         }
 
         return redirect()->back()->with('success', '更新成功');

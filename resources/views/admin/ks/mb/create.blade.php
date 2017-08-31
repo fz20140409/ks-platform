@@ -126,7 +126,7 @@
                             <label for="name" class="col-sm-2 control-label">类型</label>
 
                             <div class="col-sm-8">
-                                <select id="type" name="type" class="form-control">
+                                <select id="type" name="type" class="form-control" @if(isset($info)) disabled @endif>
                                     <option @if(isset($info)&&isset($info->type)&&$info->type==0) selected @endif value="0">店铺背景</option>
                                     <option @if(isset($info)&&isset($info->type)&&$info->type==1) selected @elseif(isset($pt)) style="display: none;" @endif value="1">平台icon</option>
                                     <option @if(isset($info) && !isset($info->type)) selected @endif value="2">名片背景</option>
