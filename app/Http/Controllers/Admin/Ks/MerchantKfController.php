@@ -59,11 +59,14 @@ class MerchantKfController extends BaseController
     public function store(Request $request)
     {
         $input = $request->all();
-        if(empty($input['area'])){
-            return response()->json(['msg'=>'区域名称不能为空']);
+        if(empty($input['area']) || mb_strlen(trim($input['area'])) > 6){
+            return response()->json(['msg'=>'区域名称不能为空并且不能大于6个汉字']);
         }
         if(empty($input['phone'])){
             return response()->json(['msg'=>'电话不能为空']);
+        }
+        if (! preg_match("/^\d*-?/", $input['phone'])) {
+            return response()->json(['msg'=>'请输入有效电话号码']);
         }
 
         $insert = array(
