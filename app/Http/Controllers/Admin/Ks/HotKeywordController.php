@@ -33,12 +33,21 @@ class HotKeywordController extends BaseController
         if ($is_recommend != -1) {
             $where[] = ['is_recommend', '=', $is_recommend];
         }
+
         $search_order_by = ($search_count == 'desc') ? 'asc' : 'desc';
-
         //条件
-        $infos = DB::table('cfg_hot_search')->where($where)->orderBy('search_count', $search_count)->paginate($this->page_size);
+        $infos = DB::table('cfg_hot_search')->where($where)->orderBy('search_count', $search_order_by)->paginate($this->page_size);
 
-        return view('admin.ks.hk.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str, 'is_recommend' => $is_recommend]);
+        $data = array(
+            'infos' => $infos,
+            'page_size' => $this->page_size,
+            'page_sizes' => $this->page_sizes,
+            'where_str' => $where_str,
+            'is_recommend' => $is_recommend,
+            'search_order_by' => $search_order_by,
+        );
+
+        return view('admin.ks.hk.index', $data);
 
     }
 
