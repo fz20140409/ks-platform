@@ -19,11 +19,12 @@
                                 </div>
 
 
-                                <div class="col-lg-9 col-xs-10">
+
+                                <div class="col-lg-10 col-xs-10">
                                     发布时间
-                                    <input name="stime" value="{{$stime}}" type="text"   class="form_datetime form-control">
+                                    <input readonly name="stime" value="{{$stime}}" type="text"   class="form_datetime form-control">
                                     至
-                                    <input name="etime" value="{{$etime}}" type="text"   class="form_datetime form-control">
+                                    <input readonly name="etime" value="{{$etime}}" type="text"   class="form_datetime form-control">
                                     分类
                                     <select style="width: 15%" name="cate" class="form-control">
                                         <option value="-1">全部</option>
@@ -38,13 +39,13 @@
                                         <option @if($status==1) selected @endif value="1">正常</option>
                                         <option  @if($status==0) selected @endif value="0">屏蔽</option>
                                     </select>
-                                    标题<input value="{{$title}}" name="title" type="text" class="form-control">
+                                    <input placeholder="标题" value="{{$title}}" name="title" type="text" class="form-control">
                                     <button class="btn btn-default" type="submit">查询</button>
 
                                 </div>
                             </form>
                             @if(Auth::user()->can('admin.ks.dh.create'))
-                                <div class="col-lg-2 col-xs-2 pull-right">
+                                <div class="col-lg-1 col-xs-2 pull-right">
                                     <a href="{{route('admin.ks.dh.create')}}" class="btn btn-primary">新增</a>
                                 </div>
                             @endif
