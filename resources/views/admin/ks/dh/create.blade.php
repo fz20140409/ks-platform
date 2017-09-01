@@ -132,8 +132,17 @@
         });
     </script>
     <script>
-        window.onbeforeunload = function(){
-            return "确定离开当前页面d？";
+       $('body').attr('onbeforeunload',"return CheckUnsave();");
+        var hasSaved = false;
+        function CheckUnsave(){
+            if(hasSaved==false){
+                alert("您确定离开当前页面吗？");
+                return false;}
+        }
+
+        function ChangeState()
+        {
+            hasSaved = true;
         }
     </script>
     @include('admin.common.layer_tip')
@@ -299,7 +308,7 @@
                     <!-- /.box-body -->
                         <div class="box-footer  ">
                             <a href="{{route('admin.ks.dh.index')}}" class="btn btn-default">返回</a>
-                            <button @if(isset($show)) style="display: none" @endif type="submit"
+                            <button onClick="ChangeState();" @if(isset($show)) style="display: none" @endif type="submit"
                                     class="btn btn-primary pull-right">保存
                             </button>
                         </div>

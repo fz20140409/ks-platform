@@ -126,6 +126,7 @@ LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where) as g";
      */
     public function show($id)
     {
+
         //
         return view('admin.ks.goods.create');
     }
