@@ -44,7 +44,7 @@
                         <div class="box-body table-responsive no-padding">
                             <table class="table table-hover">
                                 <tr>
-                                    <th></th>
+                                    {{--<th></th>--}}
                                     <th>ID</th>
                                     <th>图标</th>
                                     <th>品牌名称</th>
@@ -52,8 +52,8 @@
                                 </tr>
                                 @foreach($infos as $k=>$info)
                                     <tr>
-                                        <th><input class="minimal" name="ids[]" type="checkbox"
-                                                   value="{{$info->bid}}"></th>
+                                        {{--<th><input class="minimal" name="ids[]" type="checkbox"--}}
+                                                   {{--value="{{$info->bid}}"></th>--}}
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td  width="10%"><a href="{{$info->bicon}}"><img class="img-responsive center-block" src="{{$info->bicon}}"></a></td>
                                         <td>{{$info->zybrand}}</td>

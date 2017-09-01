@@ -1,6 +1,7 @@
 @extends('admin.layouts.default')
 @section('t1','合作机会')
 @section('t2','列表')
+
 @section('content')
     <section class="content">
         <div class="row">
@@ -19,36 +20,36 @@
                                 </div>
 
 
-                                <div class="col-lg-11 col-xs-10">
+                                <div class="col-lg-11 col-xs-9">
                                     发布时间
-                                    <input name="stime" value="{{$stime}}" type="text"   class="form_datetime form-control">
+                                    <input name="stime" value="{{$stime}}" type="text" class="form_datetime form-control mb5">
                                     至
-                                    <input name="etime" value="{{$etime}}" type="text"   class="form_datetime form-control">
+                                    <input name="etime" value="{{$etime}}" type="text" class="form_datetime form-control mb5">
                                     用户类型
-                                    <select name="type" class="form-control">
+                                    <select name="type" class="form-control mb5">
                                         <option value="-1">全部</option>
                                         @foreach($types as $item)
                                         <option @if($type==$item->type_name) selected @endif value="{{$item->type_name}}">{{$item->type_name}}</option>
                                             @endforeach
                                     </select>
                                     分类标签
-                                    <select name="catename" class="form-control">
+                                    <select name="catename" class="form-control mb5">
                                         <option value="-1">全部</option>
                                         @foreach($cat_names as $item)
                                             <option @if($catename==$item->catename) selected @endif value="{{$item->catename}}">{{$item->catename}}</option>
                                         @endforeach
                                     </select>
                                     状态
-                                    <select name="state" class="form-control">
+                                    <select name="state" class="form-control mb5">
                                         <option @if($state==-1) selected @endif value="-1">全部</option>
                                         <option @if($state==1) selected @endif value="1">推荐</option>
                                         <option @if($state==0) selected @endif value="0">不推荐</option>
                                     </select>
 
-                                    <input placeholder="标题" value="{{$title}}" name="title" class="form-control">
+                                    <input placeholder="标题" value="{{$title}}" name="title" class="form-control mb5">
 
-                                    <input placeholder="公司或店铺名称" value="{{$company}}" name="company"  class="form-control">
-                                    <button class="btn btn-default" type="submit">查询</button>
+                                    <input placeholder="公司或店铺名称" value="{{$company}}" name="company" class="form-control mb5">
+                                    <button class="btn btn-default" style="margin-bottom: 5px;" type="submit">查询</button>
 
                                 </div>
                             </form>
@@ -61,7 +62,7 @@
                         <div class="box-body table-responsive no-padding">
                             <table class="table table-hover">
                                 <tr>
-                                    <th></th>
+                                    {{--<th></th>--}}
                                     <th>ID</th>
                                     <th>发布时间</th>
                                     <th>分类标签</th>
@@ -77,8 +78,8 @@
                                 @if(!empty($infos))
                                 @foreach($infos as $k=>$info)
                                     <tr>
-                                        <th><input class="minimal" name="user_ids[]" type="checkbox"
-                                                   value="{{$info->id}}"></th>
+                                        {{--<th><input class="minimal" name="user_ids[]" type="checkbox"--}}
+                                                   {{--value="{{$info->id}}"></th>--}}
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->createtime}}</td>
                                         <td>{{$info->cat}}</td>
@@ -127,6 +128,10 @@
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">
     <link rel="stylesheet" href="/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+
+    <style type="text/css">
+        .mb5 {margin-bottom: 5px;}
+    </style>
 @endsection
 
 @section('js')

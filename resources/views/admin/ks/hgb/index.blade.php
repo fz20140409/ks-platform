@@ -10,7 +10,7 @@
                         <div class="box-body table-responsive no-padding">
                             <table class="table table-hover">
                                 <tr>
-                                    <th></th>
+                                    {{--<th></th>--}}
                                     <th>ID</th>
                                     <th>图片</th>
                                     <th>分类</th>
@@ -18,8 +18,8 @@
                                 </tr>
                                 @foreach($infos as $info)
                                     <tr>
-                                        <th><input class="minimal" name="ids[]" type="checkbox"
-                                                   value="{{$info->id}}"></th>
+                                        {{--<th><input class="minimal" name="ids[]" type="checkbox"--}}
+                                                   {{--value="{{$info->id}}"></th>--}}
                                         <td>{{$info->id}}</td>
                                         <td width="10%"><a href="{{$info->img}}"><img class="img-responsive center-block" src="{{$info->img}}"></a></td>
                                         <td>{{$info->cat_name}}</td>

@@ -59,7 +59,7 @@
                         <div class="box-body table-responsive no-padding">
                             <table class="table table-hover">
                                 <tr>
-                                    <th></th>
+                                    {{--<th></th>--}}
                                     <th>ID</th>
                                     <th>手机号</th>
                                     <th>所在区域</th>
@@ -74,8 +74,8 @@
                                 </tr>
                                 @foreach($infos as $k=>$info)
                                     <tr>
-                                        <th><input class="minimal" name="user_ids[]" type="checkbox"
-                                                   value="{{$info->sr_id}}"></th>
+                                        {{--<th><input class="minimal" name="user_ids[]" type="checkbox"--}}
+                                                   {{--value="{{$info->sr_id}}"></th>--}}
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->phone}}</td>
                                         <td>{{$info->provice}}</td>
