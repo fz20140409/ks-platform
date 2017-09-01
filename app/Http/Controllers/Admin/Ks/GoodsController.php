@@ -128,7 +128,12 @@ LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where) as g";
     {
 
         //
-        return view('admin.ks.goods.create');
+        $info=DB::select("SELECT a.goods_name,a.goods_smallname,b.zybrand,a.is_new,a.is_hot,a.is_cuxiao FROM `goods` AS a
+LEFT JOIN cfg_brand AS b ON a.bid=b.bid WHERE a.goods_id=$id")[0];
+        $spec=DB::select("select price,kc,spec_unic from goods_spec where good_id=$id");
+
+
+        return view('admin.ks.goods.create',compact('info','spec'));
     }
 
     /**

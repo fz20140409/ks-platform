@@ -25,31 +25,43 @@
                         </tr>
                         <tr>
                             <td>商品标题</td>
-                            <td>xxx</td>
+                            <td>{{$info->goods_name}}</td>
                         </tr>
                         <tr>
                             <td>商品简称</td>
-                            <td>生产商或大型贸易商</td>
+                            <td>{{$info->goods_smallname}}</td>
                         </tr>
                         <tr>
                             <td>所属品牌</td>
-                            <td>已认证</td>
+                            <td>{{$info->zybrand}}</td>
                         </tr>
                         <tr>
                             <td>商品规格</td>
-                            <td>xxx</td>
+                            <td>
+                                @foreach($spec as $item)
+                                    <span style="margin-right: 5px">{{$item->spec_unic}}</span>
+                                    @endforeach
+                            </td>
                         </tr>
                         <tr>
                             <td>商品价格</td>
-                            <td>xxx</td>
+                            <td>
+                                @foreach($spec as $item)
+                                    <span style="margin-right: 5px">￥{{$item->price}}/{{$item->spec_unic}}</span>,
+                                    @endforeach
+                            </td>
                         </tr>
                         <tr>
                             <td>商品库存</td>
-                            <td>xxx</td>
+                            <td>
+                                @foreach($spec as $item)
+                                    <span style="margin-right: 5px">{{$item->kc}}{{$item->spec_unic}}</span>,
+                                @endforeach
+                            </td>
                         </tr>
                         <tr>
                             <td>商品标签</td>
-                            <td>xxx</td>
+                            <td>@if($info->is_hot==1) <span style="color: #00a7d0">热门商品</span> @endif @if($info->is_new==1) <span style="margin-left: 2px;color: #00a7d0">新品推荐</span> @endif  @if($info->is_cuxiao==1) <span style="margin-left: 2px;color: #00a7d0">促销商品</span> @endif</td>
                         </tr>
                         <tr>
                             <td>店铺分类</td>

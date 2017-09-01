@@ -50,7 +50,7 @@
                                         <option @if($label==2) selected @endif value="2">新品推荐</option>
                                         <option @if($label==3) selected @endif value="3">促销商品</option>
                                     </select>
-                                    <div class="input-group col-lg-5">
+                                    <div class="input-group col-lg-4">
                                         <input value="{{$where_str}}" name="where_str" type="text" class="form-control"
                                                placeholder="企业/商铺名称/商品名称/商品标题">
                                         <span class="input-group-btn">
