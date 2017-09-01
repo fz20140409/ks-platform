@@ -62,7 +62,7 @@ class SalechanelController extends BaseController
         if(empty($sale_name)){
             return response()->json(['msg'=>'渠道名称不能为空']);
         }
-        if(strlen($sale_name)>35){
+        if(mb_strlen($sale_name) > 35){
             return response()->json(['msg'=>'渠道名称不能超过35字符']);
         }
 

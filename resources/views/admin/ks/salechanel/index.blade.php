@@ -52,7 +52,7 @@
                                         <label for="sale_name" class="col-sm-3 control-label">渠道名称</label>
 
                                         <div class="col-sm-8">
-                                            <input value="" name="sale_name" type="text" class="form-control" id="sale_name" placeholder="渠道名称" required>
+                                            <input value="" name="sale_name" type="text" class="form-control" id="sale_name" placeholder="渠道名称" required maxlength="35">
                                         </div>
                                     </div>
 
