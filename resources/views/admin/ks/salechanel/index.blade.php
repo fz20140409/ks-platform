@@ -69,7 +69,8 @@
                     <!--box-body-->
                     <form id="ids">
                         <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover">
+                            @if(count($infos) > 0)
+                                <table class="table table-hover">
                                 <tr>
                                     <th></th>
                                     <th>序号</th>
@@ -109,6 +110,11 @@
                                     </tr>
                                 @endforeach
                             </table>
+                            @else
+                                <div class="col-xs-12 text-center">
+                                    <h3>暂无查询记录</h3>
+                                </div>
+                            @endif
                         </div>
                     </form>
                     <!--box-body-->
