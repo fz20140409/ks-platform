@@ -3,8 +3,9 @@
     @foreach(['success','waring','info','error'] as $msg)
     @if(session()->has($msg))
     layer.alert('{{session($msg)}}', {
-        skin: 'layui-layer-molv'
-        ,closeBtn: 0
+        skin: 'layui-layer-molv',
+        closeBtn: 0,
+        time: 3000
     });
       
     @endif
