@@ -78,7 +78,7 @@ class MerchantKfController extends BaseController
 
         $kf_rela = DB::table('merchant_kf_rela')->where('area', $input['area'])->first();
         if ($kf_rela) {
-            return response()->json(['msg'=>'区域名称已存在']);
+            return response()->json(['msg'=>'区域名称不允许重名']);
         }
 
         $insert = array(
@@ -125,11 +125,29 @@ class MerchantKfController extends BaseController
     public function update_post(Request $request, $id)
     {
         $input = $request->all();
-        if(empty($input['area'])){
-            return response()->json(['msg'=>'区域名称不能为空']);
+        $input['area'] = trim($input['area']);
+        $input['phone'] = trim($input['phone']);
+
+        if(empty($input['area']) || mb_strlen(trim($input['area'])) > 6){
+            return response()->json(['msg'=>'区域名称不能为空并且不能大于6个汉字']);
         }
         if(empty($input['phone'])){
             return response()->json(['msg'=>'电话不能为空']);
+        }
+
+        $isMob="/^1[3-8]{1}[0-9]{9}$/";
+        $isTel="/^([0-9]{3,4}-)?[0-9]{7,8}$/";
+
+        if(!preg_match($isMob, $input['phone']) && !preg_match($isTel, $input['phone'])) {
+            return response()->json(['msg'=>'请输入有效电话号码']);
+        }
+
+        $where=array();
+        $where[]=['area', '=', $input['area']];
+        $where[]=['id', '!=', $id];
+        $kf_rela = DB::table('merchant_kf_rela')->where($where)->first();
+        if ($kf_rela) {
+            return response()->json(['msg'=>'区域名称不允许重名']);
         }
 
         $data = array(
