@@ -21,6 +21,7 @@
 
 @section('css')
     <link rel="stylesheet" href="/plugins/bootstrap-fileinput/css/fileinput.min.css">
+    <link rel="stylesheet" href="/plugins/bootstrapvalidator/css/bootstrapValidator.min.css">
 @endsection
 @section('js')
     <script src="/plugins/bootstrap-fileinput/js/plugins/piexif.min.js"></script>
@@ -28,6 +29,7 @@
     <script src="/plugins/bootstrap-fileinput/js/plugins/purify.min.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
+    <script src="/plugins/bootstrapvalidator/js/bootstrapValidator.js"></script>
     <script>
         $("#icon").fileinput({
             initialPreviewAsData: true,
@@ -63,8 +65,8 @@
                                 },
                                 stringLength: {
                                     max: 35,
-                                    message: '分类图标名称长度小于35字符'
-                                },
+                                    message: '分类图标名称字数不能大于6个汉字'
+                                }
                             }
                         },
 
