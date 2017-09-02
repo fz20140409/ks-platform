@@ -43,6 +43,11 @@ class BannerController extends BaseController
      */
     public function create()
     {
+        $banner = DB::table('cfg_banner')->count();
+        if($banner >= 9){
+            return redirect()->route('admin.ks.banner.index')->with('success', '轮播图最多只能新增9张');
+        }
+
         //合作机会
         $jh = DB::table('cooperation_opportunity')->select(['id','title'])->get();
         $tt = DB::table('headline_info')->select(['hid','title'])->get();
