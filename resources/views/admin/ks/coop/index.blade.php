@@ -22,9 +22,9 @@
 
                                 <div class="col-lg-11 col-xs-9">
                                     发布时间
-                                    <input name="stime" value="{{$stime}}" type="text" class="form_datetime form-control mb5">
+                                    <input name="stime" value="{{$stime}}" type="text" class="form_datetime form-control mb5" readonly>
                                     至
-                                    <input name="etime" value="{{$etime}}" type="text" class="form_datetime form-control mb5">
+                                    <input name="etime" value="{{$etime}}" type="text" class="form_datetime form-control mb5" readonly>
                                     用户类型
                                     <select name="type" class="form-control mb5">
                                         <option value="-1">全部</option>
@@ -46,9 +46,9 @@
                                         <option @if($state==0) selected @endif value="0">不推荐</option>
                                     </select>
 
-                                    <input placeholder="标题" value="{{$title}}" name="title" class="form-control mb5">
+                                    标题 <input placeholder="标题" value="{{$title}}" name="title" class="form-control mb5">
 
-                                    <input placeholder="公司或店铺名称" value="{{$company}}" name="company" class="form-control mb5">
+                                    公司或店铺名称 <input placeholder="公司或店铺名称" value="{{$company}}" name="company" class="form-control mb5">
                                     <button class="btn btn-default" style="margin-bottom: 5px;" type="submit">查询</button>
 
                                 </div>
