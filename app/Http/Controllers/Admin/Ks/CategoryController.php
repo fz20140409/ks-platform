@@ -74,6 +74,10 @@ class CategoryController extends BaseController
             return redirect()->back()->withInput()->with('success', '存在相同品类名称');
 
         }
+        if ( mb_strlen($cat_name) > 10 ) {
+            return redirect()->back()->withInput()->with('success', '品类名称不能大于10个汉字');
+        }
+
         $flag = $request->flag;
 
         $icon = array('url' => '');
@@ -149,6 +153,10 @@ class CategoryController extends BaseController
     {
 
         $cat_name = $request->cat_name;
+        if ( mb_strlen($cat_name) > 10 ) {
+            return redirect()->back()->withInput()->with('success', '品类名称不能大于10个汉字');
+        }
+
         //同名判断
         $where = array();
         $where[] = ['cat_name', '=', $cat_name];

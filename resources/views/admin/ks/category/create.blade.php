@@ -64,8 +64,8 @@
                                     message: '品类名称不能为空'
                                 },
                                 stringLength: {
-                                    max: 35,
-                                    message: '品类名称长度小于35字符'
+                                    max: 10,
+                                    message: '品类名称长度小于10个汉字'
                                 },
                             }
                         },
