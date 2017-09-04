@@ -91,7 +91,21 @@ LEFT JOIN goods_category_rela AS e ON a.goods_id=e.good_id
 LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where) as g";
         $infos = DB::table(DB::raw($sql))->paginate($this->page_size);
 
+        $info_temp = $infos->toArray();
+        $info_temp = array_map('get_object_vars', $info_temp['data']);
+        $good_ids = array_column($info_temp, 'goods_id');
 
+        $spec = DB::table('goods_spec')->select('good_id', 'price', 'spec_unic')->whereIn('good_id', $good_ids)->get();
+
+        foreach ($infos as &$value) {
+            $price_key = 1;
+            foreach ($spec as $item)
+                if ($value->goods_id == $item->good_id) {
+                    $price = 'price' . $price_key;
+                    $value->$price = $item->price . '/' . $item->spec_unic;
+                    $price_key ++;
+                }
+        }
 
         return view('admin.ks.goods.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str,'where_link' => $where_link,'provices'=>$provices,'brands'=>$brands,'area'=>$area,'brand'=>$brand,'label'=>$label,'cates'=>$cates,'cate_name'=>$cate_name]);
 
