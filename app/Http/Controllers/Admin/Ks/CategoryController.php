@@ -76,6 +76,7 @@ class CategoryController extends BaseController
         }
         $flag = $request->flag;
 
+        $icon = array('url' => '');
         if ($request->hasFile('icon')) {
             $icon=UploadTool::UploadImgForm($request,'icon');
             if (isset($icon['error'])){
