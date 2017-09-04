@@ -56,6 +56,9 @@ class BrandController extends BaseController
     public function store(Request $request)
     {
         $zybrand = $request->zybrand;
+        if (mb_strlen($zybrand) > 10) {
+            return redirect()->back()->withInput()->with('success', '品牌名称不能大于10个汉字');
+        }
         $count = DB::table('cfg_brand')->where("zybrand",$zybrand)->count();
         if (!empty($count)) {
             return redirect()->back()->withInput()->with('success', '品牌名称不允许重名');
@@ -63,8 +66,8 @@ class BrandController extends BaseController
         $ids = $request->ids;
         if (empty($ids)) {
             return redirect()->back()->withInput()->with('success', '请选择所属品类');
-
         }
+
         /*$icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
         if (empty($icon)) {
             return redirect()->back()->withInput()->with('upload', '请上传图标');
@@ -147,6 +150,10 @@ class BrandController extends BaseController
     {
         //品牌同名检测
         $zybrand = $request->zybrand;
+        if (mb_strlen($zybrand) > 10) {
+            return redirect()->back()->withInput()->with('success', '品牌名称不能大于10个汉字');
+        }
+
         $where[] = ['zybrand', '=', $zybrand];
         $where[] = ['bid', '!=', $id];
         $count = DB::table('cfg_brand')->where($where)->count();
