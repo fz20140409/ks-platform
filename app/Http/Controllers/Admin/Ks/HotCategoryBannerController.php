@@ -22,7 +22,7 @@ class HotCategoryBannerController extends BaseController
     public function index(Request $request)
     {
 
-        $infos=DB::table('cfg_hot_category as a')->select('a.id','a.img','b.cat_name')->leftJoin('cfg_category as b','a.cat_id','=','b.cat_id')->where('a.type',2)->paginate(10);
+        $infos=DB::table('cfg_hot_category as a')->select('a.id','a.img','b.cat_name')->leftJoin('cfg_category as b','a.cat_id','=','b.cat_id')->where('a.type',2)->where('a.enabled', 1)->where('b.enabled', 1)->paginate(10);
 
         return view('admin.ks.hcb.index', ['infos' => $infos, 'page_size' => 10]);
 
