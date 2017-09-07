@@ -140,14 +140,28 @@ LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where) as g";
      */
     public function show($id)
     {
-
-        //
+        // 图片
+        $banner = DB::table('goods_attr')->where('good_id', $id)->where('attr_type', 1)->where('enabled', 1)->get();
+        // 商品详情
+        $descrip = DB::table('goods_attr')->where('good_id', $id)->where('attr_type', 2)->where('enabled', 1)->value('attr_value');
+        // 店铺分类
+        $sc_id = DB::table('goods_shopclassify')->where('good_id', $id)->where('enabled', 1)->value('sc_id');
+        $sc_name = DB::table('merchant_shopclassify')->where('cat_id', $sc_id)->where('enabled', 1)->value('sc_name');
+        // 所属品类
+        $category = DB::select("select cc.cat_name from `goods_category_rela` as gc left join `cfg_category` as cc on gc.cat_id = cc.cat_id where gc.good_id = '{$id}' and gc.enabled = 1 and cc.enabled = 1 order by cc.parent_id ASC");
+        $category = array_map('get_object_vars', $category);
+        $category = array_column($category, 'cat_name');
+        $category = implode('->', $category);
+        // 商品应用
+        $apply = DB::table('goods_apply')->where('good_id', $id)->where('enabled', 1)->get();
+        //商品信息
         $info=DB::select("SELECT a.goods_name,a.goods_smallname,b.zybrand,a.is_new,a.is_hot,a.is_cuxiao FROM `goods` AS a
 LEFT JOIN cfg_brand AS b ON a.bid=b.bid WHERE a.goods_id=$id")[0];
+        // 价格
         $spec=DB::select("select price,kc,spec_unic from goods_spec where good_id=$id");
+        $data = compact('banner', 'descrip', 'sc_name', 'category', 'apply', 'info', 'spec');
 
-
-        return view('admin.ks.goods.create',compact('info','spec'));
+        return view('admin.ks.goods.create', $data);
     }
 
     /**

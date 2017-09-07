@@ -21,7 +21,11 @@
                     <table class=" table table-hover table-bordered">
                         <tr>
                             <td width="20%">图片</td>
-                            <td width="80%"><img src=""  class="img-rounded"></td>
+                            <td width="80%">
+                                @foreach($banner as $item)
+                                    <img src="{{$item->attr_value}}" class="img-rounded">
+                                @endforeach
+                            </td>
                         </tr>
                         <tr>
                             <td>商品标题</td>
@@ -65,19 +69,25 @@
                         </tr>
                         <tr>
                             <td>店铺分类</td>
-                            <td>xxx</td>
+                            <td>{{$sc_name}}</td>
                         </tr>
                         <tr>
                             <td>所属品类</td>
-                            <td>xxx</td>
+                            <td>{{$category}}</td>
                         </tr>
                         <tr>
                             <td>商品应用</td>
-                            <td>xxx</td>
+                            <td>
+                                @foreach($apply as $item)
+                                    <h5>{{$item->title}}</h5>
+                                    <video src="{{$item->videourl}}" controls="controls">
+                                    </video>
+                                @endforeach
+                            </td>
                         </tr>
                         <tr>
                             <td>商品详情</td>
-                            <td>xxx</td>
+                            <td>{!! $descrip !!}</td>
                         </tr>
                     </table>
                 </div>
