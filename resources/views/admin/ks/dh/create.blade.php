@@ -145,6 +145,16 @@
             hasSaved = true;
         }
     </script>
+    <script>
+        window.onload = function () {
+            $("#icon_url").parent().find("button[title='清除选中文件']").click(function () {
+                $("#icon_url").val('');
+            });
+            $("#vd_icon_url").parent().find("button[title='清除选中文件']").click(function () {
+                $("#vd_icon_url").val('');
+            });
+        };
+    </script>
     @include('admin.common.layer_tip')
 @endsection
 @section('content')
@@ -232,6 +242,7 @@
                                         <label for="icon" class="col-sm-2 control-label">图片</label>
                                         <div class="col-sm-8">
                                             <input id="icon" name="icon[]" type="file" multiple class="file-loading">
+                                            <input type="hidden" name="icon_url" id="icon_url" value="{{ isset($imgs) ? implode(',', $imgs) : ''}}">
                                             @if(session()->has('upload'))
                                                 <div class="alert alert-error">{{session('upload')}}</div>
                                             @endif
@@ -252,7 +263,7 @@
 
                                         <div class="col-sm-8">
                                             <input  name="video" type="file" id="video">
-                                            <input type="hidden" name="url" id="url">
+                                            <input type="hidden" name="url" id="url" value="{{$video->attr_value or ''}}">
                                             @if(session()->has('video'))
                                                 <div class="alert alert-error">{{session('video')}}</div>
                                             @endif
@@ -273,6 +284,7 @@
                                         <label for="vd_icon" class="col-sm-2 control-label">上传视频缩略图</label>
                                         <div class="col-sm-8">
                                             <input id="vd_icon" name="vd_icon[]" type="file" multiple class="file-loading">
+                                            <input type="hidden" name="vd_icon_url" id="vd_icon_url" value="{{$video->remark or ''}}">
                                             @if(session()->has('upload'))
                                                 <div class="alert alert-error">{{session('upload')}}</div>
                                             @endif

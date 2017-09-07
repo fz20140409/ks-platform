@@ -296,19 +296,21 @@ class DiscountHeadlinesController extends BaseController
                 }
             }
 
-            if (empty(!$vd_icons)){
-                $vd_icons=implode(',',$vd_icons);
-                $remark=$vd_icons;
+            if (!empty($vd_icons)){
+                $vd_icons = implode(',',$vd_icons);
+                $remark = $vd_icons;
             }else{
-                $remark='';
+                if (empty($request->vd_icon_url)) {
+                    $remark = '';
+                }
             }
 
-            if ($request->video_type==1){
-                //更新url
-                DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->update(['attr_value' => $video_url, 'video_type' => $request->video_type,'remark'=>$remark]);
-            }else{
-                DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->update(['attr_value' => $url, 'video_type' => $request->video_type,'remark'=>$remark]);
+            $update_headline_attr = array('video_type' => $request->video_type);
+            $update_headline_attr['attr_value'] = ($request->video_type == 1) ? $video_url : $url;
+            if (isset($remark)) {
+                $update_headline_attr['remark'] = $remark;
             }
+            DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->update($update_headline_attr);
 
             //更新图片集
             if (!empty($icons)) {
@@ -323,6 +325,10 @@ class DiscountHeadlinesController extends BaseController
                         'enabled' => 1,
                         'create_time' => date('Y-m-d H:i:s', time())
                     ]);
+                }
+            } else {
+                if (empty($request->icon_url)) { // 为空则进行删除操作，不论原先是否有值
+                    DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'img')->delete();
                 }
             }
             DB::commit();
