@@ -226,6 +226,16 @@ class SalechanelController extends BaseController
 
         }
 
+        if ($request->level == 2) {
+            $parent = DB::table('cfg_salechanel')->where('sid', $id)->select('sale_name')->get()[0]->sale_name;
+        }
+        if ($request->level == 3) {
+            $name1 = DB::table('cfg_salechanel')->where('sid', $id)->select('sale_name')->get()[0];
+            $name2 = DB::select("SELECT b.sale_name FROM `cfg_salechanel` AS a LEFT JOIN cfg_salechanel AS b ON a.parent_id=b.sid WHERE a.sid=$id")[0];
+            $parent = $name2->sale_name . "-->" . $name1->sale_name;
+
+        }
+
         //条件
         $infos=DB::table('cfg_salechanel')->select(['sale_name','sid'])->where($where)->where(['enabled'=>1])->paginate($this->page_size);
 
@@ -236,6 +246,7 @@ class SalechanelController extends BaseController
             'where_str' => $where_str,
             'level'=>$request->level,
             'pid'=>$id,
+            'parent' => $parent,
             'previous' => URL::previous()
         );
 

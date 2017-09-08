@@ -1,5 +1,11 @@
 @extends('admin.layouts.default')
-@section('t1','渠道')
+
+@if(isset($parent))
+    @section('t1',$parent)
+@else
+    @section('t1','渠道')
+@endif
+
 @section('t2','设置')
 @section('content')
     <section class="content">
