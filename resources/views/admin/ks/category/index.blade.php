@@ -48,7 +48,7 @@
                                             @endif
                                             @if(isset($level))
 
-                                                    <a href="{{route('admin.ks.category.index')}}"
+                                                    <a href="{{$previous}}"
                                                        class="btn btn-primary">返回</a>
 
 

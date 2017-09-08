@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Ks;
 
+use URL;
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Tools\UploadTool;
 use Illuminate\Http\Request;
@@ -307,7 +308,6 @@ class CategoryController extends BaseController
      */
     function showSub(Request $request, $id)
     {
-
         $where_str = $request->where_str;
         $where = array();
 
@@ -329,7 +329,17 @@ class CategoryController extends BaseController
         //条件
         $infos = DB::table('cfg_category')->select(['cat_name', 'cat_id', 'cat_icon'])->where($where)->paginate($this->page_size);
 
-        return view('admin.ks.category.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str, 'level' => $request->level, 'pid' => $id, 'parent' => $parent]);
+        $data = array(
+            'infos' => $infos,
+            'page_size' => $this->page_size,
+            'page_sizes' => $this->page_sizes,
+            'where_str' => $where_str,
+            'level' => $request->level,
+            'pid' => $id,
+            'parent' => $parent,
+            'previous' => URL::previous()
+        );
+        return view('admin.ks.category.index', $data);
 
     }
 }
