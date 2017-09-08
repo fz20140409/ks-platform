@@ -169,14 +169,19 @@ class BrandController extends BaseController
         }
         //$icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
 
-
+        if ($request->hasFile('icon')) {
+            $icon = UploadTool::UploadImgForm($request,'icon');
+            if (isset($icon['error'])){
+                return redirect()->back()->with('upload', $icon['error']);
+            }
+        }
 
         DB::beginTransaction();
         try{
             //品牌更新的数据
             $update['zybrand'] = $zybrand;
             if (!empty($icon)) {
-                $update['bicon'] = $icon;
+                $update['bicon'] = $icon['url'];
             }
             DB::table('cfg_brand')->where('bid', $id)->update($update);
 
