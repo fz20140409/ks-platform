@@ -1,14 +1,13 @@
 @extends('admin.layouts.default')
 @section('t1','品牌')
+
 @if(isset($show))
-        @section('t2','查看')
-   @elseif(isset($info))
-        @section('t2','修改')
-    @else
-        @section('t2','新增')
+    @section('t2','查看')
+@elseif(isset($info))
+    @section('t2','修改')
+@else
+    @section('t2','新增')
 @endif
-
-
 
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">
@@ -73,14 +72,18 @@
             radioClass: 'iradio_minimal-blue',
         });
         $('.cat_p').each(function () {
-            $(this).on('ifChecked', function () {
-                $(this).next('.cat_s').find('input[type="checkbox"]').iCheck('check');
-            });
+//            $(this).on('ifChecked', function () {
+//                $(this).next('.cat_s').find('input[type="checkbox"]').iCheck('check');
+//            });
             $(this).on('ifUnchecked', function () {
 
                 $(this).next('.cat_s').find('input[type="checkbox"]').iCheck('uncheck');
             });
-        })
+        });
+
+        $(".cat_s").find('input[type="checkbox"]').on('ifChecked', function () {
+           $(this).parents('.cat_s').prev().find('input[type="checkbox"]').iCheck('check');
+        });
     </script>
     @include('admin.common.layer_tip')
     @endsection
@@ -126,14 +129,14 @@
                                                value="{{$one['id']}}">{{$one['cat_name']}}
                                     </div>
                                     @if(!empty($one['child']))
-                                        <div class="cat_s" style="margin: 10px 0px">
-                                            @foreach($one['child'] as $item)
-                                            <input @if(!empty($cat_ids)&&in_array($item['id'],$cat_ids)) checked @endif class="minimal" name="ids[]" type="checkbox"
-                                                   value="{{$item['id']}}">{{$item['cat_name']}}
-                                                @endforeach
-                                        </div>
-                                        @endif
-                                    @endforeach
+                                    <div class="cat_s" style="margin: 10px 0px">
+                                        @foreach($one['child'] as $item)
+                                        <input @if(!empty($cat_ids)&&in_array($item['id'],$cat_ids)) checked @endif class="minimal" name="ids[]" type="checkbox"
+                                               value="{{$item['id']}}">{{$item['cat_name']}}
+                                            @endforeach
+                                    </div>
+                                    @endif
+                                @endforeach
                             </div>
                         </div>
                     </div>
