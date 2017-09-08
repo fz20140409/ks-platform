@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Ks;
 
+use URL;
 use App\Http\Controllers\Admin\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -216,8 +217,6 @@ class SalechanelController extends BaseController
      * 展示子分类
      */
     function showSub(Request $request,$id){
-
-
         $where_str = $request->where_str;
         $where = array();
 
@@ -230,7 +229,16 @@ class SalechanelController extends BaseController
         //条件
         $infos=DB::table('cfg_salechanel')->select(['sale_name','sid'])->where($where)->where(['enabled'=>1])->paginate($this->page_size);
 
-        return view('admin.ks.salechanel.index',['infos'=>$infos,'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes,'where_str' => $where_str,'level'=>$request->level,'pid'=>$id]);
+        $data = array(
+            'infos'=>$infos,
+            'page_size' => $this->page_size,
+            'page_sizes' => $this->page_sizes,
+            'where_str' => $where_str,
+            'level'=>$request->level,
+            'pid'=>$id,
+            'previous' => URL::previous()
+        );
 
+        return view('admin.ks.salechanel.index', $data);
     }
 }

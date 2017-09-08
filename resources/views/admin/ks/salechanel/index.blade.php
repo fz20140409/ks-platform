@@ -35,7 +35,7 @@
                                     <div class="col-lg-2 col-xs-3 pull-right">
                                         <a href="javascript:ce('{{route('admin.ks.salechanel.create')}}',1)" class="btn btn-primary">新增</a>
                                         @if(isset($level))
-                                                <a href="{{route('admin.ks.salechanel.index')}}" class="btn btn-primary">返回上级</a>
+                                                <a href="{{$previous}}" class="btn btn-primary">返回上级</a>
                                          @endif
                                     </div>
                                 @endif
