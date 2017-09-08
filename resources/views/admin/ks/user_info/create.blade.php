@@ -53,11 +53,15 @@
                         </tr>
                         <tr>
                             <td>订单数</td>
-                            <td>xxx</td>
+                            <td>{{$order_count}}</td>
                         </tr>
                         <tr>
                             <td>评价</td>
-                            <td>xxx</td>
+                            <td>
+                                @foreach($pj_info as $item)
+                                    <div style="display: inline-block; padding-right: 10px;">{{$item->cname}}<br>{{$item->avg_value}}</div>
+                                @endforeach
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -65,8 +69,6 @@
                     <a href="{{route('admin.ks.user_info.index')}}" class="btn btn-default">返回</a>
 
                 </div>
-
-
             </div>
         </div>
         </div>

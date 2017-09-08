@@ -89,7 +89,6 @@ class UserInfoController extends BaseController
      */
     public function show($id)
     {
-        //
         $info=DB::select("SELECT b.uicon,b.company,c.type_name,a.iscertifi,a.honesty,(SELECT COUNT('uid') FROM user_merchant_favor WHERE sr_id = a.sr_id) AS favor,(SELECT COUNT(*) FROM great_merchant WHERE mid = a.sr_id) AS is_yz,(
 		SELECT
 			COUNT(*)
@@ -103,8 +102,21 @@ LEFT JOIN `user` AS b ON a.uid=b.uid
 LEFT JOIN user_type_info AS c ON a.mtype=c.id
 WHERE a.sr_id=$id")[0];
 
-        return view('admin.ks.user_info.create',compact('info'));
+        // 订单数
+        $order_count = DB::table('user_merchant_addOrder')->where('sr_id', $id)->where('enabled', 1)->count();
 
+        // 评价
+        $pj_info = DB::table('merchant_pj_info as m')
+                        ->leftJoin('user_merchant_comment_classify as u', 'm.type', '=', 'u.cid')
+                        ->select('u.cname', DB::raw('avg(m.value) as avg_value'))
+                        ->where('m.sr_id', $id)
+                        ->where('m.enabled', 1)
+                        ->where('u.enabled', 1)
+                        ->groupBy('m.type')
+                        ->get()
+                        ->toArray();
+
+        return view('admin.ks.user_info.create', compact('info', 'order_count', 'pj_info'));
     }
 
     /**
