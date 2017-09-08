@@ -38,7 +38,7 @@
             },
             dropZoneEnabled:false,
             maxFileSize: 300,
-            maxFileCount: 5,
+            maxFileCount: 9,
             enctype: 'multipart/form-data',
             uploadUrl: '{{ route('admin.ks.dh.store') }}', //上传的地址
             allowedFileExtensions: ["jpg", "png", "gif"],//接收的文件后缀
