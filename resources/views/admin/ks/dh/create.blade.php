@@ -50,6 +50,13 @@
                 ],
             @endif
 
+        }).on('fileimagesloaded', function(event) {
+            var all_length = $("#icon_url").parent().find(".file-preview-thumbnails > div.file-preview-frame").length;
+            var upload_length = event.currentTarget.files.length;
+            var remove_length = all_length - upload_length;
+            if (remove_length > 0) {
+                $("#icon_url").parent().find(".file-preview-thumbnails > div.file-preview-frame:lt(" + remove_length + ")").remove();
+            }
         });
         $("#vd_icon").fileinput({
             initialPreviewAsData: true,
@@ -75,6 +82,13 @@
             ],
             @endif
 
+        }).on('fileimagesloaded', function(event) {
+            var all_length = $("#vd_icon_url").parent().find(".file-preview-thumbnails > div.file-preview-frame").length;
+            var upload_length = event.currentTarget.files.length;
+            var remove_length = all_length - upload_length;
+            if (remove_length > 0) {
+                $("#icon_url").parent().find(".file-preview-thumbnails > div.file-preview-frame:lt(" + remove_length + ")").remove();
+            }
         });
 
         $("#video").fileinput({
