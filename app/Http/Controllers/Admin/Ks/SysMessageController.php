@@ -57,10 +57,10 @@ class SysMessageController extends BaseController
      */
     public function store(Request $request)
     {
-        $fb_time=$request->input('fb_time');
-        if (empty($fb_time)){
-            return redirect()->back()->withInput()->with('success', '请选择发布时间');
-        }
+//        $fb_time=$request->input('fb_time');
+//        if (empty($fb_time)){
+//            return redirect()->back()->withInput()->with('success', '请选择发布时间');
+//        }
         $title=$request->title;
         $content=$request->input('content');
         $is_sync=$request->input('is_sync');
@@ -71,7 +71,7 @@ class SysMessageController extends BaseController
             'type'=>1,
             'is_sync'=>$is_sync,
             'create_time'=>date('Y-m-d H:i:s',time()),
-            'fb_time'=>$fb_time,
+//            'fb_time'=>$fb_time,
             'enabled'=>1
         ]);
         return redirect()->back()->with('success', '添加成功');

@@ -108,18 +108,18 @@
                                <input @if(isset($info)&&$info->is_sync==0) checked  @endif value="0" name="is_sync" type="radio" class="minimal">否
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="fb_time" class="col-sm-2 control-label">发布时间</label>
+                        {{--<div class="form-group">--}}
+                            {{--<label for="fb_time" class="col-sm-2 control-label">发布时间</label>--}}
 
-                            <div class="col-sm-8">
+                            {{--<div class="col-sm-8">--}}
 
-                                <div class="input-append date form_datetime">
-                                    <input  name="fb_time"  type="text" value="@if(isset($info)){{$info->fb_time}}@else{{old('fb_time')}}@endif"  class="form-control">
-                                    <span class="add-on"><i class="icon-th"></i></span>
-                                </div>
+                                {{--<div class="input-append date form_datetime">--}}
+                                    {{--<input  name="fb_time"  type="text" value="@if(isset($info)){{$info->fb_time}}@else{{old('fb_time')}}@endif"  class="form-control">--}}
+                                    {{--<span class="add-on"><i class="icon-th"></i></span>--}}
+                                {{--</div>--}}
 
-                            </div>
-                        </div>
+                            {{--</div>--}}
+                        {{--</div>--}}
 
 
 

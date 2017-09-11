@@ -49,7 +49,7 @@
                                     <th>ID</th>
                                     <th>消息标题</th>
                                     <th>创建时间</th>
-                                    <th>发布时间</th>
+                                    {{--<th>发布时间</th>--}}
                                     <th>状态</th>
 
                                     <th>操作</th>
@@ -62,7 +62,7 @@
 
                                         <td width="10%">{{$info->title}}</td>
                                         <td>{{$info->create_time}}</td>
-                                        <td>{{$info->fb_time}}</td>
+                                        {{--<td>{{$info->fb_time}}</td>--}}
                                         <td>xxx</td>
                                         <td>
 
