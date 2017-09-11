@@ -77,7 +77,7 @@ class SalechanelController extends BaseController
 
         $count= DB::table('cfg_salechanel')->where($where)->where(['enabled'=>1])->count();
         if(!empty($count)){
-            return response()->json(['msg'=>'存在相同渠道名称']);
+            return response()->json(['msg'=>'渠道名称不允许重名']);
         }
         $insert=[
             'sale_name'=>$sale_name,
@@ -131,7 +131,7 @@ class SalechanelController extends BaseController
         $where[]=['sid','!=',$id];
         $count= DB::table('cfg_salechanel')->where($where)->where(['enabled'=>1])->count();
         if (!empty($count)) {
-            return response()->json(['msg'=>'存在相同渠道名称']);
+            return response()->json(['msg'=>'渠道名称不允许重名']);
         }
 
         DB::table('cfg_salechanel')->where('sid',$id)->update(['sale_name' => $sale_name]);
@@ -146,7 +146,7 @@ class SalechanelController extends BaseController
         $where[]=['sid','!=',$id];
         $count= DB::table('cfg_salechanel')->where($where)->where(['enabled'=>1])->count();
         if (!empty($count)) {
-            return response()->json(['msg'=>'存在相同渠道名称']);
+            return response()->json(['msg'=>'渠道名称不允许重名']);
         }
 
         DB::table('cfg_salechanel')->where('sid',$id)->update(['sale_name' => $sale_name,'updatetime'=>date('Y-m-d H:i:s',time())]);
