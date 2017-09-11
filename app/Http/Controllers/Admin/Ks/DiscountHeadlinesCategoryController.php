@@ -49,7 +49,7 @@ class DiscountHeadlinesCategoryController extends BaseController
         $catename = $request->catename;
         $count=DB::table('cfg_preferential_cate')->where('catename',$catename)->count();
         if(!empty($count)){
-            return redirect()->back()->with('success', '存在相同分类名称');
+            return redirect()->back()->with('success', '优惠头条分类名称不允许重名');
         }
         DB::table('cfg_preferential_cate')->insert(['catename' => $catename]);
 
@@ -95,7 +95,7 @@ class DiscountHeadlinesCategoryController extends BaseController
         $catename = $request->catename;
         $count=DB::table('cfg_preferential_cate')->where('catename',$catename)->whereNotIn('id',[$id])->count();
         if(!empty($count)){
-            return redirect()->back()->with('success', '存在相同分类名称');
+            return redirect()->back()->with('success', '优惠头条分类名称不允许重名');
         }
         DB::table('cfg_preferential_cate')->where('id', $id)->update([
             'catename' => $catename
