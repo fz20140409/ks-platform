@@ -137,7 +137,7 @@ class SysMessageController extends BaseController
     public function destroy($id)
     {
         //
-        DB::table('cfg_menu')->where('id',$id)->delete();
+        DB::table('notice_info')->where('id',$id)->delete();
         return response()->json([
             'msg' => 1
         ]);
