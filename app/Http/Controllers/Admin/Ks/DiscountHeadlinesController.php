@@ -255,7 +255,7 @@ class DiscountHeadlinesController extends BaseController
         $vd_icons = UploadTool::UploadMultipleImg($request, 'vd_icon', 'public/upload/img');
 
         if ($request->video_type == 2) {
-            if (empty($vd_icons) && empty($request->vd_icon_url)) {
+            if (!empty($url) && empty($vd_icons) && empty($request->vd_icon_url)) {
                 return redirect()->back()->withInput()->with('success', '有上传视频，需上传视频缩略图');
             }
         }
