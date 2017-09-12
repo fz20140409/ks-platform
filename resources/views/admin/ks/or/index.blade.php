@@ -24,19 +24,19 @@
                             @if(count($infos) > 0)
                             <table class="table table-hover">
                                 <tr>
-                                    <th></th>
+                                    {{--<th></th>--}}
                                     <th>ID</th>
                                     <th>原因名称</th>
                                     <th>操作</th>
                                 </tr>
                                 @foreach($infos as $k=>$info)
                                     <tr>
-                                        <th>
-                                            @if($info->r_id!=1)
-                                            <input class="minimal" name="ids[]" type="checkbox"
-                                                   value="{{$info->r_id}}">
-                                                @endif
-                                        </th>
+                                        {{--<th>--}}
+                                            {{--@if($info->r_id!=1)--}}
+                                            {{--<input class="minimal" name="ids[]" type="checkbox"--}}
+                                                   {{--value="{{$info->r_id}}">--}}
+                                                {{--@endif--}}
+                                        {{--</th>--}}
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->r_name}}</td>
                                         <td>
@@ -47,10 +47,10 @@
                                             <a class=" op_edit"  href="{{route('admin.ks.or.edit',$info->r_id)}}"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
-                                            {{--@if($info->r_id!=1)--}}
-                                            {{--<a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.or.destroy',$info->r_id)}}')">--}}
-                                                {{--<i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>--}}
-                                                {{--@endif--}}
+                                            @if($k > 2)
+                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.or.destroy',$info->r_id)}}')">
+                                                <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -65,13 +65,13 @@
                     <!--box-body-->
                     <!--box-footer-->
                     <div class="box-footer ">
-                        @if(Auth::user()->can('admin.ks.or.batch_destroy'))
-                            <div class="btn-group">
-                                <button onclick="selectAll()" type="button" class="btn btn-default">全选</button>
-                                <button onclick="reverse()" type="button" class="btn btn-default">反选</button>
-                                <a href="javascript:batch_destroy()" class="btn btn-danger">批量删除</a>
-                            </div>
-                        @endif
+                        {{--@if(Auth::user()->can('admin.ks.or.batch_destroy'))--}}
+                            {{--<div class="btn-group">--}}
+                                {{--<button onclick="selectAll()" type="button" class="btn btn-default">全选</button>--}}
+                                {{--<button onclick="reverse()" type="button" class="btn btn-default">反选</button>--}}
+                                {{--<a href="javascript:batch_destroy()" class="btn btn-danger">批量删除</a>--}}
+                            {{--</div>--}}
+                        {{--@endif--}}
                         <div style="float: right">
                             {{$infos->appends(['page_size'=>$page_size])->links()}}
                         </div>
