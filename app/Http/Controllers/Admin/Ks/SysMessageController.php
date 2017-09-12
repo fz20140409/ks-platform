@@ -65,7 +65,7 @@ class SysMessageController extends BaseController
         $content=$request->input('content');
         $is_sync=$request->input('is_sync');
 
-        DB::table('notice_info')->insert([
+        $id = DB::table('notice_info')->insertGetId([
             'title'=>$title,
             'content'=>$content,
             'type'=>1,
@@ -74,8 +74,9 @@ class SysMessageController extends BaseController
 //            'fb_time'=>$fb_time,
             'enabled'=>1
         ]);
-        return redirect()->back()->with('success', '添加成功');
 
+        DB::table('notice_info')->where('id', $id)->update(['typeid' => $id]);
+        return redirect()->back()->with('success', '添加成功');
     }
 
     /**
