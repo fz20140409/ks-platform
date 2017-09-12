@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Ks;
 
+use Session;
 use URL;
 use App\Http\Controllers\Admin\BaseController;
 use Illuminate\Http\Request;
@@ -227,13 +228,15 @@ class SalechanelController extends BaseController
         }
 
         if ($request->level == 2) {
+            Session::put('salechanel_id', $id);
+            $previous = route('admin.ks.salechanel.index');
             $parent = DB::table('cfg_salechanel')->where('sid', $id)->select('sale_name')->get()[0]->sale_name;
         }
         if ($request->level == 3) {
+            $previous = route('admin.ks.salechanel.showSub', ['id' => Session::get('salechanel_id'), 'level' => 2]);
             $name1 = DB::table('cfg_salechanel')->where('sid', $id)->select('sale_name')->get()[0];
             $name2 = DB::select("SELECT b.sale_name FROM `cfg_salechanel` AS a LEFT JOIN cfg_salechanel AS b ON a.parent_id=b.sid WHERE a.sid=$id")[0];
             $parent = $name2->sale_name . "-->" . $name1->sale_name;
-
         }
 
         //条件
@@ -247,7 +250,7 @@ class SalechanelController extends BaseController
             'level'=>$request->level,
             'pid'=>$id,
             'parent' => $parent,
-            'previous' => URL::previous()
+            'previous' => $previous
         );
 
         return view('admin.ks.salechanel.index', $data);
