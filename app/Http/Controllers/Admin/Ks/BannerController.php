@@ -131,7 +131,7 @@ class BannerController extends BaseController
      */
     public function edit($id)
     {
-        $jh = DB::table('cooperation_opportunity')->select(['id','title'])->get();
+        $jh = DB::table('cooperation_opportunity')->select(['id','title'])->where('enabled', 1)->get();
         $tt = DB::table('headline_info')->select(['hid','title'])->where('enabled', 1)->get();
         $cj = DB::table('user')->select(['uid','company'])->get();
         $info=DB::table('cfg_banner')->where('id',$id)->first();
