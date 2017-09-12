@@ -168,6 +168,15 @@
                 $("#vd_icon_url").val('');
             });
         };
+
+        function dosubmit(){
+            //获取表单提交按钮
+            var btnSubmit = document.getElementById("submit");
+            //将表单提交按钮设置为不可用，这样就可以避免用户再次点击提交按钮
+            btnSubmit.disabled = "disabled";
+            //返回true让表单可以正常提交
+            return true;
+        }
     </script>
     @include('admin.common.layer_tip')
 @endsection
@@ -177,7 +186,7 @@
             <div class="col-md-12">
                 <div class="box box-default">
                     <!-- form start -->
-                    <form enctype="multipart/form-data" class="box-header form-horizontal" method="post"
+                    <form enctype="multipart/form-data" class="box-header form-horizontal" method="post" onsubmit="return dosubmit()"
                           action="@if(isset($info)){{ route('admin.ks.dh.update',$info->hid) }}@else{{ route('admin.ks.dh.store') }}@endif">
                         {{csrf_field()}}
                         @if(isset($info)){{method_field('PUT')}}@endif
@@ -334,7 +343,7 @@
                     <!-- /.box-body -->
                         <div class="box-footer  ">
                             <a href="{{route('admin.ks.dh.index')}}" class="btn btn-default">返回</a>
-                            <button onClick="ChangeState();" @if(isset($show)) style="display: none" @endif type="submit"
+                            <button id="submit" onClick="ChangeState();" @if(isset($show)) style="display: none" @endif type="submit"
                                     class="btn btn-primary pull-right">保存
                             </button>
                         </div>

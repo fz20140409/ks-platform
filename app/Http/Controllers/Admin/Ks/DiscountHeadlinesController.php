@@ -95,8 +95,6 @@ class DiscountHeadlinesController extends BaseController
      */
     public function store(Request $request)
     {
-
-
         if ($request->ajax()) {
             //视频
             $video = UploadTool::UploadVideo($request, 'video', 'public/upload/video');
