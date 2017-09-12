@@ -21,7 +21,7 @@
     </tr>
     <tr>
         <td>第一次认证时间</td>
-        <td>xxx</td>
+        <td>{{$info->certifi_time}}</td>
     </tr>
     <tr>
         <td>公司/店铺名称</td>
@@ -33,6 +33,6 @@
     </tr>
     <tr>
         <td>诚信值</td>
-        <td>xxx</td>
+        <td>{{$honesty}}</td>
     </tr>
 </table>

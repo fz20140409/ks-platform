@@ -140,8 +140,9 @@ class UserManageController extends BaseController
     //个人信息
     function getPersonInfo($id){
         $info=DB::table('user as a')->select('a.*','b.type_name')->leftJoin('user_type_info as b','a.utype','=','b.id')->where('a.uid',$id)->first();
+        $honesty = DB::table('merchant')->where('uid', $id)->value('honesty');
 
-        return view('admin.ks.um.person_info',compact('info'));
+        return view('admin.ks.um.person_info',compact('info', 'honesty'));
 
     }
     //老板信息
