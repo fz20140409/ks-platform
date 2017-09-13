@@ -32,15 +32,25 @@
         $('#allnot').on('ifChecked', function () {
             $('table input[type="checkbox"]').iCheck('uncheck');
         });
+
         $('table input[type="checkbox"]').each(function () {
             $(this).on('ifChecked', function () {
-                var pid = $(this).attr('pid');
-                $('table input[type="checkbox"][value="' + pid + '"]').iCheck('check');
+                var current_id = $(this).val();
+                var parent_id = $(this).attr('pid');
 
+                $("table input[type='checkbox'][value='" + parent_id + "']").iCheck('check');
+                if ($("table input[type='checkbox'][pid='" + current_id + "']:checked").length <= 0) {
+                    $("table input[type='checkbox'][pid='" + current_id + "']").iCheck('check');
+                }
             });
             $(this).on('ifUnchecked', function () {
-                var pid = $(this).attr('pid');
-                $('table input[type="checkbox"][value="' + pid + '"]').iCheck('uncheck');
+                var current_id = $(this).val();
+                var parent_id = $(this).attr('pid');
+
+                $("table input[type='checkbox'][pid='" + current_id + "']").iCheck('uncheck');
+                if ($("table input[type='checkbox'][pid='" + parent_id + "']:checked").length <= 0) {
+                    $("table input[type='checkbox'][value='" + parent_id + "']").iCheck('uncheck');
+                }
             });
 
 
