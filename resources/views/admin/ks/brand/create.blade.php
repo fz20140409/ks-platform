@@ -72,9 +72,11 @@
             radioClass: 'iradio_minimal-blue',
         });
         $('.cat_p').each(function () {
-//            $(this).on('ifChecked', function () {
-//                $(this).next('.cat_s').find('input[type="checkbox"]').iCheck('check');
-//            });
+            $(this).on('ifChecked', function () {
+                if ($(this).next('.cat_s').find('input[type="checkbox"]:checked').length <= 0) {
+                    $(this).next('.cat_s').find('input[type="checkbox"]').iCheck('check');
+                }
+            });
             $(this).on('ifUnchecked', function () {
 
                 $(this).next('.cat_s').find('input[type="checkbox"]').iCheck('uncheck');
