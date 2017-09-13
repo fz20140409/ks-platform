@@ -48,7 +48,13 @@
                                             <p style="margin-top: 10px">{{$comment->username}}</p>
                                         </td>
                                         <td>{{$comment->content}}</td>
-                                        <td>{{$comment->uicon}}</td>
+                                        <td width="50%">
+                                            @if(!empty($comment->urls))
+                                            @foreach(explode(',', $comment->urls) as $item)
+                                                <img src="{{$item}}" class="img-rounded img-responsive">
+                                            @endforeach
+                                            @endif
+                                        </td>
                                         <td>{{$comment->create_time}}</td>
                                     </tr>
                                 @endforeach
