@@ -62,11 +62,13 @@ class SysMessageController extends BaseController
 //            return redirect()->back()->withInput()->with('success', '请选择发布时间');
 //        }
         $title=$request->title;
+        $intro=$request->intro;
         $content=$request->input('content');
         $is_sync=$request->input('is_sync');
 
         $id = DB::table('notice_info')->insertGetId([
             'title'=>$title,
+            'intro'=>$intro,
             'content'=>$content,
             'type'=>1,
             'is_sync'=>$is_sync,
@@ -117,11 +119,13 @@ class SysMessageController extends BaseController
             return redirect()->back()->withInput()->with('success', '请选择发布时间');
         }
         $title=$request->title;
+        $intro=$request->intro;
         $content=$request->input('content');
         $is_sync=$request->input('is_sync');
 
         DB::table('notice_info')->where('id',$id)->update([
             'title'=>$title,
+            'intro'=>$intro,
             'content'=>$content,
             'is_sync'=>$is_sync,
             'fb_time'=>$fb_time,

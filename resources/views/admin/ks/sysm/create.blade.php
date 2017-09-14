@@ -62,7 +62,18 @@
                                 },
                             }
                         },
-
+                        intro: {
+                            message: '消息简介不能为空',
+                            validators: {
+                                notEmpty: {
+                                    message: '消息简介不能为空'
+                                },
+                                stringLength: {
+                                    max: 35,
+                                    message: '消息简介长度小于35字符'
+                                },
+                            }
+                        },
                     }
                 })
         })
@@ -89,6 +100,17 @@
                                 <input value="@if(isset($info)){{$info->title}}@else{{old('title')}}@endif" name="title" type="text" class="form-control" id="title" placeholder="消息标题" required autofocus>
                                 @if ($errors->has('title'))
                                     <div class="alert alert-warning">{{ $errors->first('title') }}</div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="intro" class="col-sm-2 control-label">消息简介</label>
+
+                            <div class="col-sm-8">
+                                <input value="@if(isset($info)){{$info->intro}}@else{{old('intro')}}@endif" name="intro" type="text" class="form-control" id="intro" placeholder="消息简介" required>
+                                @if ($errors->has('intro'))
+                                    <div class="alert alert-warning">{{ $errors->first('intro') }}</div>
                                 @endif
                             </div>
                         </div>
