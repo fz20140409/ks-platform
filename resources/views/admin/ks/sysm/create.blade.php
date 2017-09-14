@@ -74,6 +74,14 @@
                                 },
                             }
                         },
+                        content: {
+                            message: '消息内容不能为空',
+                            validators: {
+                                notEmpty: {
+                                    message: '消息内容不能为空'
+                                },
+                            }
+                        },
                     }
                 })
         })
@@ -119,7 +127,7 @@
                             <label for="content" class="col-sm-2 control-label">消息内容</label>
 
                             <div class="col-sm-8">
-                                <textarea name="content" style="width: 100%; height: 400px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="editor">@if(isset($info)){{$info->content}}@else{{old('content')}}@endif</textarea>
+                                <textarea id="content" name="content" style="width: 100%; height: 400px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="editor">@if(isset($info)){{$info->content}}@else{{old('content')}}@endif</textarea>
                             </div>
                         </div>
                         <div class="form-group">
