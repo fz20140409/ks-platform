@@ -89,6 +89,7 @@ class MoreIconController extends BaseController
             'enabled'=>1,
             'icon'=>$icon['url'],
             'type'=>$type,
+            'utype'=>1,
             'status'=>1
         ]);
         return redirect()->back()->with('success', '添加成功');

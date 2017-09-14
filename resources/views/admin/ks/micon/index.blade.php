@@ -80,7 +80,7 @@
                                             <a class=" op_edit"  href="{{route('admin.ks.micon.edit',$info->id)}}"
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
-                                            @if($info->ftype != 1)
+                                            @if($info->utype != 0)
                                             <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.micon.destroy',$info->id)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i>
                                             </a>
