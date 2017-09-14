@@ -66,9 +66,9 @@
                                         <td>xxx</td>
                                         <td>
 
-                                            <a class=" op_edit"  href="{{route('admin.ks.sysm.edit',$info->id)}}"
-                                               style="margin-right: 10px;display: none">
-                                                <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
+                                            {{--<a class=" op_edit"  href="{{route('admin.ks.sysm.edit',$info->id)}}"--}}
+                                               {{--style="margin-right: 10px;display: none">--}}
+                                                {{--<i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>--}}
                                             <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.ks.sysm.destroy',$info->id)}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
                                         </td>
