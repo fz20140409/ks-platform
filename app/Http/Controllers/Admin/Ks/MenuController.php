@@ -77,6 +77,8 @@ class MenuController extends BaseController
             'menu_name'=>$menu_name,
             'm_url'=>$m_url,
             'icon'=>$icon['url'],
+            'dtype'=>1,
+            'isinner'=>6,
         ]);
         return redirect()->back()->with('success', '添加成功');
 
