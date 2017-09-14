@@ -124,7 +124,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" @if(isset($info)) hidden="hidden" @endif>
                             <label for="name" class="col-sm-2 control-label">类型</label>
 
                             <div class="col-sm-8">
@@ -135,8 +135,6 @@
                                </select>
                             </div>
                         </div>
-
-
 
                     </div>
                     @if(isset($show))</fieldset>@endif
