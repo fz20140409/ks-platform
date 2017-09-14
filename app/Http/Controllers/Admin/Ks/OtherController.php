@@ -150,4 +150,58 @@ class OtherController extends BaseController
         return redirect()->back()->with('success', '操作成功');
 
     }
+
+    //客商平台服务协议
+    function service_contract()
+    {
+        $content = DB::table('cfg_platform_content')->where('type', 1)->where('enabled', 1)->value('content');
+        return view('admin.ks.other.service_contract', compact('content'));
+    }
+
+    //客商平台服务协议
+    function service_contract_update(Request $request)
+    {
+        $content = $request->service_contract;
+        $platform_content = DB::table('cfg_platform_content')->where('type', 1)->where('enabled', 1)->first();
+        if ($platform_content) {
+            DB::table('cfg_platform_content')->where('type', 1)->where('enabled', 1)->update(['content' => $content]);
+        } else {
+            $insert = array(
+                'type' => 1,
+                'content' => $content,
+                'create_time' => date("Y-m-d H:i:s")
+            );
+            DB::table('cfg_platform_content')->where('type', 1)->where('enabled', 1)->insert($insert);
+        }
+
+        return redirect()->back()->with('success', '操作成功');
+
+    }
+
+    //客商平台服务协议
+    function privacy_policy()
+    {
+        $content = DB::table('cfg_platform_content')->where('type', 2)->where('enabled', 1)->value('content');
+        return view('admin.ks.other.privacy_policy', compact('content'));
+    }
+
+    //客商平台服务协议
+    function privacy_policy_update(Request $request)
+    {
+        $content = $request->privacy_policy;
+        $platform_content = DB::table('cfg_platform_content')->where('type', 2)->where('enabled', 1)->first();
+        if ($platform_content) {
+            DB::table('cfg_platform_content')->where('type', 2)->where('enabled', 1)->update(['content' => $content]);
+        } else {
+            $insert = array(
+                'type' => 2,
+                'content' => $content,
+                'create_time' => date("Y-m-d H:i:s")
+            );
+            DB::table('cfg_platform_content')->where('type', 2)->where('enabled', 1)->insert($insert);
+        }
+
+        return redirect()->back()->with('success', '操作成功');
+
+    }
 }

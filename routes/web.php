@@ -120,6 +120,12 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         //客服设置
         Route::get('other/kefu_setting','OtherController@kefu_setting')->name('other.kefu_setting');
         Route::post('other/kefu_setting_update','OtherController@kefu_setting_update')->name('other.kefu_setting_update');
+        //客商平台服务协议
+        Route::get('other/service_contract','OtherController@service_contract')->name('other.service_contract');
+        Route::post('other/service_contract_update','OtherController@service_contract_update')->name('other.service_contract_update');
+        //隐私声明
+        Route::get('other/privacy_policy','OtherController@privacy_policy')->name('other.privacy_policy');
+        Route::post('other/privacy_policy_update','OtherController@privacy_policy_update')->name('other.privacy_policy_update');
 
         //合作机会
         Route::resource('coop','CooperationOpportunityController');
