@@ -76,7 +76,7 @@ class DiscountGoodsController extends BaseController
         //
         $where_str = $request->where_str;
         if (!empty($where_str)) {
-            $str_where.=" and c.company like '%$where_str%' or a.goods_smallname like '%$where_str%' or a.goods_name like '%$where_str%'";
+            $str_where.=" and (c.company like '%$where_str%' or a.goods_smallname like '%$where_str%' or a.goods_name like '%$where_str%')";
             $where_link['where_str']=$where_str;
         }
         //品类
@@ -132,14 +132,13 @@ class DiscountGoodsController extends BaseController
         $brands=DB::select("SELECT bid,zybrand FROM cfg_brand");
 
 
-
-
-        $sql = "(SELECT a.goods_id,c.provice,c.company,d.zybrand,a.goods_smallname,a.goods_name,f.cat_name,a.sell_count,a.is_hot,a.is_new,is_cuxiao FROM `goods` AS a
+        $sql = "(SELECT a.goods_id,c.provice,c.company,d.zybrand,a.goods_smallname,a.goods_name,f.cat_name,a.sell_count,a.is_hot,a.is_new,is_cuxiao, gs.price, gs.spec_unic, gs.changespec_price, gs.changespec_name FROM `goods` AS a
 LEFT JOIN merchant AS b ON a.sr_id=b.sr_id
 LEFT JOIN `user` AS c ON c.uid=b.uid
 LEFT JOIN cfg_brand AS d ON a.bid=d.bid
+LEFT JOIN goods_spec AS gs ON a.goods_id=gs.good_id
 LEFT JOIN goods_category_rela AS e ON a.goods_id=e.good_id
-LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where) as g";
+LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where group by goods_id) as g";
         $infos = DB::table(DB::raw($sql))->paginate($this->page_size);
 
 
