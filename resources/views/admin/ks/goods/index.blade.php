@@ -96,8 +96,8 @@
                                         <td>{{$info->goods_name}}</td>
                                         <td>{{$info->cat_name}}</td>
 
-                                        <td>{{$info->price1 or ''}}</td>
-                                        <td>{{$info->price2 or ''}}</td>
+                                        <td>{{$info->price}}/{{$info->spec_unic}}</td>
+                                        <td>{{$info->changespec_price}}/{{$info->changespec_name}}</td>
                                         <td>@if($info->is_hot==1) <span style="color: #00a7d0">热门商品</span> @endif @if($info->is_new==1) <span style="margin-left: 2px;color: #00a7d0">新品推荐</span> @endif  @if($info->is_cuxiao==1) <span style="margin-left: 2px;color: #00a7d0">促销商品</span> @endif</td>
                                         <td>{{$info->sell_count }}</td>
                                         <td>

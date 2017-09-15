@@ -26,7 +26,7 @@ class GoodsController extends BaseController
         //
         $where_str = $request->where_str;
         if (!empty($where_str)) {
-            $str_where.=" and c.company like '%$where_str%' or a.goods_smallname like '%$where_str%' or a.goods_name like '%$where_str%'";
+            $str_where.=" and (c.company like '%$where_str%' or a.goods_smallname like '%$where_str%' or a.goods_name like '%$where_str%')";
             $where_link['where_str']=$where_str;
         }
         //品牌
@@ -81,31 +81,14 @@ class GoodsController extends BaseController
         $brands=DB::select("SELECT bid,zybrand FROM cfg_brand");
 
 
-
-
-        $sql = "(SELECT a.goods_id,c.provice,c.company,d.zybrand,a.goods_smallname,a.goods_name,f.cat_name,a.sell_count,a.is_hot,a.is_new,is_cuxiao FROM `goods` AS a
+        $sql = "(SELECT a.goods_id,c.provice,c.company,d.zybrand,a.goods_smallname,a.goods_name,f.cat_name,a.sell_count,a.is_hot,a.is_new,is_cuxiao, gs.price, gs.spec_unic, gs.changespec_price, gs.changespec_name FROM `goods` AS a
 LEFT JOIN merchant AS b ON a.sr_id=b.sr_id
 LEFT JOIN `user` AS c ON c.uid=b.uid
 LEFT JOIN cfg_brand AS d ON a.bid=d.bid
+LEFT JOIN goods_spec AS gs ON a.goods_id=gs.good_id
 LEFT JOIN goods_category_rela AS e ON a.goods_id=e.good_id
-LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where) as g";
+LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where group by goods_id) as g";
         $infos = DB::table(DB::raw($sql))->paginate($this->page_size);
-
-        $info_temp = $infos->toArray();
-        $info_temp = array_map('get_object_vars', $info_temp['data']);
-        $good_ids = array_column($info_temp, 'goods_id');
-
-        $spec = DB::table('goods_spec')->select('good_id', 'price', 'spec_unic')->whereIn('good_id', $good_ids)->get();
-
-        foreach ($infos as &$value) {
-            $price_key = 1;
-            foreach ($spec as $item)
-                if ($value->goods_id == $item->good_id) {
-                    $price = 'price' . $price_key;
-                    $value->$price = $item->price . '/' . $item->spec_unic;
-                    $price_key ++;
-                }
-        }
 
         return view('admin.ks.goods.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str,'where_link' => $where_link,'provices'=>$provices,'brands'=>$brands,'area'=>$area,'brand'=>$brand,'label'=>$label,'cates'=>$cates,'cate_name'=>$cate_name]);
 
