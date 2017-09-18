@@ -102,13 +102,13 @@ class CategoryController extends BaseController
 
         }*/
 
-
+        $level = $count = DB::table('cfg_category')->where('cat_id', $pid)->value('level');
         $insert = [
             'cat_name' => $cat_name,
             'cat_icon' => $icon['url'],
             'parent_id' => $pid,
+            'level' => intval($level) + 1,
             'createtime' => date('Y-m-d H:i:s', time()),
-
         ];
 
 
