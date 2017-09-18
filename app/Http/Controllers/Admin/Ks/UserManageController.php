@@ -151,6 +151,7 @@ class UserManageController extends BaseController
     }
     //业务信息
     function getBusinessInfo($id){
+        $s = DB::table('merchant')->where('uid', $id)->value('honesty');
         return view('admin.ks.um.business_info',compact('info'));
     }
     //经营人
@@ -160,7 +161,23 @@ class UserManageController extends BaseController
     }
     //企业信息
     function getCompanyInfo($id){
-        return view('admin.ks.um.company_info',compact('info'));
+        // 用户信息
+        $user = DB::table('user')->where('uid', $id)->first();
+        // 商户信息
+        $merchant = DB::table('merchant')->where('uid', $id)->first();
+        // 营业执照
+        $merchant_file = DB::table('merchant_file')->where('sr_id', $merchant->sr_id)->where('filetype', 2)->where('enabled', 1)->get();
+        // 业务辐射区
+        $merchant_dealers_ywfs = DB::table('merchant_dealers_ywfs as md')
+                                    ->select('cl.name')
+                                    ->leftJoin('cfg_locations as cl', 'md.bizarea_id', '=', 'cl.id')
+                                    ->where('md.sr_id', $merchant->sr_id)
+                                    ->orderBy('cl.parent_id', 'asc')
+                                    ->get()
+                                    ->toArray();
+        $merchant_dealers_ywfs = array_map('get_object_vars', $merchant_dealers_ywfs);
 
+        $data = compact('user', 'merchant', 'merchant_file', 'merchant_dealers_ywfs');
+        return view('admin.ks.um.company_info', $data);
     }
 }
