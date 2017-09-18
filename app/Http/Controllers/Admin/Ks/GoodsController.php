@@ -87,7 +87,7 @@ LEFT JOIN `user` AS c ON c.uid=b.uid
 LEFT JOIN cfg_brand AS d ON a.bid=d.bid
 LEFT JOIN goods_spec AS gs ON a.goods_id=gs.good_id
 LEFT JOIN goods_category_rela AS e ON a.goods_id=e.good_id
-LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where $str_where group by goods_id) as g";
+LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where $str_where group by goods_id order by a.createtime desc) as g";
         $infos = DB::table(DB::raw($sql))->paginate($this->page_size);
 
         return view('admin.ks.goods.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str,'where_link' => $where_link,'provices'=>$provices,'brands'=>$brands,'area'=>$area,'brand'=>$brand,'label'=>$label,'cates'=>$cates,'cate_name'=>$cate_name]);
