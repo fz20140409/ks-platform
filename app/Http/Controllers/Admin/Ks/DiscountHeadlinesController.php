@@ -112,10 +112,10 @@ class DiscountHeadlinesController extends BaseController
         if (empty($url)) {
             //填写的地址
             $url = $request->video_url;
-        } else {
-            if (empty($vd_icons)) { // 有上传视频，视频缩略图要做成必填的
-                return redirect()->back()->withInput()->with('success', '有上传视频，需上传视频缩略图');
-            }
+        }
+        // 有上传视频，视频缩略图要做成必填的
+        if (!empty($url) && empty($vd_icons)) {
+            return redirect()->back()->withInput()->with('success', '有上传视频，需上传视频缩略图');
         }
 
         $title = $request->title;
@@ -253,7 +253,13 @@ class DiscountHeadlinesController extends BaseController
         $vd_icons = UploadTool::UploadMultipleImg($request, 'vd_icon', 'public/upload/img');
 
         if ($request->video_type == 2) {
+            // 本地上传
             if (!empty($request->url) && empty($vd_icons) && empty($request->vd_icon_url)) {
+                return redirect()->back()->withInput()->with('success', '有上传视频，需上传视频缩略图');
+            }
+        } else {
+            // url地址
+            if (!empty($request->video_url) && empty($vd_icons)) {
                 return redirect()->back()->withInput()->with('success', '有上传视频，需上传视频缩略图');
             }
         }
