@@ -21,7 +21,7 @@ class GoodsController extends BaseController
      */
     public function index(Request $request)
     {
-        $str_where='';
+        $str_where='1=1 and a.state != 3 and a.enabled = 1';
         $where_link['page_size']=$this->page_size;
         //
         $where_str = $request->where_str;
@@ -87,7 +87,7 @@ LEFT JOIN `user` AS c ON c.uid=b.uid
 LEFT JOIN cfg_brand AS d ON a.bid=d.bid
 LEFT JOIN goods_spec AS gs ON a.goods_id=gs.good_id
 LEFT JOIN goods_category_rela AS e ON a.goods_id=e.good_id
-LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where group by goods_id) as g";
+LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where $str_where group by goods_id) as g";
         $infos = DB::table(DB::raw($sql))->paginate($this->page_size);
 
         return view('admin.ks.goods.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str,'where_link' => $where_link,'provices'=>$provices,'brands'=>$brands,'area'=>$area,'brand'=>$brand,'label'=>$label,'cates'=>$cates,'cate_name'=>$cate_name]);
@@ -124,9 +124,14 @@ LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where group by g
     public function show($id)
     {
         // 图片
-        $banner = DB::table('goods_attr')->where('good_id', $id)->where('attr_type', 1)->where('enabled', 1)->get();
-        // 商品详情
-        $descrip = DB::table('goods_attr')->where('good_id', $id)->where('attr_type', 2)->where('enabled', 1)->value('attr_value');
+        $banner = DB::table('goods_attr')->where('good_id', $id)->where('attr_name', 'banner')->where('attr_type', 2)->where('enabled', 1)->get();
+//        // 商品详情
+//        $descrip = DB::table('goods_attr')->where('good_id', $id)->where('attr_name', 'descrip')->where('enabled', 1)->get();
+        // 商品详情链接
+        $sr_id = DB::table('goods')->where('goods_id', $id)->value('sr_id');
+        $uid = DB::table('merchant')->where('sr_id', $sr_id)->value('uid');
+        $descrip_link = "http://ks.fjmaimaimai.com:8588/shareNew/#/goodsDetails?uid={$uid}&good_id={$id}";
+
         // 店铺分类
         $sc_id = DB::table('goods_shopclassify')->where('good_id', $id)->where('enabled', 1)->value('sc_id');
         $sc_name = DB::table('merchant_shopclassify')->where('cat_id', $sc_id)->where('enabled', 1)->value('sc_name');
@@ -142,7 +147,7 @@ LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where group by g
 LEFT JOIN cfg_brand AS b ON a.bid=b.bid WHERE a.goods_id=$id")[0];
         // 价格
         $spec=DB::select("select price,kc,spec_unic from goods_spec where good_id=$id");
-        $data = compact('banner', 'descrip', 'sc_name', 'category', 'apply', 'info', 'spec');
+        $data = compact('banner', 'descrip', 'sc_name', 'category', 'apply', 'info', 'spec', 'descrip_link');
 
         return view('admin.ks.goods.create', $data);
     }

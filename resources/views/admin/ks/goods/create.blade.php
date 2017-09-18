@@ -23,7 +23,7 @@
                             <td width="20%">图片</td>
                             <td width="80%">
                                 @foreach($banner as $item)
-                                    <img src="{{$item->attr_value}}" class="img-rounded">
+                                    <a href="{{$item->attr_value}}" title="点我查看大图"><img src="{{$item->attr_value}}" class="img-responsive img-rounded" style="width: 20%; display: inline-block;"></a>
                                 @endforeach
                             </td>
                         </tr>
@@ -87,7 +87,31 @@
                         </tr>
                         <tr>
                             <td>商品详情</td>
-                            <td>{!! $descrip !!}</td>
+                            <td>
+                                <a href="{{$descrip_link}}" target="_blank">商品详情链接</a>
+                                {{--<div style="width: 600px">--}}
+                                {{--@foreach($descrip as $item)--}}
+                                    {{--@if($item->attr_type == 1)--}}
+                                        {{--<div>--}}
+                                            {{--<textarea style="width: 100%" rows="10" >{{$item->attr_value}}</textarea>--}}
+                                        {{--</div>--}}
+                                    {{--@endif--}}
+                                    {{--@if($item->attr_type == 2)--}}
+                                        {{--<div style="width: 20%; display: inline-block;">--}}
+                                            {{--<a href="{{$item->attr_value}}" title="点我查看大图"><img src="{{$item->attr_value}}" class="img-responsive img-rounded" ></a>--}}
+                                        {{--</div>--}}
+                                    {{--@endif--}}
+                                    {{--@if($item->attr_type == 3)--}}
+                                        {{--<div>--}}
+                                            {{--<video width="100%" src="{{$item->attr_value}}" controls="controls"></video>--}}
+                                        {{--</div>--}}
+                                    {{--@endif--}}
+                                    {{--@if($item->attr_type == 4)--}}
+                                        {{--<hr />--}}
+                                    {{--@endif--}}
+                                {{--@endforeach--}}
+                                {{--</div>--}}
+                            </td>
                         </tr>
                     </table>
                 </div>
