@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Ks;
 
+use App\Http\Controllers\Tools\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\BaseController;
 use Illuminate\Support\Facades\DB;
@@ -151,13 +152,58 @@ class UserManageController extends BaseController
     }
     //业务信息
     function getBusinessInfo($id){
-        $s = DB::table('merchant')->where('uid', $id)->value('honesty');
-        return view('admin.ks.um.business_info',compact('info'));
+        // 商户信息
+        $merchant = DB::table('merchant')->where('uid', $id)->first();
+
+        // 主营渠道
+        $salechanel = DB::table('merchant_salechanel as ms')
+                        ->select('cs.sid as id', 'cs.sale_name as name', 'cs.parent_id as pid')
+                        ->leftJoin('cfg_salechanel as cs', 'ms.sid', '=', 'cs.sid')
+                        ->where('ms.sr_id', $merchant->sr_id)
+                        ->where('ms.enabled', 1)
+                        ->where('cs.enabled', 1)
+                        ->get()
+                        ->toArray();
+        $salechanel = array_map('get_object_vars', $salechanel);
+        $salechanel = Category::toLayer($salechanel);
+
+        // 品类
+        $category = DB::table('merchant_category as mc')
+            ->select('cc.cat_id as id', 'cc.cat_name as name', 'cc.parent_id as pid')
+            ->leftJoin('cfg_category as cc', 'mc.cat_id', '=', 'cc.cat_id')
+            ->where('mc.sr_id', $merchant->sr_id)
+            ->where('mc.enabled', 1)
+            ->where('cc.enabled', 1)
+            ->get()
+            ->toArray();
+        $category = array_map('get_object_vars', $category);
+        $category = Category::toLayer($category);
+
+        // 业务辐射区
+        $merchant_dealers_ywfs = DB::table('merchant_dealers_ywfs as md')
+                                    ->select('cl.*', 'cl.parent_id as pid')
+                                    ->leftJoin('cfg_locations as cl', 'md.bizarea_id', '=', 'cl.id')
+                                    ->where('md.sr_id', $merchant->sr_id)
+                                    ->where('md.enabled', 1)
+                                    ->orderBy('cl.parent_id', 'asc')
+                                    ->get()
+                                    ->toArray();
+        $merchant_dealers_ywfs = array_map('get_object_vars', $merchant_dealers_ywfs);
+        $merchant_dealers_ywfs = Category::toLayer($merchant_dealers_ywfs);
+
+        // 主要经销品牌
+        $brand = DB::table('merchant_dealers_brand as m')
+                    ->select('cb.zybrand', 'm.proportion')
+                    ->leftJoin('cfg_brand as cb', 'm.bid', '=', 'cb.bid')
+                    ->where('m.sr_id', $merchant->sr_id)
+                    ->where('m.enabled', 1)
+                    ->get();
+
+        return view('admin.ks.um.business_info',compact('merchant', 'salechanel', 'category', 'merchant_dealers_ywfs', 'brand'));
     }
     //经营人
     function getTransactorInfo($id){
         return view('admin.ks.um.transactor_info',compact('info'));
-
     }
     //企业信息
     function getCompanyInfo($id){
@@ -167,15 +213,6 @@ class UserManageController extends BaseController
         $merchant = DB::table('merchant')->where('uid', $id)->first();
         // 营业执照
         $merchant_file = DB::table('merchant_file')->where('sr_id', $merchant->sr_id)->where('filetype', 2)->where('enabled', 1)->get();
-        // 业务辐射区
-        $merchant_dealers_ywfs = DB::table('merchant_dealers_ywfs as md')
-                                    ->select('cl.name')
-                                    ->leftJoin('cfg_locations as cl', 'md.bizarea_id', '=', 'cl.id')
-                                    ->where('md.sr_id', $merchant->sr_id)
-                                    ->orderBy('cl.parent_id', 'asc')
-                                    ->get()
-                                    ->toArray();
-        $merchant_dealers_ywfs = array_map('get_object_vars', $merchant_dealers_ywfs);
 
         $data = compact('user', 'merchant', 'merchant_file', 'merchant_dealers_ywfs');
         return view('admin.ks.um.company_info', $data);
