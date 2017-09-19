@@ -37,7 +37,7 @@
                 actionDelete:'',
             },
             dropZoneEnabled:false,
-            maxFileSize: 300,
+            maxFileSize: 1024,
             maxFileCount: 9,
             enctype: 'multipart/form-data',
             uploadUrl: '{{ route('admin.ks.dh.store') }}', //上传的地址
@@ -69,7 +69,7 @@
                 actionUpload:'',
                 actionDelete:'',
             },
-            maxFileSize: 300,
+            maxFileSize: 1024,
             maxFileCount: 5,
             enctype: 'multipart/form-data',
             uploadUrl: '{{ route('admin.ks.dh.store') }}', //上传的地址
