@@ -88,7 +88,13 @@
                         <tr>
                             <td>商品详情</td>
                             <td>
-                                <a href="{{$descrip_link}}" target="_blank">商品详情链接</a>
+
+                                <iframe src="{{$descrip_link}}" width="400" height="700" longdesc="w3school.txt">
+                                    <p>您的浏览器不支持框架。</p>
+                                </iframe>
+
+                                {{--<a href="{{$descrip_link}}" target="_blank">商品详情链接</a>--}}
+
                                 {{--<div style="width: 600px">--}}
                                 {{--@foreach($descrip as $item)--}}
                                     {{--@if($item->attr_type == 1)--}}

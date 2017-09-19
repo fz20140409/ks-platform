@@ -124,7 +124,7 @@ LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where $str_where group by goods
     public function show($id)
     {
         // 图片
-        $banner = DB::table('goods_attr')->where('good_id', $id)->where('attr_name', 'banner')->where('attr_type', 2)->where('enabled', 1)->get();
+        $banner = DB::table('goods_attr')->where('good_id', $id)->where('attr_name', 'banner')->where('enabled', 1)->get();
 //        // 商品详情
 //        $descrip = DB::table('goods_attr')->where('good_id', $id)->where('attr_name', 'descrip')->where('enabled', 1)->get();
         // 商品详情链接
