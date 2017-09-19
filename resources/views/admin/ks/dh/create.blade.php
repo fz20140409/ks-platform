@@ -269,6 +269,7 @@
                                             @if(session()->has('upload'))
                                                 <div class="alert alert-error">{{session('upload')}}</div>
                                             @endif
+                                            <p style="color: red;margin-top: 5px">上传图片扩展名只支持jpg、png、gif 格式 ，图片大小不超过1M, 批量上传需在弹出选择框时按住 Ctrl 键选择</p>
                                         </div>
                                     </div>
                                     <div class="form-group" id="video_type">
@@ -290,6 +291,8 @@
                                             @if(session()->has('video'))
                                                 <div class="alert alert-error">{{session('video')}}</div>
                                             @endif
+
+                                            <p style="color: red;margin-top: 5px">只能上传一个视频</p>
                                         </div>
                                     </div>
                                     <div class="form-group" id="video_url"   style="display: @if(isset($info)&&isset($video)&&$video->video_type==1) show  @endif none">
