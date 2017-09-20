@@ -107,7 +107,7 @@
                     @if(isset($show))</fieldset>@endif
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <a href="{{route('admin.ks.mb.index')}}" class="btn btn-default">返回</a>
+                        <a href="javascript:history.back();" class="btn btn-default">返回</a>
                         <button @if(isset($show)) style="display: none" @endif type="submit" class="btn btn-primary pull-right">保存</button>
                     </div>
                     <!-- /.box-footer -->
