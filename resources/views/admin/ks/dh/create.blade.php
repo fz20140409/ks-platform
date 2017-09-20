@@ -94,9 +94,10 @@
         $("#video").fileinput({
             initialPreviewAsData: true,
             showCaption: false,
+            dropZoneEnabled:false,
             language: 'zh',
             showClose: false,
-            showRemove: false,
+//            showRemove: false,
             layoutTemplates:{
                 actionUpload:'',
             },
@@ -167,6 +168,9 @@
             $("#vd_icon_url").parent().find("button[title='清除选中文件']").click(function () {
                 $("#vd_icon_url").val('');
             });
+            $("#url").parent().find("button[title='清除选中文件']").click(function () {
+                $("#url").val('');
+            })
         };
 
         function dosubmit(){
