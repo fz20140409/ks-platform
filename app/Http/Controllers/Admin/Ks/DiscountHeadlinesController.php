@@ -157,23 +157,23 @@ class DiscountHeadlinesController extends BaseController
             }
 
             //视频
-            if (empty($url)){
-                $url='';
-            }
-            $vd=[
-                'video_type' => $request->video_type,
-                'hid' => $id,
-                'attr_value' => $url,
-                'enabled' => 1,
-                'attr_type' => 'mv',
-                'create_time' => date('Y-m-d H:i:s', time())
-            ];
-            if (!empty($vd_icons)){
-                $vd_icons=implode(',',$vd_icons);
-                $vd['remark']=$vd_icons;
+            if (!empty($url)){
+                $vd=[
+                    'video_type' => $request->video_type,
+                    'hid' => $id,
+                    'attr_value' => $url,
+                    'enabled' => 1,
+                    'attr_type' => 'mv',
+                    'create_time' => date('Y-m-d H:i:s', time())
+                ];
 
+                if (!empty($vd_icons)){
+                    $vd_icons=implode(',',$vd_icons);
+                    $vd['remark']=$vd_icons;
+
+                }
+                DB::table('headline_attr')->insert($vd);
             }
-            DB::table('headline_attr')->insert($vd);
 
             //图集
             if (!empty($icons)) {
@@ -227,7 +227,6 @@ class DiscountHeadlinesController extends BaseController
         $cates = DB::table('cfg_preferential_cate')->get();
         $areas = DB::table('cfg_locations')->select('id', 'name')->where('level', 1)->get();
 
-
         return view('admin.ks.dh.create', compact('cates', 'areas', 'info', 'area_arr', 'cate', 'video', 'imgs'));
     }
 
@@ -259,7 +258,7 @@ class DiscountHeadlinesController extends BaseController
             }
         } else {
             // url地址
-            if (!empty($request->video_url) && empty($vd_icons)) {
+            if (!empty($request->video_url) && empty($vd_icons) && empty($request->vd_icon_url)) {
                 return redirect()->back()->withInput()->with('success', '有上传视频，需上传视频缩略图');
             }
         }
@@ -326,7 +325,27 @@ class DiscountHeadlinesController extends BaseController
             if (isset($remark)) {
                 $update_headline_attr['remark'] = $remark;
             }
-            DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->update($update_headline_attr);
+
+            if (empty($update_headline_attr['attr_value'])) {
+                DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->delete();
+            } else {
+                $headline_attr = DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->first();
+                if ($headline_attr) {
+                    DB::table("headline_attr")->where('hid', $id)->where('attr_type', 'mv')->update($update_headline_attr);
+                } else {
+                    $vd=[
+                        'video_type' => $update_headline_attr['video_type'],
+                        'hid' => $id,
+                        'attr_value' => $update_headline_attr['attr_value'],
+                        'enabled' => 1,
+                        'attr_type' => 'mv',
+                        'remark' => $update_headline_attr['remark'],
+                        'create_time' => date('Y-m-d H:i:s', time())
+                    ];
+
+                    DB::table('headline_attr')->insert($vd);
+                }
+            }
 
             //更新图片集
             if (!empty($icons)) {

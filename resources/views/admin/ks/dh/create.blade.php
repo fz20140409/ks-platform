@@ -275,8 +275,7 @@
                                     <div class="form-group" id="video_type">
                                         <label class="col-sm-2 control-label">上传视频方式</label>
                                         <div class="col-sm-8" style="margin-top: 6px">
-                                            <input  @if(isset($info)) @if(isset($video)&&$video->video_type==2) checked
-                                                    @else   @endif @else checked @endif   name="video_type"
+                                            <input  @if(isset($info)&&isset($video)&&$video->video_type==1) @else checked @endif name="video_type"
                                                    type="radio" class="minimal" value="2" id="tt2">本地上传
                                             <input @if(isset($info)&&isset($video)&&$video->video_type==1) checked
                                                    @endif name="video_type" type="radio" class="minimal" value="1" id="tt1">url地址
