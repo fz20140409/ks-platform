@@ -100,6 +100,7 @@
 //            showRemove: false,
             layoutTemplates:{
                 actionUpload:'',
+                actionDelete:'',
             },
             maxFileSize: 1024*20,
             maxFileCount: 1,
