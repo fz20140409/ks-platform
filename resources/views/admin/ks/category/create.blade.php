@@ -48,6 +48,24 @@
             @endif
 
         });
+
+        $("#check_icon").fileinput({
+            initialPreviewAsData: true,
+            language: 'zh',
+            maxFileSize: 1500,
+            showUpload: false,
+            @if(isset($info))
+            showRemove: false,
+            @else
+            showRemove: true,
+            @endif
+            showClose: false,
+            allowedFileExtensions: ["jpg", "png", "gif"],
+            @if(isset($info)&&!empty($info->check_icon))
+            initialPreview: ["{{$info->check_icon}}"],
+            @endif
+
+        });
     </script>
     <script>
         $(document).ready(function() {
@@ -100,18 +118,31 @@
                                     </div>
                                 </div>
                                 @if(!($level==3))
-                                <div class="form-group">
-                                    <label for="icon" class="col-sm-2 control-label">图片</label>
-                                    <div  class="col-sm-8">
-                                        <input id="icon" name="icon" type="file"  >
-                                        @if(session()->has('upload'))
-                                            <div class="alert alert-error">{{session('upload')}}</div>
-                                        @endif
+                                    <div class="form-group">
+                                        <label for="icon" class="col-sm-2 control-label">图片</label>
+                                        <div  class="col-sm-8">
+                                            <input id="icon" name="icon" type="file"  >
+                                            @if(session()->has('upload'))
+                                                <div class="alert alert-error">{{session('upload')}}</div>
+                                            @endif
+                                        </div>
                                     </div>
-                                </div>
-                                    @else
+                                @else
                                     <input type="hidden" name="flag" value="1">
-                                    @endif
+                                @endif
+
+                                @if($level == 1)
+                                    <div class="form-group">
+                                        <label for="check_icon" class="col-sm-2 control-label">点击后的效果图</label>
+                                        <div  class="col-sm-8">
+                                            <input id="check_icon" name="check_icon" type="file"  >
+                                            @if(session()->has('upload'))
+                                                <div class="alert alert-error">{{session('upload')}}</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="check_flag" value="1">
+                                @endif
 
                                 <input type="hidden" name="pid" value="{{$pid}}">
 

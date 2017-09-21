@@ -93,6 +93,20 @@ class CategoryController extends BaseController
             }
 
         }
+
+        // 一级点击后的图标
+        $check_icon = array();
+        if ($request->check_flag) {
+            if ($request->hasFile('check_icon')) {
+                $check_icon = UploadTool::UploadImgForm($request,'check_icon');
+                if (isset($check_icon['error'])){
+                    return redirect()->back()->withInput()->with('upload', $check_icon['error']);
+                }
+            }else{
+                return redirect()->back()->withInput()->with('upload', '请上传图片');
+            }
+        }
+
        /* //图片
         $icon = UploadTool::UploadImg($request, 'icon', config('admin.upload_img_path'));
 
@@ -111,6 +125,9 @@ class CategoryController extends BaseController
             'createtime' => date('Y-m-d H:i:s', time()),
         ];
 
+        if ($request->check_flag) {
+            $insert['check_icon'] = $check_icon['url'];
+        }
 
         if (DB::table('cfg_category')->insert($insert)) {
             return redirect()->back()->with('success', '添加成功');
@@ -152,7 +169,6 @@ class CategoryController extends BaseController
      */
     public function update(Request $request, $id)
     {
-
         $cat_name = $request->cat_name;
         if ( mb_strlen($cat_name) > 10 ) {
             return redirect()->back()->withInput()->with('success', '品类名称不能大于10个汉字');
@@ -162,6 +178,7 @@ class CategoryController extends BaseController
         $where = array();
         $where[] = ['cat_name', '=', $cat_name];
         $where[] = ['cat_id', '!=', $id];
+        $where[] = ['parent_id', '=', $request->pid];
         $where[] = ['enabled', '=', 1];
         $count = DB::table('cfg_category')->where($where)->count();
         if (!empty($count)) {
@@ -180,6 +197,15 @@ class CategoryController extends BaseController
         //有重新上传图片，才更新
         if (!empty($icon)) {
             $update['cat_icon'] = $icon['url'];
+        }
+
+        if ($request->hasFile('check_icon')) {
+            $check_icon = UploadTool::UploadImgForm($request,'check_icon');
+            if (isset($check_icon['error'])){
+                return redirect()->back()->with('upload', $check_icon['error']);
+            } else {
+                $update['check_icon'] = $check_icon['url'];
+            }
         }
 
         DB::table('cfg_category')->where('cat_id', $id)->update($update);
