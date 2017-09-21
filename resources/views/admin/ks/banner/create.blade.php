@@ -13,6 +13,7 @@
 @section('css')
     <link rel="stylesheet" href="/adminlte/plugins/iCheck/all.css">
     <link rel="stylesheet" href="/plugins/bootstrap-fileinput/css/fileinput.min.css">
+    <link rel="stylesheet" href="/adminlte/plugins/select2/select2.min.css">
     @endsection
 @section('js')
     <script src="/adminlte/plugins/iCheck/icheck.min.js"></script>
@@ -21,6 +22,8 @@
     <script src="/plugins/bootstrap-fileinput/js/plugins/purify.min.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
     <script src="/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
+    <script src="/adminlte/plugins/select2/select2.min.js"></script>
+    <script src="/adminlte/plugins/select2/i18n/zh-CN.js"></script>
     <script>
       $("#url").fileinput({
             initialPreviewAsData: true,
@@ -38,6 +41,10 @@
             @endif
 
         });
+
+      $(document).ready(function() {
+          $("select").select2({language: "zh-CN"});
+      });
     </script>
     <script>
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -135,6 +142,25 @@
         @if(isset($info)&&$info->type==4)
              $(".jh option[value='{{$info->r_url}}']").prop("selected", 'selected');
         @endif
+
+        var info_type = '{{isset($info) ? $info->type : false}}';
+        $(window).load(function () {
+            switch(info_type){
+                case '2':
+                    $(".tt").hide();
+                    $(".jh").hide();
+                    break;
+                case '4':
+                    $(".tt").hide();
+                    $(".cj").hide();
+                    break;
+                case '3':
+                    $(".cj").hide();
+                    $(".jh").hide();
+                    break;
+            }
+        });
+
     </script>
     @include('admin.common.layer_tip')
     @endsection
@@ -192,18 +218,18 @@
                             <input @if(isset($info)) @if($info->type==3) checked @else  @endif   @endif value="" name="flag2" type="radio" class="minimal" id="tt">优惠头条
                             </div>
                         </div>
-                        <div class="form-group cj" style="display: @if(isset($info)&&$info->type==2) block @else none @endif">
+                        <div class="form-group cj">
                             <label  class="col-sm-2 control-label">厂家/商家主页</label>
                             <div class="col-sm-8" style="margin-top: 6px">
                                 <select  class="form-control">
                                     <option>请选择厂家/商家主页</option>
                                     @foreach($cj as $v)
-                                        <option value="{{$v->uid}}">{{$v->company}}</option>
+                                        <option value="{{$v->sr_id}}">{{$v->company}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group jh" style="display: @if(isset($info)&&$info->type==4) block @else none @endif">
+                        <div class="form-group jh">
                             <label  class="col-sm-2 control-label">合作机会</label>
                             <div class="col-sm-8" style="margin-top: 6px">
                                 <select  class="form-control">
@@ -214,7 +240,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group tt" style="display: @if(isset($info)&&$info->type==3) block @else none @endif">
+                        <div class="form-group tt">
                             <label  class="col-sm-2 control-label">优惠头条</label>
                             <div class="col-sm-8" style="margin-top: 6px">
                                 <select  class="form-control">

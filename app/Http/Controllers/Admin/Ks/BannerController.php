@@ -133,7 +133,7 @@ class BannerController extends BaseController
     {
         $jh = DB::table('cooperation_opportunity')->select(['id','title'])->where('enabled', 1)->get();
         $tt = DB::table('headline_info')->select(['hid','title'])->where('enabled', 1)->get();
-        $cj = DB::table('user')->select(['uid','company'])->get();
+        $cj = DB::table('merchant')->select(['merchant.sr_id','user.company'])->leftJoin('user', 'user.uid', '=', 'merchant.uid')->get();
         $info=DB::table('cfg_banner')->where('id',$id)->first();
         return view('admin.ks.banner.create',compact('info','jh','tt','cj'));
     }
