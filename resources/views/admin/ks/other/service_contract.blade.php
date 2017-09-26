@@ -34,7 +34,7 @@
                             <label for="menu_name" class="col-sm-2 control-label">客商平台服务协议</label>
 
                             <div class="col-sm-8">
-                                <textarea name="service_contract" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="editor">{{$content}}</textarea>
+                                <textarea name="service_contract" style="width: 100%; height: 600px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="editor">{{$content}}</textarea>
                             </div>
                         </div>
 
