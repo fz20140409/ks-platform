@@ -178,14 +178,14 @@ class OtherController extends BaseController
 
     }
 
-    //客商平台服务协议
+    //隐私声明
     function privacy_policy()
     {
         $content = DB::table('cfg_platform_content')->where('type', 2)->where('enabled', 1)->value('content');
         return view('admin.ks.other.privacy_policy', compact('content'));
     }
 
-    //客商平台服务协议
+    //隐私声明
     function privacy_policy_update(Request $request)
     {
         $content = $request->privacy_policy;
