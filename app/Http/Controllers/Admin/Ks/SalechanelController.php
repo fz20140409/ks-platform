@@ -80,13 +80,15 @@ class SalechanelController extends BaseController
         if(!empty($count)){
             return response()->json(['msg'=>'渠道名称不允许重名']);
         }
+
+        $zylevel = DB::table('cfg_salechanel')->where('sid', $pid)->value('zylevel');
         $insert=[
             'sale_name'=>$sale_name,
             'parent_id'=>$pid,
+            'zylevel' => intval($zylevel) + 1,
             'createtime'=>date('Y-m-d H:i:s',time())
         ];
-
-
+        
         if( DB::table('cfg_salechanel')->insert($insert)){
             return response()->json(['msg'=>1]);
         }
