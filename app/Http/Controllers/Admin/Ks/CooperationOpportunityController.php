@@ -160,12 +160,12 @@ class CooperationOpportunityController extends BaseController
         if($info->state==1){
             DB::table('cooperation_opportunity')->where('id',$id)->update([
                 'state'=>0,
-                'updatetime'=> date("Y-d-m H:i:s")
+                'updatetime'=> date("Y-m-d H:i:s")
             ]);
         }else{
             DB::table('cooperation_opportunity')->where('id',$id)->update([
                 'state'=>1,
-                'updatetime'=> date("Y-d-m H:i:s")
+                'updatetime'=> date("Y-m-d H:i:s")
             ]);
         }
         return response()->json([
