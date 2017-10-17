@@ -229,7 +229,7 @@
                                 <select  class="form-control">
                                     <option>请选择厂家/商家主页</option>
                                     @foreach($cj as $v)
-                                        <option value="{{$v->sr_id}}">{{$v->company}}</option>
+                                        <option value="{{$v->sr_id or ''}}">{{$v->company}}</option>
                                     @endforeach
                                 </select>
                             </div>
