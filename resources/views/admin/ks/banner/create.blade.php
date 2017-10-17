@@ -158,6 +158,11 @@
                     $(".cj").hide();
                     $(".jh").hide();
                     break;
+                default:
+                    $(".tt").hide();
+                    $(".jh").hide();
+                    $(".cj").hide();
+                    break;
             }
         });
 
