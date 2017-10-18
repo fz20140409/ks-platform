@@ -32,7 +32,7 @@ class SysMessageController extends BaseController
         }
 
         //条件
-        $infos = DB::table('notice_info')->where($where)->orderBy('create_time','DESC')->paginate($this->page_size);
+        $infos = DB::table('notice_info')->where($where)->where('type', 1)->where('enabled', 1)->orderBy('create_time','DESC')->paginate($this->page_size);
 
         return view('admin.ks.sysm.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'where_str' => $where_str]);
 
