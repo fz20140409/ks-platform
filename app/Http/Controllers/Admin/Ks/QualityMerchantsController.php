@@ -38,7 +38,7 @@ class QualityMerchantsController extends BaseController
             $str .= " and d.provice = '$provice'";
         }
 
-        $infos = DB::table(DB::raw("(SELECT a.mid,c.company,c.provice FROM `great_merchant` AS a LEFT JOIN merchant AS b ON a.mid=b.sr_id LEFT JOIN `user` AS c ON b.uid=c.uid WHERE b.mtype IN (4,5,6)) as d where 1=1 $str"))->paginate($this->page_size);
+        $infos = DB::table(DB::raw("(SELECT a.mid,c.company,c.provice FROM `great_merchant` AS a LEFT JOIN merchant AS b ON a.mid=b.sr_id LEFT JOIN `user` AS c ON b.uid=c.uid WHERE b.mtype IN (1,4,5,6)) as d where 1=1 $str"))->paginate($this->page_size);
         return view('admin.ks.qum.index', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'provices' => $provices, 'where_str' => $where_str,'provice'=>$provice,'link_where'=>$link_where]);
 
     }
@@ -66,8 +66,8 @@ class QualityMerchantsController extends BaseController
             $where[] = ['f.provice','=',"$provice"];
         }
         $infos = DB::table('merchant as d')->select('d.sr_id as mid','f.provice','f.company')->whereNotIn('d.sr_id', function ($query) {
-            $query->select('a.mid')->from('great_merchant AS a')->leftJoin('merchant AS b', 'a.mid', '=', 'b.sr_id')->whereIn('b.mtype', [4, 5, 6]);
-        })->leftJoin('user as f','d.uid','=','f.uid')->whereIn('d.mtype', [4, 5, 6])->where($where)->paginate($this->page_size);
+            $query->select('a.mid')->from('great_merchant AS a')->leftJoin('merchant AS b', 'a.mid', '=', 'b.sr_id')->whereIn('b.mtype', [1, 4, 5, 6]);
+        })->leftJoin('user as f','d.uid','=','f.uid')->whereIn('d.mtype', [1, 4, 5, 6])->where($where)->paginate($this->page_size);
         return view('admin.ks.qum.create', ['infos' => $infos, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes, 'provices' => $provices, 'where_str' => $where_str,'provice'=>$provice,'link_where'=>$link_where]);
 
     }
