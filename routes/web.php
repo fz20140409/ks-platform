@@ -163,6 +163,9 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         Route::resource('av','AppVersionController');
         Route::post('av/batch_destroy','AppVersionController@batch_destroy')->name('av.batch_destroy');
         Route::post('av/update_post/{id}','AppVersionController@update_post')->name('av.update_post');
+        //对平台说
+        Route::get('talk/index','TalkController@index')->name('talk.index');
+
 
     });
 
