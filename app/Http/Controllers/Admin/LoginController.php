@@ -26,6 +26,10 @@ class LoginController extends Controller
     //重写
     public function showLoginForm()
     {
+        if (Auth::check()) {
+            return redirect()->route('admin.home');
+        }
+
         return view('admin.login.login');
     }
     //登录成功，记录ip,登录时间
