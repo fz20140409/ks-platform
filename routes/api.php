@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('talk/getUserDetailInfo',function (Request $request) {
-    $uid=141;
+    $uid=$request->uid;
     if(empty($uid)){
         return response()->json(array());
     }
