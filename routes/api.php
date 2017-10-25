@@ -16,3 +16,16 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('talk/getUserDetailInfo',function (Request $request) {
+    $uid=141;
+    if(empty($uid)){
+        return response()->json(array());
+    }
+    $url=config('admin.api_url').'/index/getUserDetailInfo';
+    $data=[
+        'param'=>['uid'=>$uid]
+    ];
+    return $result=curl_request($url,true,$data);
+
+});

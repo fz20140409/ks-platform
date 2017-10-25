@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\ks;
 
 use Auth;
 use App\Http\Controllers\Admin\BaseController;
+use Illuminate\Http\Request;
 
 
 /**
@@ -18,6 +19,8 @@ class TalkController extends BaseController
 
         return view('admin.ks.talk.index');
     }
+
+
 
 
 

@@ -165,6 +165,10 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
         Route::post('av/update_post/{id}','AppVersionController@update_post')->name('av.update_post');
         //对平台说
         Route::get('talk/index','TalkController@index')->name('talk.index');
+        //对平台说接口
+
+        //有话说角色设置
+        Route::resource('tr','TalkRoleController');
 
 
     });
