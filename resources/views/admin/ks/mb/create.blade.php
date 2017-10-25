@@ -35,7 +35,7 @@
           showRemove: true,
           @endif
             showClose: false,
-            allowedFileExtensions: ["jpg", "png", "gif"],
+            allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],
             @if(isset($info)&&!empty($info->bgurl))
             initialPreview: ["{{$info->bgurl}}"],
             @endif

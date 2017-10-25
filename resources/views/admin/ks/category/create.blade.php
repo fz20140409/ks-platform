@@ -42,7 +42,7 @@
             showRemove: true,
             @endif
             showClose: false,
-            allowedFileExtensions: ["jpg", "png", "gif"],
+            allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],
             @if(isset($info)&&!empty($info->cat_icon))
             initialPreview: ["{{$info->cat_icon}}"],
             @endif
@@ -60,7 +60,7 @@
             showRemove: true,
             @endif
             showClose: false,
-            allowedFileExtensions: ["jpg", "png", "gif"],
+            allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],
             @if(isset($info)&&!empty($info->check_icon))
             initialPreview: ["{{$info->check_icon}}"],
             @endif

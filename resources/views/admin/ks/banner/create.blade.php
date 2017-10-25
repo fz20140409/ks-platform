@@ -35,7 +35,7 @@
           showRemove: true,
           @endif
             showUpload: false,
-            allowedFileExtensions: ["jpg", "png", "gif"],
+            allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],
             @if(isset($info)&&!empty($info->url))
             initialPreview: ["{{$info->url}}"],
             @endif

@@ -22,7 +22,7 @@
             maxFileSize: 1500,
             showRemove: false,
             showUpload: false,
-            allowedFileExtensions: ["jpg", "png", "gif"],
+            allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],
             initialPreview: ["@if(isset($user)&&!empty($user->avatar)){{$user->avatar}}@else /img/default_avatar_male.jpg @endif"],
 
         });

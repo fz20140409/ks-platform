@@ -27,7 +27,7 @@
             language: 'zh',
             maxFileSize: 1500,
             showUpload: false,
-            allowedFileExtensions: ["jpg", "png", "gif"],
+            allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],
             initialPreview: ["@if(isset($user)){{$user->avatar}}@else /img/default_avatar_male.jpg @endif"],
 
         });
