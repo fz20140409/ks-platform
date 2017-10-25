@@ -36,11 +36,10 @@
             showRemove: true,
             @endif
             showClose: false,
-
             allowedFileExtensions: ["jpg", "png", "gif",'jpeg'],
             @if(isset($info)&&!empty($info->role_icon))
             initialPreview: ["{{$info->role_icon}}"],
-
+            @endif
 
         });
     </script>
@@ -108,7 +107,7 @@
                                         <select name="uid" class="form-control">
                                             <option value="-1">请选择帐号</option>
                                             @foreach($users as $v)
-                                                <option @if(isset($info)&&$info->uid=$v->id) selected  @endif  value="{{$v->id}}">{{$v->email}}</option>
+                                                <option @if(isset($info)&&$info->uid==$v->id) selected  @endif  value="{{$v->id}}">{{$v->email}}</option>
                                                 @endforeach
 
                                         </select>

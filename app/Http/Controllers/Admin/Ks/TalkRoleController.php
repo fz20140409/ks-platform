@@ -19,7 +19,7 @@ class TalkRoleController extends BaseController
     public function index(Request $request)
     {
         //条件
-        $infos = DB::table('merchant_role_rela as a')->select('a.*','b.email as email','b.name as nkname')->leftJoin('lara_users as b','a.uid','=','b.id')->paginate(10);
+        $infos = DB::table('merchant_role_rela as a')->select('a.*','b.email as email','b.name as nkname')->leftJoin('lara_users as b','a.uid','=','b.id')->where('enabled',1)->paginate(10);
 
         return view('admin.ks.tr.index', ['infos' => $infos]);
 
@@ -29,7 +29,7 @@ class TalkRoleController extends BaseController
     public function create(Request $request)
     {
 
-        $sql="select email,id from lara_users where id  not in (select uid from merchant_role_rela)";
+        $sql="select email,id from lara_users where id  not in (select uid from merchant_role_rela where enabled=1)";
         $users=DB::select($sql);
         return view('admin.ks.tr.create',compact('users'));
     }
@@ -104,8 +104,9 @@ class TalkRoleController extends BaseController
     {
         $info = DB::table('merchant_role_rela')->where('id', $id)->first();
         $uid=$info->uid;
-        $sql="select email,id from lara_users where id  not in (select uid from merchant_role_rela) or id=$uid";
+        $sql="select email,id from lara_users where id  not in (select uid from merchant_role_rela where enabled=1) or id=$uid";
         $users=DB::select($sql);
+
 
         return view('admin.ks.tr.create',compact('users','info'));
 
@@ -166,7 +167,9 @@ class TalkRoleController extends BaseController
     public function destroy(Request $request, $id)
     {
 
-        DB::table('merchant_role_rela')->where(['id'=>$id])->delete();
+        DB::table('merchant_role_rela')->where(['id'=>$id])->update([
+            'enabled' => 0
+        ]);
         return response()->json(['msg' => 1]);
 
     }
