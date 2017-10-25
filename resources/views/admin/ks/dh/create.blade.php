@@ -41,7 +41,7 @@
             maxFileCount: 9,
             enctype: 'multipart/form-data',
             uploadUrl: '{{ route('admin.ks.dh.store') }}', //上传的地址
-            allowedFileExtensions: ["jpg", "png", "gif"],//接收的文件后缀
+            allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],//接收的文件后缀
             @if(isset($info)&&!empty($imgs))
             initialPreview: [
                 @foreach($imgs as $img)
@@ -73,7 +73,7 @@
             maxFileCount: 5,
             enctype: 'multipart/form-data',
             uploadUrl: '{{ route('admin.ks.dh.store') }}', //上传的地址
-            allowedFileExtensions: ["jpg", "png", "gif"],//接收的文件后缀
+            allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],//接收的文件后缀
             @if(isset($info)&&!empty($video->remark))
             initialPreview: [
                 @foreach(explode(',',$video->remark) as $img)

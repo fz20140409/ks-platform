@@ -36,10 +36,11 @@
             showRemove: true,
             @endif
             showClose: false,
+
             allowedFileExtensions: ["jpg", "png", "gif",'jpeg'],
             @if(isset($info)&&!empty($info->role_icon))
             initialPreview: ["{{$info->role_icon}}"],
-            @endif
+
 
         });
     </script>

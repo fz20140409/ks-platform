@@ -27,7 +27,7 @@
             showUpload: false,
           showRemove: false,
           showClose: false,
-            allowedFileExtensions: ["jpg", "png", "gif"],
+            allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],
             @if(!empty($yy->fileurl))
             initialPreview: ["{{$yy->fileurl}}"],
             @endif
@@ -40,7 +40,7 @@
           showUpload: false,
           showRemove: false,
           showClose: false,
-          allowedFileExtensions: ["jpg", "png", "gif"],
+          allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],
           @if(!empty($sc->fileurl))
           initialPreview: ["{{$sc->fileurl}}"],
           @endif
@@ -53,7 +53,7 @@
           showUpload: false,
           showRemove: false,
           showClose: false,
-          allowedFileExtensions: ["jpg", "png", "gif"],
+          allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],
           @if(!empty($sp->fileurl))
           initialPreview: ["{{$sp->fileurl}}"],
           @endif

@@ -29,7 +29,7 @@
             showUpload: false,
           showRemove: false,
           showClose: false,
-            allowedFileExtensions: ["jpg", "png", "gif"],
+            allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],
             @if(isset($info)&&!empty($info->img))
             initialPreview: ["{{$info->img}}"],
             @endif
