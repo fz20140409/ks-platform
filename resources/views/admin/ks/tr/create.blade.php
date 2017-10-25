@@ -36,9 +36,9 @@
             showRemove: true,
             @endif
             showClose: false,
-            allowedFileExtensions: ["jpg", "png", "gif"],
-            @if(isset($info)&&!empty($info->cicon))
-            initialPreview: ["{{$info->cicon}}"],
+            allowedFileExtensions: ["jpg", "png", "gif",'jpeg'],
+            @if(isset($info)&&!empty($info->role_icon))
+            initialPreview: ["{{$info->role_icon}}"],
             @endif
 
         });
@@ -75,7 +75,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-default">
-                    <form id="layer_ce" enctype="multipart/form-data" class="box-header form-horizontal" method="post" action="@if(isset($info)){{ route('admin.ks.tr.update',$info->cid) }}@else{{ route('admin.ks.tr.store') }}@endif">
+                    <form id="layer_ce" enctype="multipart/form-data" class="box-header form-horizontal" method="post" action="@if(isset($info)){{ route('admin.ks.tr.update',$info->id) }}@else{{ route('admin.ks.tr.store') }}@endif">
                         {{csrf_field()}}
                         @if(isset($info)){{method_field('PUT')}}@endif
                             <div class="box-body">
@@ -83,7 +83,7 @@
                                     <label for="name" class="col-sm-2 control-label">角色名称</label>
 
                                     <div class="col-sm-8">
-                                        <input value="@if(isset($info)){{$info->name}}@else{{old('name')}}@endif" name="name" type="text" class="form-control" id="name" placeholder="角色名称"  >
+                                        <input value="@if(isset($info)){{$info->role_name}}@else{{old('name')}}@endif" name="name" type="text" class="form-control" id="name" placeholder="角色名称"  >
                                         @if ($errors->has('name'))
                                             <div class="alert alert-warning">{{ $errors->first('name') }}</div>
                                         @endif
@@ -103,13 +103,17 @@
                                     <label for="uid" class="col-sm-2 control-label">绑定帐号</label>
 
                                     <div class="col-sm-8">
+                                        @if(!empty($users))
                                         <select name="uid" class="form-control">
                                             <option value="-1">请选择帐号</option>
                                             @foreach($users as $v)
-                                                <option value="{{$v->id}}">{{$v->email}}</option>
+                                                <option @if(isset($info)&&$info->uid=$v->id) selected  @endif  value="{{$v->id}}">{{$v->email}}</option>
                                                 @endforeach
 
                                         </select>
+                                        @else
+                                            <span style="color: red">无可选择的帐号，请先创建帐号</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

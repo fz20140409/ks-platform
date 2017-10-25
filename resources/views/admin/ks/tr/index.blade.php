@@ -28,10 +28,11 @@
                                     {{--<th></th>--}}
                                     <th>序号</th>
 
-                                    <th>图标</th>
+                                    <th>头像</th>
                                     <th>角色名称</th>
 
-                                    <th>管理后台帐号</th>
+                                    <th>管理后台帐号和昵称</th>
+                                    <th>网易云的account和token</th>
 
                                     <th>操作</th>
                                 </tr>
@@ -44,7 +45,8 @@
                                             <td width="10%">@if(!empty($info->role_icon)) <img class="img-responsive center-block" src="{{$info->role_icon}}"> @endif</td>
 
                                         <td>{{$info->role_name}}</td>
-                                        <td>{{$info->role_name}}</td>
+                                        <td>{{$info->email}}——{{$info->nkname}}</td>
+                                        <td>{{$info->peerid}}——{{$info->token}}</td>
 
                                         <td>
                                             {{--{{route('admin.ks.tr.edit',$info->uid)}}--}}
@@ -55,7 +57,7 @@
 
 
                                             <a style="display: none" class=" op_destroy"
-                                               href="javascript:del('@if(isset($level)&&$level==2){{route('admin.ks.tr.destroy',[$info->id,'level'=>3])}}@else{{route('admin.ks.tr.destroy',[$info->id,'level'=>2])}}@endif')">
+                                               href="javascript:del('{{route('admin.ks.tr.destroy',[$info->id])}}')">
                                                 <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
                                         </td>
                                     </tr>
@@ -122,31 +124,9 @@
                     url: url,
                     type: 'DELETE',
                     success: function (data) {
-                        if (data.msg == -1) {
-                            layer.alert(data.info);
-                            return false;
-                        }
                         if (data.msg == 1) {
                             layer.alert('删除成功');
                             location.reload();
-                        } else {
-                            layer.confirm(data.msg, {
-                                btn: ['确认', '取消']
-                            }, function () {
-                                $.ajax({
-                                    url: url,
-                                    type: 'DELETE',
-                                    data: {'flag': true},
-                                    success: function (data) {
-                                        if (data.msg == 1) {
-                                            layer.alert('删除成功');
-                                            location.reload();
-                                        } else {
-                                            layer.alert('删除失败');
-                                        }
-                                    }
-                                })
-                            });
                         }
                     }
                 });
