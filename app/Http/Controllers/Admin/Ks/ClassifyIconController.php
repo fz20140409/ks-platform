@@ -145,6 +145,7 @@ class ClassifyIconController extends BaseController
         $where = array();
         $where[] = ['cname', '=', $cname];
         $where[] = ['cid', '!=', $id];
+        $where[] = ['fid', '=', $request->pid];
         $where[] = ['uid', '=', 0];
         $where[] = ['utype', '=', 0];
         $where[] = ['enabled', '=', 1];
