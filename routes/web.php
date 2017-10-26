@@ -10,6 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
 
@@ -178,6 +181,37 @@ Route::group(['prefix'=>config('admin.prefix'),'as'=>'admin.','namespace'=>'Admi
     Route::get('/',function (){
         return redirect()->route('admin.login');
     });
+
+
+});
+
+//获取用户信息接口
+Route::get('talk/getUserDetailInfo',function (Request $request) {
+    $uid=$request->uid;
+    if(empty($uid)||empty(Auth::id())){
+        return response()->json(array());
+    }
+    $url=config('admin.api_url').'/index/getUserDetailInfo';
+    $data=[
+        'param'=>['uid'=>$uid]
+    ];
+    return $result=curl_request($url,true,$data);
+
+});
+//获取account和token接口
+Route::get('talk/getLoginInfo',function (Request $request) {
+    $uid=Auth::id();
+    if(empty($uid)){
+        return response()->json(array());
+    }
+    $token=DB::table('merchant_role_rela')->select('token','peerid')->where('uid',$uid)->first();
+
+    if(empty($token)){
+        return response()->json(array());
+    }
+
+    return response()->json(array('account'=>$token->peerid,'token'=>$token->token));
+
 
 });
 
