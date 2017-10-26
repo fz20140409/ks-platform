@@ -52,7 +52,7 @@
                                         <label for="url" class="col-sm-3 control-label">电话</label>
 
                                         <div class="col-sm-8">
-                                            <input value="" name="phone" type='text' class="form-control" id="phone" placeholder="电话" required>
+                                            <input value="" name="tel" type='text' class="form-control" id="tel" placeholder="电话" required>
                                         </div>
                                     </div>
                                 </div>
@@ -83,7 +83,7 @@
                                                    value="{{$info->id}}"></th>
                                         <td>{{$k+1+($infos->currentPage() -1)*$infos->perPage()}}</td>
                                         <td>{{$info->area}}</td>
-                                        <td>{{$info->phone}}</td>
+                                        <td>{{$info->tel}}</td>
                                         <td>
                                             {{--{{route('admin.ks.mk.edit',$info->uid)}}--}}
                                             <a class=" op_edit"  href="javascript:ce('{{route('admin.ks.mk.edit',$info->id)}}',2)"
@@ -204,7 +204,7 @@
                     success:function (data) {
                         $('#layer_ce').attr('url',data.link);
                         $("#layer_ce input[name='area']").val(data.area);
-                        $("#layer_ce input[name='phone']").val(data.phone);
+                        $("#layer_ce input[name='tel']").val(data.tel);
 
                         layer.open({
                             title:'修改平台客服电话设置',

@@ -21,14 +21,15 @@ class MerchantKfController extends BaseController
     public function index(Request $request)
     {
         $where_str = $request->where_str;
-        $where = array();
 
+        $where['sr_id'] = 999999;
+        $where['enabled'] = 1;
         if (isset($where_str)) {
             $where[] = ['area', 'like', '%' . $where_str . '%'];
         }
 
         //条件
-        $infos=DB::table('merchant_kf_rela')->select(['id', 'area', 'phone'])->where($where)->paginate($this->page_size);
+        $infos=DB::table('cfg_kefu')->select(['id', 'area', 'tel'])->where($where)->paginate($this->page_size);
 
         $data = array(
             'infos'=>$infos,
@@ -60,33 +61,34 @@ class MerchantKfController extends BaseController
     {
         $input = $request->all();
         $input['area'] = trim($input['area']);
-        $input['phone'] = trim($input['phone']);
+        $input['tel'] = trim($input['tel']);
 
         if(empty($input['area']) || mb_strlen(trim($input['area'])) > 6){
             return response()->json(['msg'=>'区域名称不能为空并且不能大于6个汉字']);
         }
-        if(empty($input['phone'])){
+        if(empty($input['tel'])){
             return response()->json(['msg'=>'电话不能为空']);
         }
 
         $isMob="/^1[3-8]{1}[0-9]{9}$/";
         $isTel="/^([0-9]{3,4}-)?[0-9]{7,8}$/";
 
-        if(!preg_match($isMob, $input['phone']) && !preg_match($isTel, $input['phone'])) {
+        if(!preg_match($isMob, $input['tel']) && !preg_match($isTel, $input['tel'])) {
             return response()->json(['msg'=>'请输入有效电话号码']);
         }
 
-        $kf_rela = DB::table('merchant_kf_rela')->where('area', $input['area'])->first();
+        $kf_rela = DB::table('cfg_kefu')->where('sr_id', 999999)->where('area', $input['area'])->where('enabled', 1)->first();
         if ($kf_rela) {
             return response()->json(['msg'=>'区域名称不允许重名']);
         }
 
         $insert = array(
+            'sr_id' => 999999,
             'area' => trim($input['area']),
-            'phone' => trim($input['phone'])
+            'tel' => trim($input['tel'])
         );
 
-        if( DB::table('merchant_kf_rela')->insert($insert)){
+        if( DB::table('cfg_kefu')->insert($insert)){
             return response()->json(['msg'=>1]);
         }
     }
@@ -110,7 +112,7 @@ class MerchantKfController extends BaseController
      */
     public function edit($id)
     {
-        $info = DB::table('merchant_kf_rela')->where('id', $id)->first();
+        $info = DB::table('cfg_kefu')->where('id', $id)->first();
         $info->link = route('admin.ks.mk.update_post', $id);
         return response()->json($info);
     }
@@ -126,36 +128,38 @@ class MerchantKfController extends BaseController
     {
         $input = $request->all();
         $input['area'] = trim($input['area']);
-        $input['phone'] = trim($input['phone']);
+        $input['tel'] = trim($input['tel']);
 
         if(empty($input['area']) || mb_strlen(trim($input['area'])) > 6){
             return response()->json(['msg'=>'区域名称不能为空并且不能大于6个汉字']);
         }
-        if(empty($input['phone'])){
+        if(empty($input['tel'])){
             return response()->json(['msg'=>'电话不能为空']);
         }
 
         $isMob="/^1[3-8]{1}[0-9]{9}$/";
         $isTel="/^([0-9]{3,4}-)?[0-9]{7,8}$/";
 
-        if(!preg_match($isMob, $input['phone']) && !preg_match($isTel, $input['phone'])) {
+        if(!preg_match($isMob, $input['tel']) && !preg_match($isTel, $input['tel'])) {
             return response()->json(['msg'=>'请输入有效电话号码']);
         }
 
         $where=array();
         $where[]=['area', '=', $input['area']];
+        $where[]=['sr_id', '=', 999999];
         $where[]=['id', '!=', $id];
-        $kf_rela = DB::table('merchant_kf_rela')->where($where)->first();
+        $where[]=['enabled', '=', 1];
+        $kf_rela = DB::table('cfg_kefu')->where($where)->first();
         if ($kf_rela) {
             return response()->json(['msg'=>'区域名称不允许重名']);
         }
 
         $data = array(
             'area' => $input['area'],
-            'phone' => $input['phone']
+            'tel' => $input['tel']
         );
 
-        DB::table('merchant_kf_rela')->where('id', $id)->update($data);
+        DB::table('cfg_kefu')->where('id', $id)->update($data);
         return response()->json(['msg'=>1]);
     }
 
@@ -167,7 +171,7 @@ class MerchantKfController extends BaseController
      */
     public function destroy($id)
     {
-        DB::table('merchant_kf_rela')->where('id', $id)->delete();
+        DB::table('cfg_kefu')->where('id', $id)->delete();
         return response()->json(['msg' => 1]);
     }
 
@@ -176,7 +180,7 @@ class MerchantKfController extends BaseController
      */
     function batch_destroy(Request $request){
         $ids = $request->ids;
-        DB::table('merchant_kf_rela')->whereIn('id', $ids)->delete();
+        DB::table('cfg_kefu')->whereIn('id', $ids)->delete();
         return response()->json(['msg' => 1]);
 
     }
