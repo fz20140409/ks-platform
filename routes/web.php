@@ -215,3 +215,69 @@ Route::get('talk/getLoginInfo',function (Request $request) {
 
 });
 
+//用户主营渠道信息获取
+Route::get('talk/getUserSalechanel',function (Request $request) {
+    $uid=$request->uid;
+    if(empty($uid)||empty(Auth::id())){
+        return response()->json(array());
+    }
+    $url=config('admin.api_url').'/index/getUserSalechanel';
+    $data=[
+        'param'=>['uid'=>$uid]
+    ];
+    return $result=curl_request($url,true,$data);
+
+});
+//用户主营品类信息获取
+Route::get('talk/getUserCategory',function (Request $request) {
+    $uid=$request->uid;
+    if(empty($uid)||empty(Auth::id())){
+        return response()->json(array());
+    }
+    $url=config('admin.api_url').'/index/getUserCategory';
+    $data=[
+        'param'=>['uid'=>$uid]
+    ];
+    return $result=curl_request($url,true,$data);
+
+});
+//用户经销品牌信息获取
+Route::get('talk/getUserBrandInfo',function (Request $request) {
+    $uid=$request->uid;
+    if(empty($uid)||empty(Auth::id())){
+        return response()->json(array());
+    }
+    $url=config('admin.api_url').'/index/getUserBrandInfo';
+    $data=[
+        'param'=>['uid'=>$uid]
+    ];
+    return $result=curl_request($url,true,$data);
+
+});
+//用户业务辐射区信息获取
+Route::get('talk/getUserYwfs',function (Request $request) {
+    $uid=$request->uid;
+    if(empty($uid)||empty(Auth::id())){
+        return response()->json(array());
+    }
+    $url=config('admin.api_url').'/index/getUserYwfs';
+    $data=[
+        'param'=>['uid'=>$uid]
+    ];
+    return $result=curl_request($url,true,$data);
+
+});
+//用户主营产品信息获取
+Route::get('talk/getUserMaingoods',function (Request $request) {
+    $uid=$request->uid;
+    if(empty($uid)||empty(Auth::id())){
+        return response()->json(array());
+    }
+    $url=config('admin.api_url').'/index/getUserMaingoods';
+    $data=[
+        'param'=>['uid'=>$uid]
+    ];
+    return $result=curl_request($url,true,$data);
+
+});
+
