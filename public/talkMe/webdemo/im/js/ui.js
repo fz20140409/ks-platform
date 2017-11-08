@@ -76,6 +76,15 @@ var appUI = {
                 	nick=obj.username
                 	headImg=obj.uicon
                 }else{
+                	if(message.from=="im59f03470e22c5"){
+                		nick="客服"
+                	}else if(message.from=="im59f0350de6fd3"){
+                		nick="经理"
+                	}else if(message.from=="im59f035510b15e"){
+                		nick="总经理"
+                	}else if(message.from=="im59f2d38767463"){
+                		nick="客服主管"
+                	}
                 	headImg=user.avatar
                 }
             if (type === "tip") {

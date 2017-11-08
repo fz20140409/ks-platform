@@ -623,9 +623,19 @@ function getAvatar(url) {
 
 //或者备注名或者昵称
 function getNick(account, cache) {
+	var nick=""
 	if(localStorage.getItem(account)){
 		var obj=JSON.parse(localStorage.getItem(account))
-		var nick=obj.username || account
+		nick=obj.username || account
+	}
+	if(account=="im59f03470e22c5"){
+		nick="客服"
+	}else if(account=="im59f0350de6fd3"){
+		nick="经理"
+	}else if(account=="im59f035510b15e"){
+		nick="总经理"
+	}else if(account=="im59f2d38767463"){
+		nick="客服主管"
 	}
 //  cache = cache || yunXin.cache;
 //  var nick = cache.getFriendAlias(account), tmp = cache.getUserById(account);
