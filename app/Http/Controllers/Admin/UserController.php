@@ -8,6 +8,7 @@ use App\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Tools\CacheTool;
 use App\Http\Controllers\Tools\UploadTool;
 
 class UserController extends BaseController
@@ -127,7 +128,7 @@ class UserController extends BaseController
             'email' => "required|string|email|max:255|unique:$table,email,$user->id",
             'password' => 'nullable|string|min:6|confirmed',
         ]);
-        $role_ids = $request->role_ids;
+        $role_ids = $request->role_id;
         DB::beginTransaction();
         try {
             $data = ['name' => $request->name, 'email' => $request->email];
@@ -142,6 +143,7 @@ class UserController extends BaseController
             $user->update($data);
             $user->saveRoles($role_ids);
             DB::commit();
+            CacheTool::flush();
             return redirect()->back()->with('success', '更新成功');
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());

@@ -109,7 +109,7 @@
                                 @if(isset($show))
                                     @if(isset($user)&&$user->hasRole($role->name)) {{$role->display_name}} @endif
                                 @else
-                                    <input @if(isset($user)&&$user->hasRole($role->name)) checked @endif value="{{$role->id}}" name="role_ids[]" type="checkbox" class="minimal">{{$role->display_name}}
+                                    <input @if(isset($user)&&$user->hasRole($role->name)) checked @endif value="{{$role->id}}" name="role_id" type="radio" class="minimal">{{$role->display_name}}
                                 @endif
                             </label>
                                 @endforeach
