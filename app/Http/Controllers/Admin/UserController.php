@@ -143,7 +143,11 @@ class UserController extends BaseController
             $user->update($data);
             $user->saveRoles($role_ids);
             DB::commit();
-            CacheTool::flush();
+
+            $role_id = DB::table('lara_role_user')->where('user_id', $user->id)->value('role_id');
+            if ($role_id != $role_ids) {
+                CacheTool::flush();
+            }
             return redirect()->back()->with('success', '更新成功');
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
