@@ -305,6 +305,11 @@
             }
         });
     });
+    
+	$(".logout").on("click",function(){
+		localStorage.clear()
+		$("#logout-form").submit()
+	})
 </script>
 
 @yield('js')

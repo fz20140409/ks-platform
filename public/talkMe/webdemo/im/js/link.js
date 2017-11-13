@@ -121,7 +121,7 @@ var SDKBridge = function(ctr, data) {
 					alert("你的帐号于" + dateFormat(+new Date(), "HH:mm") + "被" + (map[str] || "其他端") + "踢出下线，请确定帐号信息安全!");
 					delCookie('uid');
 					delCookie('sdktoken');
-					window.location.href = './index.html';
+					location.reload() 
 					break;
 				default:
 					break;
