@@ -53,6 +53,7 @@
                                 </tr>
                                 @foreach($roles as $role)
                                     <!--todo-->
+                                    @if ($user_role == 3 || $role->id != 3)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
                                                    value="{{$role->id}}"></th>
@@ -67,15 +68,17 @@
                                                style="margin-right: 10px;display: none">
                                                 <i class="fa fa-eye " aria-hidden="true">查看</i></a>
 
-                                            <a class=" op_edit"  href="{{route('admin.role.edit',$role->id)}}"
-                                               style="margin-right: 10px;display: none">
-                                                <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
+                                            @if ($role->id != $user_role)
+                                                <a class=" op_edit"  href="{{route('admin.role.edit',$role->id)}}"
+                                                   style="margin-right: 10px;display: none">
+                                                    <i class="fa fa-pencil-square-o " aria-hidden="true">修改</i></a>
 
-                                            <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.role.destroy',$role->id)}}')">
-                                                <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
-
+                                                <a style="display: none"  class=" op_destroy"  href="javascript:del('{{route('admin.role.destroy',$role->id)}}')">
+                                                    <i class="fa  fa-trash-o " aria-hidden="true">删除</i></a>
+                                            @endif
                                         </td>
                                     </tr>
+                                    @endif
                                 @endforeach
                             </table>
                         </div>

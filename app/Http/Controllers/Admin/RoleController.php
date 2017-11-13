@@ -7,6 +7,7 @@ use App\Http\Controllers\Tools\Category;
 use App\Role;
 use App\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -20,6 +21,8 @@ class RoleController extends BaseController
      */
     public function index(Request $request)
     {
+        // 当前用户的角色
+        $user_role = DB::table('lara_role_user')->where('user_id', Auth::id())->value('role_id');
 
         //条件
         $where_str = $request->where_str;
@@ -33,7 +36,13 @@ class RoleController extends BaseController
         //分页
         $roles = Role::where($where)->orWhere($orWhere)->paginate($this->page_size);
         //视图
-        return view('admin.role.index', ['roles' => $roles, 'where_str' => $where_str, 'page_size' => $this->page_size, 'page_sizes' => $this->page_sizes]);
+        return view('admin.role.index', [
+            'user_role' => $user_role,
+            'roles' => $roles,
+            'where_str' => $where_str,
+            'page_size' => $this->page_size,
+            'page_sizes' => $this->page_sizes
+        ]);
     }
 
     /**
