@@ -20,6 +20,9 @@ class AdminPermissionAuth
         $action = Route::currentRouteName();
 
         if(!Auth::user()->can($action)){
+            if ($action == 'admin.home') {
+                Auth::logout();
+            }
             //上一个请求
             $data['url']=$_SERVER['HTTP_REFERER'];
             $data['jump_time']=3;
