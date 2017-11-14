@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 
 
 /**
@@ -105,6 +106,17 @@ class OtherController extends BaseController
             'email' => "required|string|email|max:255|unique:$table,email,$user->id",
             'password' => 'nullable|string|min:6|confirmed',
         ]);
+
+        if ($request->has('password')) {
+            if ($request->has('raw_password')) {
+                if (! Hash::check($request->raw_password, $user->password)) {
+                    return redirect()->back()->with('error', '原密码错误！');
+                }
+            } else {
+                return redirect()->back()->with('error', '请填写原密码！');
+            }
+        }
+
         DB::beginTransaction();
         try {
             $data = ['name' => $request->name, 'email' => $request->email];
