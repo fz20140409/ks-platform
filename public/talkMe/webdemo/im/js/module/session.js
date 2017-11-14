@@ -31,7 +31,6 @@ YX.fn.buildSessions = function(id) {
 		//this.sessions.update(data)
 
 		if(readCookie("uid") == "im59f2d38767463") {
-
 			this.sessions.update(data,"&1")
 		} else {
 			this.sessions.update(data,"all")

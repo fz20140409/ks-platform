@@ -188,7 +188,7 @@
 					str,
 					info,
 					sessions = data.sessions;
-
+					console.log(sessions)
 				function showTypeList(type) {
 					
 					if(type != "all") {

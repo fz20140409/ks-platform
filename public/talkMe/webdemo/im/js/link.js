@@ -147,12 +147,12 @@ var SDKBridge = function(ctr, data) {
 		teamlist = this.nim.cutTeams(teamlist, teams.invalid);
 		
 		this.cache.setTeamList(teamlist);
-		console.log(teamlist)
+		
 		var reg = /^(kspt_)(.*)(#.*&[1|2|3])$/
 		teamlist = teamlist.filter(function(val) {
 			return reg.test(val.name)
 		})
-	
+		console.log(teamlist.length)
 		function getUserSession(obj,i,type,id) {
 			teamlist[i].name = obj.username
 			teamlist[i].avatar = obj.uicon
@@ -179,7 +179,6 @@ var SDKBridge = function(ctr, data) {
 
 			function cb(err, msgObj) {
 				if(msgObj && msgObj.msgs.length > 0) {
-
 					var str = buildSessionMsg(msgObj.msgs[0])
 					obj1.lastMsg = msgObj.msgs[0]
 					var old = _this.cache.getSessions()
@@ -196,6 +195,7 @@ var SDKBridge = function(ctr, data) {
 				var re3 = /^(.*)(&.*)$/
 				var type = id.replace(re3, "$2")
 				id = id.replace(reg, "$2")
+				console.log(id)
 				if(!localStorage.getItem(id)) {
 					$.get("/talk/getUserDetailInfo", {
 						"uid": id
@@ -203,12 +203,15 @@ var SDKBridge = function(ctr, data) {
 						if(JSON.parse(res).success) {
 							var obj = JSON.parse(res).data[0]
 							getUserSession(obj,i,type,id)
+						}else{
+							getTalkerInfo(i+1)
 						}
 					})
 				} else {
 					var obj = JSON.parse(localStorage.getItem(id))
 					getUserSession(obj,i,type,id)
 				}
+				console.log(i)
 			} else {
 				layer.close(index)
 			}
@@ -268,6 +271,7 @@ var SDKBridge = function(ctr, data) {
 		hasSession = old.every(function(val) {
 			return val.id != id
 		})
+		alert(hasSession)
 		if(hasSession) {
 			if(session.lastMsg.from) {
 				var uID = session.lastMsg.from
