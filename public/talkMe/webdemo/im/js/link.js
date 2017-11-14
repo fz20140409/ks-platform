@@ -3,7 +3,6 @@
  */
 
 var SDKBridge = function(ctr, data) {
-
 	var sdktoken = readCookie('sdktoken'),
 		userUID = readCookie('uid'),
 		that = this;
@@ -195,7 +194,7 @@ var SDKBridge = function(ctr, data) {
 				var re3 = /^(.*)(&.*)$/
 				var type = id.replace(re3, "$2")
 				id = id.replace(reg, "$2")
-				console.log(id)
+			
 				if(!localStorage.getItem(id)) {
 					$.get("/talk/getUserDetailInfo", {
 						"uid": id
@@ -211,7 +210,7 @@ var SDKBridge = function(ctr, data) {
 					var obj = JSON.parse(localStorage.getItem(id))
 					getUserSession(obj,i,type,id)
 				}
-				console.log(i)
+	
 			} else {
 				layer.close(index)
 			}
@@ -271,7 +270,7 @@ var SDKBridge = function(ctr, data) {
 		hasSession = old.every(function(val) {
 			return val.id != id
 		})
-		alert(hasSession)
+		console.log(session)
 		if(hasSession) {
 			if(session.lastMsg.from) {
 				var uID = session.lastMsg.from
@@ -279,7 +278,6 @@ var SDKBridge = function(ctr, data) {
 					"uid": session.lastMsg.from
 				}, function(res) {
 					if(JSON.parse(res).success) {
-
 						var obj = JSON.parse(res).data[0]
 						var teamInfo = _this.cache.getTeamById(to)
 						var name = teamInfo.name
@@ -292,16 +290,20 @@ var SDKBridge = function(ctr, data) {
 						session.isNew = true
 						session.typeA = type
 						setTimeout(function() {
+							console.log(session)
 							_this.cache.setSessions(this.nim.mergeSessions(old, session));
 							_this.controller.buildSessions(id);
-						}, 100)
+						}, 1000)
 					}
 				})
 			}
 
 		} else {
-			_this.cache.setSessions(this.nim.mergeSessions(old, session));
-			_this.controller.buildSessions(id);
+			setTimeout(function() {
+					console.log(old)
+					_this.cache.setSessions(this.nim.mergeSessions(old, session));
+					_this.controller.buildSessions(id);
+			}, 1000)
 		}
 
 	};

@@ -262,7 +262,8 @@ YX.fn.getNick = function(account) {
  * @return {Object} info 需要呈现的数据
  */
 YX.fn.infoProvider = function(data, type) {
-
+	console.log(data)
+	console.log(type)
 	var info = {}
 	switch(type) {
 		case "session":

@@ -180,8 +180,7 @@
 			 * @param  {Object} data 
 			 * @return {Void}   
 			 */
-			SessionList.prototype.update = function(data,type) {
-			
+			SessionList.prototype.update = function(data,type) {		
 				var _this = this
 				var html = '',
 					i,
@@ -190,25 +189,22 @@
 					sessions = data.sessions;
 					console.log(sessions)
 				function showTypeList(type) {
-					
 					if(type != "all") {
 						sessions = sessions.filter(function(val) {
-						
 							return val.typeA == type
 						})
-					
 					}
-					
+					console
 					if(sessions.length === 0) {
 						html += '<p class="empty">暂无最近联系人哦</p>';
 					} 
 					else {
 						for(i = 0; i < sessions.length; i++) {
-							//console.log(sessions[i])
 							info = _this.provider(sessions[i], "session");
 							if(!info) {
 								continue;
 							}
+							console.log(info)
 							var account = info.account
 							var personSubscribes = data.personSubscribes
 							var multiPortStatus = ''
