@@ -58,7 +58,7 @@ class UserController extends BaseController
             'email' => "required|string|email|max:255|unique:$table",
             'password' => 'required|string|min:6|confirmed',
         ]);
-        $role_ids = $request->role_ids;
+        $role_ids = $request->role_id;
         DB::beginTransaction();
         try {
             $user = new User();
@@ -69,7 +69,7 @@ class UserController extends BaseController
             $user->save();
 
             if ($user && !empty($role_ids)) {
-                $user->attachRoles($role_ids);
+                $user->attachRole($role_ids);
             }
             DB::commit();
             return redirect()->back()->with('success', '添加成功');
