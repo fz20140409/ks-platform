@@ -48,9 +48,20 @@
                             <label for="email" class="col-sm-2 control-label">邮箱</label>
 
                             <div class="col-sm-8">
-                                <input name="email" value="@if(isset($user)){{$user->email}}@else{{old('email')}}@endif" type="email" class="form-control" id="email" placeholder="邮箱" required autofocus>
+                                <input name="email" value="@if(isset($user)){{$user->email}}@else{{old('email')}}@endif" type="email" class="form-control" id="email" placeholder="邮箱" required readonly>
                                 @if ($errors->has('email'))
                                     <div class="alert alert-warning">{{ $errors->first('email') }}</div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="col-sm-2 control-label">原密码</label>
+
+                            <div class="col-sm-8">
+                                <input name="raw_password" type="password" class="form-control" id="raw_password" placeholder="原密码" @if(!isset($user)) required @endif>
+                                @if ($errors->has('raw_password'))
+                                    <div class="alert alert-warning">{{ $errors->first('raw_password') }}</div>
                                 @endif
                             </div>
                         </div>
