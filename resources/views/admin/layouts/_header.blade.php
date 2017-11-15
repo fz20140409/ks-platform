@@ -253,8 +253,7 @@
                                 <a href="{{route('admin.ks.other.user_center')}}" class="btn btn-default btn-flat">个人中心</a>
                             </div>
                             <div class="pull-right">
-                                <a onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();" href="{{ route('admin.logout') }}"  class="btn btn-default btn-flat">注销</a>
+                                <a class="btn btn-default btn-flat logout">注销</a>
                                 <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
                                     {{ csrf_field() }}
                                 </form>
@@ -271,3 +270,6 @@
         </div>
     </nav>
 </header>
+<script type="text/javascript">
+
+</script>

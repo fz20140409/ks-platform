@@ -263,6 +263,8 @@
 <!-- Morris.js charts -->
 {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>--}}
 <script src="/plugins/layer/layer.js"></script>
+<script src="/talkMe/js/jquery.cookie.js"></script>
+	<script src="/talkMe/webdemo/im/js/util.js" type="text/javascript" charset="utf-8"></script>
 <script>
     $.ajaxSetup({
         headers: {
@@ -307,8 +309,13 @@
     });
     
 	$(".logout").on("click",function(){
+
+		delCookie('uid');
+		delCookie('sdktoken');
 		localStorage.clear()
 		$("#logout-form").submit()
+
+		
 	})
 </script>
 

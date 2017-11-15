@@ -53,8 +53,8 @@
 		}else{
 			$.get("/talk/getLoginInfo",function(res){
 				console.log(res)
-				$.cookie('uid', res.account, { expires: 7, path: '/' }); 
-				$.cookie('sdktoken', res.token, { expires: 7, path: '/' }); 
+				setCookie('uid', res.account)
+				setCookie('sdktoken', res.token)
 				win.location.href ="/talkMe/webdemo/im/main.html"; 
 
 			})
