@@ -14,7 +14,6 @@ var SDKBridge = function(ctr, data) {
 	this.person[userUID] = true;
 	this.controller = ctr;
 	this.cache = data;
-	alert(123)
 	console.log(sdktoken)
 	console.log(userUID)
 	window.nim = ctr.nim = this.nim = new SDK.NIM({
