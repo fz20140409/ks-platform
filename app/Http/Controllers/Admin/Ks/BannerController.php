@@ -49,9 +49,9 @@ class BannerController extends BaseController
         }
 
         //合作机会
-        $jh = DB::table('cooperation_opportunity')->select(['id','title'])->get();
-        $tt = DB::table('headline_info')->select(['hid','title'])->get();
-        $cj = DB::table('user')->select(['uid','company'])->get();
+        $jh = DB::table('cooperation_opportunity')->select(['id','title'])->where('enabled', 1)->get();
+        $tt = DB::table('headline_info')->select(['hid','title'])->where('enabled', 1)->get();
+        $cj = DB::table('merchant')->select(['merchant.sr_id','user.company'])->leftJoin('user', 'user.uid', '=', 'merchant.uid')->get();
         return view('admin.ks.banner.create',compact('jh','tt','cj'));
     }
 
@@ -63,7 +63,6 @@ class BannerController extends BaseController
      */
     public function store(Request $request)
     {
-
         $title=$request->title;
         $type=$request->type;
         $r_url=$request->r_url;
