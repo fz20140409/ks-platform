@@ -57,7 +57,7 @@
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
                                                    value="{{$role->id}}"></th>
-                                        <td>{{$k+1+($roles->currentPage() -1)*$roles->perPage()}}</td>
+                                        <td>{{$key+1+($roles->currentPage() -1)*$roles->perPage()}}</td>
                                         <td>{{$role->name}}</td>
                                         <td>{{$role->display_name}}</td>
                                         <td>
