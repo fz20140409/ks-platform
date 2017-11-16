@@ -51,13 +51,13 @@
                                     <th>名称</th>
                                     <th>操作</th>
                                 </tr>
-                                @foreach($roles as $role)
+                                @foreach($roles as $key => $role)
                                     <!--todo-->
                                     @if ($user_role == 3 || $role->id != 3)
                                     <tr>
                                         <th><input class="minimal" name="user_ids[]" type="checkbox"
                                                    value="{{$role->id}}"></th>
-                                        <td>{{$role->id}}</td>
+                                        <td>{{$k+1+($users->currentPage() -1)*$users->perPage()}}</td>
                                         <td>{{$role->name}}</td>
                                         <td>{{$role->display_name}}</td>
                                         <td>
