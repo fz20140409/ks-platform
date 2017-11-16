@@ -347,13 +347,19 @@ class CategoryController extends BaseController
             $parent = DB::table('cfg_category')->where('cat_id', $id)->select('cat_name')->get()[0]->cat_name;
         }
         if ($request->level == 3) {
-            $name1 = DB::table('cfg_category')->where('cat_id', $id)->select('cat_name')->get()[0];
+            $name1 = DB::table('cfg_category')->where('cat_id', $id)->select('cat_name', 'parent_id')->get()[0];
             $name2 = DB::select("SELECT b.cat_name FROM `cfg_category` AS a LEFT JOIN cfg_category AS b ON a.parent_id=b.cat_id WHERE a.cat_id=$id")[0];
             $parent = $name2->cat_name . "-->" . $name1->cat_name;
 
         }
         //条件
         $infos = DB::table('cfg_category')->select(['cat_name', 'cat_id', 'cat_icon'])->where($where)->paginate($this->page_size);
+
+        if ($request->level == 2) {
+            $previous = route('admin.ks.category.index');
+        } else {
+            $previous = route('admin.ks.category.showSub', ['id' => $name1->parent_id, 'level' => 2]);
+        }
 
         $data = array(
             'infos' => $infos,
@@ -363,7 +369,7 @@ class CategoryController extends BaseController
             'level' => $request->level,
             'pid' => $id,
             'parent' => $parent,
-            'previous' => URL::previous()
+            'previous' => $previous
         );
         return view('admin.ks.category.index', $data);
 
