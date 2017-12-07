@@ -57,7 +57,7 @@ class DiscountGoodsController extends BaseController
     {
         $hid=$request->hid;
         $title=DB::table('headline_info')->select('title')->where('hid',$hid)->first();
-        $str_where='';
+        $str_where='1=1 and a.state != 3 and a.enabled = 1';
         $where_link['page_size']=$this->page_size;
         $where_link['hid']=$hid;
 
@@ -138,7 +138,7 @@ LEFT JOIN `user` AS c ON c.uid=b.uid
 LEFT JOIN cfg_brand AS d ON a.bid=d.bid
 LEFT JOIN goods_spec AS gs ON a.goods_id=gs.good_id
 LEFT JOIN goods_category_rela AS e ON a.goods_id=e.good_id
-LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where 1=1 $str_where group by goods_id) as g";
+LEFT JOIN cfg_category AS f ON e.cat_id=f.cat_id where $str_where group by goods_id) as g";
         $infos = DB::table(DB::raw($sql))->paginate($this->page_size);
 
 
