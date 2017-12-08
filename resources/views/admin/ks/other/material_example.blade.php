@@ -28,8 +28,8 @@
           showRemove: false,
           showClose: false,
             allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],
-            @if(!empty($yy->fileurl))
-            initialPreview: ["{{$yy->fileurl}}"],
+            @if(!empty($yy[0]->fileurl))
+            initialPreview: ["{{$yy[0]->fileurl}}"],
             @endif
 
         });
@@ -41,8 +41,8 @@
           showRemove: false,
           showClose: false,
           allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],
-          @if(!empty($sc->fileurl))
-          initialPreview: ["{{$sc->fileurl}}"],
+          @if(!empty($sc[0]->fileurl))
+          initialPreview: ["{{$sc[0]->fileurl}}"],
           @endif
 
       });
@@ -54,8 +54,8 @@
           showRemove: false,
           showClose: false,
           allowedFileExtensions: ["jpg", 'jpeg', "png", "gif"],
-          @if(!empty($sp->fileurl))
-          initialPreview: ["{{$sp->fileurl}}"],
+          @if(!empty($sp[0]->fileurl))
+          initialPreview: ["{{$sp[0]->fileurl}}"],
           @endif
 
       });
@@ -85,7 +85,7 @@
                             <label for="menu_name" class="col-sm-2 control-label">文字说明</label>
 
                             <div class="col-sm-8">
-                                <textarea name="remark" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="editor">{{$yy->remark}}</textarea>
+                                <textarea name="remark" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="editor">{{$wz[0]->remark or ''}}</textarea>
                             </div>
                         </div>
                         <div class="form-group">

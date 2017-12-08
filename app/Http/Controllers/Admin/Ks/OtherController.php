@@ -21,11 +21,12 @@ class OtherController extends BaseController
     //上传材料范例
     function material_example()
     {
+        $wz = DB::select('select *  from merchant_file  where filetype=0 and sr_id=0');
+        $yy = DB::select('select *  from merchant_file  where filetype=2 and sr_id=0');
+        $sc = DB::select('select *  from merchant_file  where filetype=5 and sr_id=0');
+        $sp = DB::select('select *  from merchant_file  where filetype=4 and sr_id=0');
 
-        $yy = DB::select('select *  from merchant_file  where filetype=2 and sr_id=0')[0];
-        $sc = DB::select('select *  from merchant_file  where filetype=5 and sr_id=0')[0];
-        $sp = DB::select('select *  from merchant_file  where filetype=4 and sr_id=0')[0];
-        return view('admin.ks.other.material_example', compact('yy', 'sc', 'sp'));
+        return view('admin.ks.other.material_example', compact('wz', 'yy', 'sc', 'sp'));
     }
 
     //上传材料范例
@@ -35,23 +36,23 @@ class OtherController extends BaseController
         $yy = UploadTool::UploadImg($request, 'yy', 'public/upload/img');
         $sc = UploadTool::UploadImg($request, 'sc', 'public/upload/img');
         $sp = UploadTool::UploadImg($request, 'sp', 'public/upload/img');
-        $data_yy['remark'] = $remark;
-        $data_sc['remark'] = $remark;
-        $data_sp['remark'] = $remark;
+
+        DB::table('merchant_file')->whereRaw('filetype=0 and sr_id=0')->update(['remark' => $remark]);
+
         if (!empty($yy)) {
             $data_yy['fileurl'] = $yy;
+            DB::table('merchant_file')->whereRaw('filetype=2 and sr_id=0')->update($data_yy);
         }
         if (!empty($sc)) {
             $data_sc['fileurl'] = $sc;
+            DB::table('merchant_file')->whereRaw('filetype=5 and sr_id=0')->update($data_sc);
         }
         if (!empty($sp)) {
             $data_sp['fileurl'] = $sp;
+            DB::table('merchant_file')->whereRaw('filetype=4 and sr_id=0')->update($data_sp);
         }
-        DB::table('merchant_file')->whereRaw('filetype=2 and sr_id=0')->update($data_yy);
-        DB::table('merchant_file')->whereRaw('filetype=5 and sr_id=0')->update($data_sc);
-        DB::table('merchant_file')->whereRaw('filetype=4 and sr_id=0')->update($data_sp);
-        return redirect()->back()->with('success', '操作成功');
 
+        return redirect()->back()->with('success', '操作成功');
     }
 
     //模块设置
@@ -85,11 +86,6 @@ class OtherController extends BaseController
         DB::table('cfg_menu')->where('id',2)->update(['enabled'=>$yzcs]);
         DB::table('cfg_menu')->where('id',1)->update(['enabled'=>$rmsp]);
         return redirect()->back()->with('success', '操作成功');
-
-
-
-
-
     }
     //个人中心
     function user_center(){
